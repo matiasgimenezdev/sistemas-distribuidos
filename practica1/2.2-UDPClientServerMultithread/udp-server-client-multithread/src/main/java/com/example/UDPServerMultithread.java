@@ -1,7 +1,6 @@
 package com.example;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 // Este servidor UDP se pone en escucha en el puerto 5000, esperando recibir mensajes del cliente. Por cada mensaje de cliente
 // recibido, abre un hilo para manejar responder al cliente.
@@ -28,33 +27,4 @@ public class UDPServerMultithread {
     }
 }
 
-class ClientHandler extends Thread {
-    private DatagramPacket request;
-    private DatagramSocket socket;
 
-    public ClientHandler(DatagramSocket socket, DatagramPacket request) {
-        this.request = request;
-        this.socket = socket;
-    }
-
-    public void run() {
-        try {
-            // obtiene los datos de la solicitud
-            String message = new String(request.getData());
-            System.out.println("Mensaje recibido: " + message);
-
-            // procesa la solicitud
-            byte[] responseData = message.getBytes();
-            int responseSize = responseData.length;
-            InetAddress clientAddress = request.getAddress();
-            int clientPort = request.getPort();
-            DatagramPacket response = new DatagramPacket(responseData, responseSize, clientAddress, clientPort);
-
-            // envía la respuesta al cliente
-            socket.send(response);
-            System.out.println("Respuesta enviada al cliente ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
