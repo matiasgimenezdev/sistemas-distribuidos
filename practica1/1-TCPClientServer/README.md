@@ -10,5 +10,6 @@ cd tcp-server-client
 ```
 java -jar target/tcp-client-server.jar
 ```
-3- En una terminal ingresar la opcion para iniciar el servidor y en la otra terminal ingresar la opcion para iniciar el cliente.
-###### Los resultados de la ejecucion se muestran en sus respectivas terminales
+3- En una terminal ingresar la opcion para iniciar el servidor y en la otra terminal ingresar la opcion para iniciar el cliente. <br>
+
+##### Los resultados de la ejecucion se muestran en sus respectivas terminales
