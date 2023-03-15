@@ -17,6 +17,8 @@ public class MessageQueueClient {
                 System.out.println("1- Enviar mensaje");
                 System.out.println("2- Leer mensajes");
                 System.out.println("");
+                System.out.println("-- Ingrese cualquier otra tecla para salir...");
+                System.out.println("");
                 System.out.print("Ingrese una opcion: ");
                 int option = Integer.parseInt(scanner.nextLine().trim());
 

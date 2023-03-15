@@ -14,7 +14,7 @@ public class MessageQueueServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Nuevo cliente conectado desde " + clientSocket.getInetAddress().getHostAddress());
+                System.out.println("Nuevo cliente conectado");
 
                 // Crear un nuevo hilo para manejar las solicitudes del cliente
                 Thread thread = new Thread(new ClientHandler(clientSocket, messageQueues));
