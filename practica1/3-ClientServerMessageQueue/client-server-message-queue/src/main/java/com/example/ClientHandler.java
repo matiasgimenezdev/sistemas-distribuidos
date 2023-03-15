@@ -86,7 +86,6 @@ import java.util.*;
                     return new ArrayList<String>();
                 } else {
                     List<String> messages = new ArrayList<String>(queue);
-                    queue.clear();
                     return messages;
                 }
             }
