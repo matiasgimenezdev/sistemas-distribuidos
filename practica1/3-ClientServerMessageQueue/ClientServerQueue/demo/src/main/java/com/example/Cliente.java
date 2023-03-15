@@ -28,16 +28,16 @@ public class Cliente {
       System.out.println(response);
 
       while (true) {
-        System.out.println("Enter a command (SEND or RECEIVE):");
+        System.out.println("Ingrese un comando (SEND or RECEIVE):");
         String command = scanner.nextLine();
         output.println(command);
 
         if (command.equalsIgnoreCase("SEND")) {
-          System.out.println("Enter the recipient name:");
+          System.out.println("Ingrese el nombre del destinatario:");
           String recipient = scanner.nextLine();
           output.println(recipient);
 
-          System.out.println("Enter the message:");
+          System.out.println("Ingrese el mensaje:");
           String message = scanner.nextLine();
           output.println(message);
 

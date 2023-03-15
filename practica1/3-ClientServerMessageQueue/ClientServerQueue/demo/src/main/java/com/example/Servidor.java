@@ -42,28 +42,31 @@ public class Servidor {
             messageQueues.put(clientName, new LinkedList<String>());
           }
         }
-        outputWriter.println("Bienvenido, " + clientName
-            + ". Para enviar un mensaje, ingrese el nombre del destinatario seguido por el mensaje.");
-        String inputLine;
-        while ((inputLine = inputReader.readLine()) != null) {
-          String[] messageParts = inputLine.split(" ", 2);
-          if (messageParts.length == 2) {
-            String recipient = messageParts[0];
-            String message = clientName + ": " + messageParts[1];
-            synchronized (messageQueues) {
-              Queue<String> messageQueue = messageQueues.get(recipient);
-              if (messageQueue != null) {
-                messageQueue.add(message);
-              } else {
-                outputWriter.println("El destinatario " + recipient + " no estÃ¡ conectado.");
-              }
+        String comando;
+        comando = inputReader.readLine();
+        if (comando.matches("SEND")) {
+          String destinatario;
+          destinatario = inputReader.readLine();
+          synchronized (messageQueues) {
+            if (!messageQueues.containsKey(destinatario)) {
+              messageQueues.put(destinatario, new LinkedList<String>());
             }
-          } else {
-            outputWriter.println(
-                "Mensaje mal formado. Por favor ingrese el nombre del destinatario seguido por el mensaje.");
+          }
+          String mensaje;
+          mensaje = inputReader.readLine();
+          sendMessage(destinatario, mensaje);
+        } else {
+          if (comando.matches("RECEIVE")) {
+            List<String> messages = receiveMessages(clientName);
+            outputWriter.println(messages.size());
+            for (String msg : messages) {
+              outputWriter.println(msg);
+            }
           }
         }
-      } catch (IOException e) {
+      } catch (
+
+      IOException e) {
         System.err.println("Error al manejar la conexiÃ³n con el cliente " + clientName + ": " + e.getMessage());
       } finally {
         try {
@@ -76,6 +79,33 @@ public class Servidor {
           messageQueues.remove(clientName);
         }
         System.out.println("Cliente desconectado: " + clientName);
+      }
+    }
+
+    private void sendMessage(String recipient, String message) {
+      synchronized (messageQueues) {
+        Queue<String> queue = messageQueues.get(recipient);
+        if (queue == null) {
+          queue = new LinkedList<String>();
+          messageQueues.put(recipient, queue);
+        }
+        queue.add(message);
+        System.out.println("Mensaje registrado para: " + recipient);
+      }
+    }
+
+    // Obtener todos los mensajes de la cola del destinatario y eliminarlos de la
+    // cola
+    private List<String> receiveMessages(String recipient) {
+      synchronized (messageQueues) {
+        Queue<String> queue = messageQueues.get(recipient);
+        if (queue == null) {
+          return new ArrayList<String>();
+        } else {
+          List<String> messages = new ArrayList<String>(queue);
+          queue.clear();
+          return messages;
+        }
       }
     }
   }
