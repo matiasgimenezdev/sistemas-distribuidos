@@ -2,9 +2,9 @@
 
 ###### El proyecto maven ya se encuentra compilado y empaquetado.
 
-1- Abrir dos terminales y moverse en ambas al directorio 'tcp-server-client': <br>
+1- Abrir dos terminales y moverse en ambas al directorio 'tcp-client-server': <br>
 ```
-cd tcp-server-client
+cd tcp-client-server
 ```
 2- Abrir dos terminales (una para cliente y otra para servidor) y ejecutar en ambas: <br>
 ```

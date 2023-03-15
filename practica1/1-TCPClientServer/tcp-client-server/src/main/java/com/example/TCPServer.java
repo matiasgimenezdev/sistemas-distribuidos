@@ -13,7 +13,7 @@ public class TCPServer {
             // Crea un socket servidor en el puerto 5000
             ServerSocket serverSocket = new ServerSocket(5000);
 
-            System.out.println("Esperando conexiones entrantes...");
+            System.out.println("Servidor TCP iniciado en el puerto 5000.");
 
             // Espera a que llegue una conexión entrante
             Socket clientSocket = serverSocket.accept();
