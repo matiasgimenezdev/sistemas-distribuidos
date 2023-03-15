@@ -13,11 +13,12 @@ public class MessageQueueClient {
             Scanner scanner = new Scanner(System.in);
 
             while(!finish) {
-                System.out.println("");
+System.out.println("");
+                System.out.println("==================  MENU DEL CLIENTE ================== ");
                 System.out.println("1- Enviar mensaje");
                 System.out.println("2- Leer mensajes");
                 System.out.println("");
-                System.out.println("-- Ingrese cualquier otra tecla para salir...");
+                System.out.println("-- Ingrese cualquier otra tecla para salir.");
                 System.out.println("");
                 System.out.print("Ingrese una opcion: ");
                 int option = Integer.parseInt(scanner.nextLine().trim());
@@ -48,6 +49,7 @@ public class MessageQueueClient {
                         for (int i = 0; i < numMessages; i++) {
                             System.out.println(i + ". " + in.readLine());
                         }
+                        out.println("ACK");
                         break;
                     }
                     default: finish = true;
