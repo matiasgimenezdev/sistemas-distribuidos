@@ -1,3 +1,4 @@
+com/example/App.class
 com/example/MessageQueueServer.class
-com/example/MessageQueueServer$ClientHandler.class
+com/example/ClientHandler.class
 com/example/MessageQueueClient.class

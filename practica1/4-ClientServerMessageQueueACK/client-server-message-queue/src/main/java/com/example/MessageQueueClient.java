@@ -4,9 +4,9 @@ import java.net.*;
 import java.util.Scanner;
 
 public class MessageQueueClient {
-    public static void main(String[] args) {
+    public void run() {
         try {
-            Socket socket = new Socket("localhost", 1234);
+            Socket socket = new Socket("localhost", 5000);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             boolean finish = false;
@@ -52,7 +52,6 @@ public class MessageQueueClient {
                 }
          }
 
-            scanner.close();
             socket.close();
         } catch (IOException e) {
             System.out.println("Error al conectar con el servidor: " + e.getMessage());

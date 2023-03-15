@@ -3,36 +3,16 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class MessageQueueServer {
-    // HashMap para almacenar las colas de mensajes de cada destinatario
-    private static HashMap<String, LinkedList<String>> messageQueues = new HashMap<String, LinkedList<String>>();
-
-    public static void main(String[] args) {
-        try {
-            ServerSocket serverSocket = new ServerSocket(1234);
-            System.out.println("Servidor de cola de mensajes iniciado en el puerto 1234.");
-
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Nuevo cliente conectado desde " + clientSocket.getInetAddress().getHostAddress());
-
-                // Crear un nuevo hilo para manejar las solicitudes del cliente
-                Thread thread = new Thread(new ClientHandler(clientSocket));
-                thread.start();
-            }
-        } catch (IOException e) {
-            System.out.println("Error al iniciar el servidor: " + e.getMessage());
-        }
-    }
-
     // Clase para manejar las solicitudes de un cliente
-    private static class ClientHandler implements Runnable {
+    public class ClientHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
+        private HashMap<String, LinkedList<String>> messageQueues;
 
-        public ClientHandler(Socket socket) {
+        public ClientHandler(Socket socket, HashMap<String, LinkedList<String>> messageQueues) {
             this.clientSocket = socket;
+            this.messageQueues = messageQueues;
         }
 
         public void run() {
@@ -67,7 +47,6 @@ public class MessageQueueServer {
                             List<String> messages = receiveMessages(recipient);
                             out.println(messages.size());
                             for (String msg : messages) {
-                                System.out.println(msg);
                                 out.println(msg);
                             }
                             break;
@@ -113,4 +92,3 @@ public class MessageQueueServer {
             }
         }
     }
-}
