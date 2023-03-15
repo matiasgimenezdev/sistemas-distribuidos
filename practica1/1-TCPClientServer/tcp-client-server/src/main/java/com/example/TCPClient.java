@@ -7,7 +7,7 @@ import java.io.*;
 // cierra los flujos de entrada y salida y el socket del cliente.
 
 public class TCPClient {
-    public static void main(String[] args) {
+    public void run() {
         try {
             // Crea un socket cliente y se conecta al servidor en el puerto 5000
             Socket socket = new Socket("localhost", 5000);

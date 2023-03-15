@@ -13,11 +13,12 @@ public class MessageQueueClient {
             Scanner scanner = new Scanner(System.in);
 
             while(!finish) {
+                System.out.println("");
                 System.out.println("1- Enviar mensaje");
                 System.out.println("2- Leer mensajes");
-                System.out.println("0- Leer mensajes");
-
-                int option = Integer.parseInt(scanner.nextLine());
+                System.out.println("");
+                System.out.print("Ingrese una opcion: ");
+                int option = Integer.parseInt(scanner.nextLine().trim());
 
                 switch(option) {
                     case 1:
@@ -40,8 +41,10 @@ public class MessageQueueClient {
                         // Obtener los mensajes dirigidos al cliente actual
                         int numMessages = Integer.parseInt(in.readLine());
                         System.out.println("Tiene " + numMessages + " mensajes nuevos:");
+                        System.out.println("");
+
                         for (int i = 0; i < numMessages; i++) {
-                            System.out.println(in.readLine());
+                            System.out.println(i + ". " + in.readLine());
                         }
                         break;
                     }

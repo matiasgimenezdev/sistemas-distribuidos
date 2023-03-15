@@ -8,7 +8,7 @@ import java.io.*;
 // cierra los flujos de entrada y salida y su propio socket.
 
 public class TCPServer {
-    public static void main(String[] args) {
+    public  void run() {
         try {
             // Crea un socket servidor en el puerto 5000
             ServerSocket serverSocket = new ServerSocket(5000);
