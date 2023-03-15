@@ -10,7 +10,7 @@ import java.io.*;
 
 
 public class TCPServerMultithread {
-    public static void main(String[] args) {
+    public void run() {
         try {
             // Crea un socket servidor en el puerto 5000
             ServerSocket serverSocket = new ServerSocket(5000);
@@ -25,7 +25,7 @@ public class TCPServerMultithread {
                 // Inicia un nuevo hilo para manejar la conexión del cliente
                 Thread thread = new Thread(new ClientHandler(clientSocket));
                 thread.start();
-                System.out.println("Se abrio un nuevo hilo.");
+
 
             }
 

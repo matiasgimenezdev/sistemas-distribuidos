@@ -27,7 +27,7 @@ class ClientHandler implements Runnable {
 
             // Devuelve el mismo mensaje al cliente
             out.println("Servidor: " + message);
-            System.out.println("Peticion del cliente atendida");
+            System.out.println("Mensaje devuelvo al cliente");
             
             // Cierra los flujos de entrada y salida y el socket del cliente
             in.close();
