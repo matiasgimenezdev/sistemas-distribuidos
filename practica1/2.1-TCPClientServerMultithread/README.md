@@ -2,17 +2,17 @@
 
 ###### El proyecto maven ya se encuentra compilado y empaquetado.
 
-1- Abrir una terminal y moverse al directorio 'tcp-server-client-multithread': <br>
+1- Abrir una terminal y moverse al directorio 'tcp-client-server-multithread': <br>
 ```
-cd tcp-server-client-multithread
+cd tcp-client-server-multithread
 ```
 2- En esa terminal iniciar el servidor TCP : <br>
 ```
-java -cp target/tcp-server-client-multithread.jar com.example.TCPServerMultithread
+java -jar target/tcp-client-server-multithread.jar
 ```
 3- Abrir dos o mas terminales nuevas para ejecutar diferentes clientes TCP: <br> 
 ```
-java -cp target/tcp-server-client-multithread.jar com.example.TCPClient
+java -jar target/tcp-client-server-multithread.jar
 ```
 
 ###### Los resultados de la ejecucion se muestran en sus respectivas terminales

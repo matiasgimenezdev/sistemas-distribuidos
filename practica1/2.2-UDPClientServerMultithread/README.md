@@ -4,15 +4,15 @@
 
 1- Abrir una terminal y moverse al directorio 'udp-server-client-multithread': <br>
 ```
-cd udp-server-client-multithread
+cd udp-client-server-multithread
 ```
 2- En esa terminal iniciar el servidor UDP : <br>
 ```
-java -cp target/udp-server-client-multithread.jar com.example.UDPServerMultithread
+java -jar target/udp-client-server-multithread.jar
 ```
 3- Abrir dos o mas terminales nuevas para ejecutar diferentes clientes TCP: <br> 
 ```
-java -cp target/udp-server-client-multithread.jar com.example.UDPClient
+java -jar target/udp-client-server-multithread.jar
 ```
 
 ###### Los resultados de la ejecucion se muestran en sus respectivas terminales

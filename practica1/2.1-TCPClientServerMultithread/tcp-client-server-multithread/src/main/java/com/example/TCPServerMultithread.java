@@ -14,7 +14,7 @@ public class TCPServerMultithread {
         try {
             // Crea un socket servidor en el puerto 5000
             ServerSocket serverSocket = new ServerSocket(5000);
-            System.out.println("Servidor iniciado. Esperando conexiones entrantes...");
+            System.out.println("Servidor TCP iniciado en el puerto 5000.");
 
             while (true) {
                 // Espera a que llegue una conexión entrante
