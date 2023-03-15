@@ -6,13 +6,13 @@
 ```
 cd client-server-message-queue
 ```
-2- En esa terminal iniciar el servidor UDP : <br>
+2- En esa terminal iniciar el servidor de mensajes : <br>
 ```
-java -cp target/client-server-message-queue.jar com.example.MessageQueueServer
+java -jar target/client-server-message-queue.jar
 ```
 3- Abrir dos o mas terminales nuevas para ejecutar diferentes clientes: <br> 
 ```
-java -cp target/client-server-message-queue.jar com.example.MessageQueueClient
+java -jar target/client-server-message-queue.jar
 ```
 
 ###### Los resultados de la ejecucion se muestran en sus respectivas terminales
