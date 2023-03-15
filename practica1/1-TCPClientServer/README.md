@@ -6,7 +6,7 @@
 ```
 cd tcp-server-client
 ```
-2- Abrir dos terminales (una para cliente y otra para servidor): <br>
+2- Abrir dos terminales (una para cliente y otra para servidor) y ejecutar en ambas: <br>
 ```
 java -jar target/tcp-client-server.jar
 ```
