@@ -20,7 +20,7 @@ public class TCPClient {
 
             // Envía un mensaje al servidor
             out.println("Hola servidor!");
-            System.out.println("Mensaje enviado al servidor: Hola servidor!");
+            System.out.println("Servidor recibio: Hola servidor!");
 
             // Lee la respuesta del servidor
             String response = in.readLine();
