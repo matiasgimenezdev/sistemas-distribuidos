@@ -17,6 +17,8 @@ public class Cliente {
         PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
         Scanner scanner = new Scanner(System.in)) {
 
+      boolean finish = false;
+
       System.out.println("Connected to the message queue server");
       System.out.println("Bienvenido al servidor de mensajes. Por favor ingrese su nombre:");
       String clientName = scanner.nextLine();
@@ -27,7 +29,7 @@ public class Cliente {
       String response = input.readLine();
       System.out.println(response);
 
-      while (true) {
+      while (!finish) {
         System.out.println("Ingrese un comando (SEND or RECEIVE):");
         String command = scanner.nextLine();
         output.println(command);
