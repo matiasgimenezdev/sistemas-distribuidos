@@ -18,7 +18,12 @@ public class Cliente {
         Scanner scanner = new Scanner(System.in)) {
 
       System.out.println("Connected to the message queue server");
-
+      System.out.println("Bienvenido al servidor de mensajes. Por favor ingrese su nombre:");
+      String clientName = scanner.nextLine();
+      if (clientName == null) {
+        return;
+      }
+      output.println(clientName);
       String response = input.readLine();
       System.out.println(response);
 

@@ -35,11 +35,7 @@ public class Servidor {
       try {
         inputReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         outputWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-        outputWriter.println("Bienvenido al servidor de mensajes. Por favor ingrese su nombre:");
         clientName = inputReader.readLine();
-        if (clientName == null) {
-          return;
-        }
         System.out.println("Nuevo cliente conectado: " + clientName);
         synchronized (messageQueues) {
           if (!messageQueues.containsKey(clientName)) {
