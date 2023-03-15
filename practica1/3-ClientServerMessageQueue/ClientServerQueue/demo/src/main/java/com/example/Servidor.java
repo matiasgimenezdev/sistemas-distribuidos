@@ -1,3 +1,5 @@
+package com.example;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -6,7 +8,7 @@ public class Servidor {
   private static final int PORT = 5000;
   private static Map<String, Queue<String>> messageQueues = new HashMap<>();
 
-  public static void main(String[] args) {
+  public void run() {
     try (ServerSocket serverSocket = new ServerSocket(PORT)) {
       System.out.println("Servidor en linea");
       while (true) {
@@ -29,7 +31,6 @@ public class Servidor {
       this.clientSocket = socket;
     }
 
-    @Override
     public void run() {
       try {
         inputReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -42,7 +43,7 @@ public class Servidor {
         System.out.println("Nuevo cliente conectado: " + clientName);
         synchronized (messageQueues) {
           if (!messageQueues.containsKey(clientName)) {
-            messageQueues.put(clientName, new LinkedList<>());
+            messageQueues.put(clientName, new LinkedList<String>());
           }
         }
         outputWriter.println("Bienvenido, " + clientName

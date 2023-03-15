@@ -1,3 +1,5 @@
+package com.example;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,7 +11,7 @@ public class Cliente {
   private static final String SERVER_ADDRESS = "localhost";
   private static final int SERVER_PORT = 5000;
 
-  public static void main(String[] args) {
+  public void run() {
     try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
         BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
