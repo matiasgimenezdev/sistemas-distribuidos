@@ -9,6 +9,10 @@ import java.io.InputStreamReader;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
 public class MyHandler implements HttpHandler {
 
     private static final String API_KEY = "ccd5d173a546a4a269abb5da6df49263"; // Clave API OpenWeatherMap
