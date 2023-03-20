@@ -11,4 +11,7 @@ Una vez hecho esto, cierra el flujo de entrada y salida de datos para liberar re
 
 Por otro lado, la clase "TCPClient", abre una conexion con el servidor TCP escuchando en el puerto 5000. A traves del flujo de salida de datos de la conexion, escribe un mensaje para el servidor. Luego se prepara para recibir la respuesta a traves del flujo de entrada de datos y, una vez leido los bytes enviados por el servidor y convertirlos a caracteres, imprime la respuesta en pantalla. Para finalizar el cliente tambien cierra los flujos de entrada/salida y la conexion con el servidor.
 
+### Ejercicio 2.1
+
+
 ##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
