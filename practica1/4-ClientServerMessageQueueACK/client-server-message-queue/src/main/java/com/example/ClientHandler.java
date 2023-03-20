@@ -49,6 +49,11 @@ import java.util.*;
                             for (String msg : messages) {
                                 out.println(msg);
                             }
+
+                            String clientAck = in.readLine();
+                            if(clientAck.trim().equals("ACK")){
+                                deleteMessages(recipient);
+                            }
                             break;
                         default:
                             out.println("Comando no reconocido.");
@@ -78,7 +83,7 @@ import java.util.*;
             }
         }
 
-        // Obtener todos los mensajes de la cola del destinatario y eliminarlos de la cola
+        // Obtener todos los mensajes de la cola del destinatario
         private List<String> receiveMessages(String recipient) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -86,8 +91,20 @@ import java.util.*;
                     return new ArrayList<String>();
                 } else {
                     List<String> messages = new ArrayList<String>(queue);
-                    queue.clear();
                     return messages;
+                }
+
+
+            }
+        }
+
+        // Eliminar los mensajes de la cola del destinatario
+        private void deleteMessages(String recipient) {
+            synchronized (messageQueues) {
+                LinkedList<String> queue = messageQueues.get(recipient);
+                if (queue != null && queue.size() > 0) {
+                    queue.clear();
+                    System.out.println("Los mensajes de " + recipient + " fueron eliminados de la cola");
                 }
             }
         }

@@ -78,7 +78,7 @@ import java.util.*;
             }
         }
 
-        // Obtener todos los mensajes de la cola del destinatario y eliminarlos de la cola
+        // Obtener todos los mensajes de la cola del destinatario
         private List<String> receiveMessages(String recipient) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -86,7 +86,6 @@ import java.util.*;
                     return new ArrayList<String>();
                 } else {
                     List<String> messages = new ArrayList<String>(queue);
-                    queue.clear();
                     return messages;
                 }
             }
