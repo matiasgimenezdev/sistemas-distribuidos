@@ -6,11 +6,11 @@ import java.io.*;
 public class TCPClient {
     public void run() {
         try {
-            Socket socket = new Socket("localhost", 5000);
+            Socket connection = new Socket("localhost", 5000);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
             out.println("Hola servidor!");
             System.out.println("Servidor recibio: Hola servidor!");
 
@@ -19,7 +19,7 @@ public class TCPClient {
             
             in.close();
             out.close();
-            socket.close();
+            connection.close();
 
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());

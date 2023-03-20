@@ -8,11 +8,11 @@ public class TCPServer {
             ServerSocket serverSocket = new ServerSocket(5000);
             System.out.println("Servidor TCP iniciado en el puerto 5000.");
 
-            Socket clientSocket = serverSocket.accept();
+            Socket connection = serverSocket.accept();
             System.out.println("Conexión establecida con el cliente.");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
 
             String message = in.readLine();
             out.println(message);
