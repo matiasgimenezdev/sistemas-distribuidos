@@ -1,6 +1,18 @@
-Antes de ejecutar este programa, deberá registrarse en OpenWeatherMap para obtener una
-clave de API. Reemplace la cadena "YOUR_API_KEY_HERE" en la línea 6 con su propia 
-clave.
+# Instrucciones de ejecucion
+
+###### El proyecto maven ya se encuentra compilado y empaquetado.
+
+1- Abrir dos terminales y moverse en ambas al directorio 'client-server-http-weather': <br>
+```
+cd client-server-http-weather
+```
+2- Abrir dos terminales (una para cliente y otra para servidor) y ejecutar en ambas: <br>
+```
+java -jar target/client-server-http-weather.jar
+```
+3- En una terminal ingresar la opcion para iniciar el servidor y en la otra terminal ingresar la opcion para iniciar el cliente. <br>
+
+##### Los resultados de la ejecucion se muestran en sus respectivas terminales
 
 Cuando se ejecuta el programa, se solicita al usuario que ingrese el nombre de su 
 ciudad. Luego, se construye una URL para hacer una solicitud a la API de 
