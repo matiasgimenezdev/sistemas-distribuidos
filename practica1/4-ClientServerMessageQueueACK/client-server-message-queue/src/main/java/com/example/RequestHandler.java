@@ -69,7 +69,6 @@ import java.util.*;
             }
         }
 
-        // Agregar un mensaje a la cola del destinatario
         private void sendMessage(String recipient, String message) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -82,7 +81,6 @@ import java.util.*;
             }
         }
 
-        // Obtener todos los mensajes de la cola del destinatario
         private List<String> receiveMessages(String recipient) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -97,7 +95,6 @@ import java.util.*;
             }
         }
 
-        // Eliminar los mensajes de la cola del destinatario
         private void deleteMessages(String recipient) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
