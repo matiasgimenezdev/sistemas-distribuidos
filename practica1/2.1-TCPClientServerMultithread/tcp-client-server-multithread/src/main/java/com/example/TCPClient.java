@@ -3,10 +3,6 @@ import java.net.*;
 import java.util.Scanner;
 import java.io.*;
 
-// Este cliente se conecta al servidor en el puerto 5000, obtiene un flujo de entrada para leer los datos enviados por el servidor y un 
-// flujo de salida para enviar datos al servidor. Luego, envía un mensaje al servidor, lee la respuesta del servidor, imprime la respuesta y 
-// cierra los flujos de entrada y salida y el socket del cliente.
-
 public class TCPClient {
     public void run() {
         try {
