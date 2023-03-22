@@ -28,7 +28,18 @@ Las diferencias clave con el servidor TCP, es que en este caso no se gestionan c
 
 La clase "ClienteUDP" le solicita al usuario que ingrese un mensaje. Una vez obtenido el mensaje, lo convertira en bytes y los usara para armar el datagrama que enviará al servidor. Pero para el datagrama tambien va a requerir otros datos como: la direccion IP destino, puerto donde escucha el servidor y la longitud de los bytes del payload. Con todo esto, genera el datagrama y lo envia. Luego, se pone a la escucha en el socket para recibir el datagrama de respuesta enviado por el servidor. Una vez lo recibe, obtiene los datos del mensaje y lo muestra al usuario.
 
+### Ejercicio 3
+La clase "MessageQueueServer" tiene casi el mismo comportamiento que los servidores TCP anteriores. La unica diferencia es que posee una estructura HashMap para almacenar la cola de mensajes para cada usuario.
 
+La clase "RequestHandler", recibe ademas del socket donde se abrio la conexion, una referencia a las colas de mensajes. Esta clase tiene dos posibilidades de comportamiento, dependiendo del comando que reciba por parte del usuario. El comando puede ser: SEND para enviar un mensaje a otro usuario y RECEIVE para obtener todos los mensajes de su cola de mensajes. 
+
+En el caso de SEND, lo que ocurre es que queda registrado un mensaje en la cola de mensajes del destinatario. Tanto el nombre del destinatario como el mensaje son enviados por el cliente.
+
+En el caso del RECEIVE, lo que hace es enviar el numero de mensajes que posee en la cola y luego, uno a uno, envia los mensajes.
+
+La clase "MessageQueueClient" implementa todo el comportamiento que permite al usuario enviar un mensaje o leer los que esten en su cola de mensajes.
+
+### Ejercicio 4
 
 
 ##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
