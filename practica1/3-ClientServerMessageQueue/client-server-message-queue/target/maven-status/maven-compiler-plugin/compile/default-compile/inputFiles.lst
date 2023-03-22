@@ -1,4 +1,4 @@
 /home/mgimenez/repos/sd/trabajos-practicos/practica1/3-ClientServerMessageQueue/client-server-message-queue/src/main/java/com/example/App.java
 /home/mgimenez/repos/sd/trabajos-practicos/practica1/3-ClientServerMessageQueue/client-server-message-queue/src/main/java/com/example/MessageQueueClient.java
-/home/mgimenez/repos/sd/trabajos-practicos/practica1/3-ClientServerMessageQueue/client-server-message-queue/src/main/java/com/example/ClientHandler.java
+/home/mgimenez/repos/sd/trabajos-practicos/practica1/3-ClientServerMessageQueue/client-server-message-queue/src/main/java/com/example/RequestHandler.java
 /home/mgimenez/repos/sd/trabajos-practicos/practica1/3-ClientServerMessageQueue/client-server-message-queue/src/main/java/com/example/MessageQueueServer.java

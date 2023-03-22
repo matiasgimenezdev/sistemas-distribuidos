@@ -4,13 +4,13 @@ import java.net.*;
 import java.util.*;
 
     // Clase para manejar las solicitudes de un cliente
-    public class ClientHandler implements Runnable {
+    public class RequestHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
         private HashMap<String, LinkedList<String>> messageQueues;
 
-        public ClientHandler(Socket socket, HashMap<String, LinkedList<String>> messageQueues) {
+        public RequestHandler(Socket socket, HashMap<String, LinkedList<String>> messageQueues) {
             this.clientSocket = socket;
             this.messageQueues = messageQueues;
         }
