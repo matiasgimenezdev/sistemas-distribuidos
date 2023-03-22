@@ -40,6 +40,9 @@ En el caso del RECEIVE, lo que hace es enviar el numero de mensajes que posee en
 La clase "MessageQueueClient" implementa todo el comportamiento que permite al usuario enviar un mensaje o leer los que esten en su cola de mensajes.
 
 ### Ejercicio 4
+Las clases "MessageQueueServer" y "MessageQueueClient" funcionan igual que en el caso anterior. La diferencia esta en la clase "RequestHandler" ya que ahora, al recibir un ACK por parte del cliente (luego de que el usuario lea sus mensajes), debe limpiar la cola de mensajes. Es decir, el cliente una vez que obtiene los mensajes del usuario, envia simplemente el mensaje "ACK" a traves del flujo de salida de datos de la conexion. Cuando del otro lado se lee el mensaje, se verifica que sea un ACK. En caso de serlo, limpia la cola de mensajes asociada al nombre del usuario.
+
+### Ejercicio 4
 
 
 ##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
