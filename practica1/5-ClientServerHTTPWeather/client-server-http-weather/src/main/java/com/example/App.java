@@ -17,16 +17,13 @@ public class App {
         switch (option) {
             case 1:
                 try {
-                    // código que lanza la excepción
                     new WeatherServer().run();
                 } catch (Exception e) {
-                    // manejo de la excepción
                     e.toString();
                 }
                 break;
             case 2:
                 try {
-                    // código que lanza la excepción
                     new WeatherClient().run();
                 } catch (Exception e) {
                     e.toString();

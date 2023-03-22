@@ -1,5 +1,4 @@
 package com.example;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
@@ -16,8 +15,7 @@ public class ClientHandler implements HttpHandler {
 
     public void handle(HttpExchange t) throws IOException {
         String response = "";
-        String query = t.getRequestURI().getQuery();
-        String city = query.substring(5); // Obtener el valor del parámetro "city" de la consulta
+        String city = "San Francisco";
         try {
             URL url = new URL(API_URL + "?q=" + city.toLowerCase() + "&appid=" + API_KEY);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

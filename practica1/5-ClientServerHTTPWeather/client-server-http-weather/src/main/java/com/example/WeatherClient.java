@@ -4,25 +4,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
 
 public class WeatherClient {
 
     public void run() throws Exception {
-
-        Scanner scanner = new Scanner(System.in);
-        boolean finish = false;
-
-        while (!finish) {
-            System.out.println("");
-            System.out.print("Ingresar ciudad: ");
-            String city = scanner.nextLine();
-            System.out.println("");
-
-            URL url = new URL("http://localhost:8080/?city=" + city);
-
-            System.out.println("CARGANDO...");
+        System.out.println("");
+        System.out.println("Cargando...");
             try {
+                URL url = new URL("http://localhost:8080");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Accept", "application/json");
@@ -36,7 +25,7 @@ public class WeatherClient {
                 String output;
 
                 System.out.println("");
-                System.out.println("Aquí está la información del clima en " + city + ": ");
+                System.out.println("Aquí está la información del clima de la ubicacion del servidor");
                 System.out.println("");
 
                 while ((output = br.readLine()) != null) {
@@ -47,25 +36,5 @@ public class WeatherClient {
             } catch (Exception e) {
                 System.out.println("Error al conectar con el servidor: " + e.getMessage());
             }
-
-            System.out.println("");
-            System.out.println("| Gracias por su consulta |");
-            System.out.println("");
-            System.out.println("1 - Realizar otra Consulta");
-            System.out.println("");
-            System.out.println("0 - Salir");
-            System.out.println("");
-
-            int option = Integer.parseInt(scanner.nextLine().trim());
-
-            switch (option) {
-                case 0:
-                    finish = true;
-                    break;
-                default:
-                    break;
-            }
-
-        }
     }
 }
