@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-    public class ClientHandler implements HttpHandler {
+    public class RequestHandler implements HttpHandler {
         public void handle(HttpExchange he) throws IOException {
             String requestMethod = he.getRequestMethod().trim();
             if (requestMethod.equalsIgnoreCase("POST")) {
@@ -19,6 +19,7 @@ import java.io.OutputStream;
                 OutputStream os = he.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
+                he.close();
             } else {
                 he.sendResponseHeaders(405, -1); 
             }
