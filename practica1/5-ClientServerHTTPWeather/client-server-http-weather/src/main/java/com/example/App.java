@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // Crear un objeto Scanner
+        Scanner scanner = new Scanner(System.in);
         System.out.println("");
         System.out.println("1- Iniciar Servidor");
         System.out.println("2- Iniciar Cliente");
