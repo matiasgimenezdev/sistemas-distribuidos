@@ -44,7 +44,7 @@ Las clases "MessageQueueServer" y "MessageQueueClient" funcionan igual que en el
 
 ### Ejercicio 5
 
-Este código simula un servidorweb HTTP que se encuentra en San Francisco.
+Este código simula un servidor web HTTP que se encuentra en San Francisco.
 
 La clase "WeatherServer" inicia un servidor web HTTP, el cual escucha en el puerto 5000 las peticiones del cliente por tiempo indefinido.
 
@@ -55,5 +55,13 @@ La respuesta recibida será luego enviada al cliente.
 La clase "WeatherClient" se conecta al servidor en el puerto 5000, y mediante la clase "ClientHandler" obtiene la información sobre el clima en la localidad donde se encuentra el servido, la cual en este caso es San Francisco.
 
 En el caso de que la respuesta HTTP recibida por el servidor tenga como estado un número distinto a 200 (OK), se le informa el error al cliente. Puede probar esto ingrasando una ciudad inexistente, el ClientHandler no podrá obtener información y recibirá un código de error 404.
+
+### Ejercicio 6
+La clase "Server" es un servidor HTTP que se inicia en el puerto 8080 y se pone a la espera de recibir conexiones de clientes. Ademas, este define una ruta '/sum' para que los clientes puedan realizar una peticion POST con ese path en la URL y, enviando dos vectores enteros, recibiran como respuesta el resultado de la suma de esos dos vectores. Para las peticiones que lleguen y matcheen con la ruta '/sum' el servidor instancia a la clase "RequestHandler" para que se encargue de procesar la peticion.
+
+Esta clase "RequestHandler" se encarga de parsear el cuerpo de la peticion POST, donde vienen los parametros necesarios para realizar la suma de los vectores. Convierte el vector sumado a string, luego a bytes y lo envia a traves del flujo de datos de salida de la conexion. Posteriormente, finaliza la conexion con el cliente.
+
+La clase "Cliente" abre una conexion TCP contra el servidor utilizando la URL 'http://localhost:8080/sum' y arma la peticion, incluyendo headers, method (POST) y el body del mensaje HTTP donde envia los vectores que quiere sumar. Si la peticion tuvo exito (codigo 200), muestra el resultado en la consola.
+
 
 ##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
