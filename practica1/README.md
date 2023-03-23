@@ -42,7 +42,18 @@ La clase "MessageQueueClient" implementa todo el comportamiento que permite al u
 ### Ejercicio 4
 Las clases "MessageQueueServer" y "MessageQueueClient" funcionan igual que en el caso anterior. La diferencia esta en la clase "RequestHandler" ya que ahora, al recibir un ACK por parte del cliente (luego de que el usuario lea sus mensajes), debe limpiar la cola de mensajes. Es decir, el cliente una vez que obtiene los mensajes del usuario, envia simplemente el mensaje "ACK" a traves del flujo de salida de datos de la conexion. Cuando del otro lado se lee el mensaje, se verifica que sea un ACK. En caso de serlo, limpia la cola de mensajes asociada al nombre del usuario.
 
-### Ejercicio 4
+### Ejercicio 5
 
+Este código simula un servidorweb HTTP que se encuentra en San Francisco.
+
+La clase "WeatherServer" inicia un servidor web HTTP, el cual escucha en el puerto 5000 las peticiones del cliente por tiempo indefinido.
+
+La clase "ClientHandler" es la encargada de crear las solicitudes mendiante el protocolo HTTP para luego enviarselas al servidor. Esta clase está utilizando la API OpenWeatherMap para poder acceder a la información del clima solicitada por el cliente.
+Se genera una conexión HTTP mediante la cuál va a realizar una solicitud mediante el método GET.
+La respuesta recibida será luego enviada al cliente.
+
+La clase "WeatherClient" se conecta al servidor en el puerto 5000, y mediante la clase "ClientHandler" obtiene la información sobre el clima en la localidad donde se encuentra el servido, la cual en este caso es San Francisco.
+
+En el caso de que la respuesta HTTP recibida por el servidor tenga como estado un número distinto a 200 (OK), se le informa el error al cliente. Puede probar esto ingrasando una ciudad inexistente, el ClientHandler no podrá obtener información y recibirá un código de error 404.
 
 ##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
