@@ -25,11 +25,7 @@ public class RequestHandler implements HttpHandler {
                 requestBodyAsString += line;
             }
             JSONObject parameters = new JSONObject(requestBodyAsString);
-            System.out.println(parameters.toString());
-            /*
-             * A partir de aca, ya obtuvo los parametros necesarios desde el cliente.
-             */
-            
+            ejecutarTareaRemota(parameters);
         } else {
             connection.sendResponseHeaders(405, -1); 
         }
@@ -41,7 +37,16 @@ public class RequestHandler implements HttpHandler {
         // json.put("city", "chicago");
         // JSONObject json2 = new JSONObject(json.toString());
         // System.out.println(json2.get("name"));
+    }
+
+    private void ejecutarTareaRemota(JSONObject parameters) {
+        System.out.println(parameters.toString());
+        /*
+        * A partir de aca, ya obtuvo los parametros necesarios desde el cliente.
+        */
 
     }
+
+
 
 }
