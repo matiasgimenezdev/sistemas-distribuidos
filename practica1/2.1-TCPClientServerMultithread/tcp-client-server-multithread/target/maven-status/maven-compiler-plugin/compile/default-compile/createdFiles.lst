@@ -1,4 +1,4 @@
 com/example/App.class
-com/example/ClientHandler.class
+com/example/RequestHandler.class
 com/example/TCPClient.class
 com/example/TCPServerMultithread.class

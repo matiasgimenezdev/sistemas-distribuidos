@@ -7,8 +7,8 @@ public class WeatherServer {
 
     public void run() throws Exception {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-            System.out.println("Servidor escuchando el puerto 8080");
+            HttpServer server = HttpServer.create(new InetSocketAddress(5000), 0);
+            System.out.println("Servidor escuchando el puerto 5000");
             server.createContext("/", new ClientHandler());
             server.setExecutor(null);
             server.start();

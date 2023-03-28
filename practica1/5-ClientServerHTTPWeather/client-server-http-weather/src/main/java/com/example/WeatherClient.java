@@ -10,31 +10,31 @@ public class WeatherClient {
     public void run() throws Exception {
         System.out.println("");
         System.out.println("Cargando...");
-            try {
-                URL url = new URL("http://localhost:8080");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
+        try {
+            URL url = new URL("http://localhost:5000");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
-                }
-
-                BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
-
-                String output;
-
-                System.out.println("");
-                System.out.println("Aquí está la información del clima de la ubicacion del servidor");
-                System.out.println("");
-
-                while ((output = br.readLine()) != null) {
-                    System.out.println(output);
-                }
-
-                connection.disconnect();
-            } catch (Exception e) {
-                System.out.println("Error al conectar con el servidor: " + e.getMessage());
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
             }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+
+            String output;
+
+            System.out.println("");
+            System.out.println("Aquí está la información del clima de la ubicacion del servidor");
+            System.out.println("");
+
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error al conectar con el servidor: " + e.getMessage());
+        }
     }
 }

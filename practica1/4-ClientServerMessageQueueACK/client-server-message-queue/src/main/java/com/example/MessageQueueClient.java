@@ -13,7 +13,7 @@ public class MessageQueueClient {
             Scanner scanner = new Scanner(System.in);
 
             while(!finish) {
-System.out.println("");
+                System.out.println("");
                 System.out.println("==================  MENU DEL CLIENTE ================== ");
                 System.out.println("1- Enviar mensaje");
                 System.out.println("2- Leer mensajes");
@@ -31,9 +31,9 @@ System.out.println("");
                         System.out.println("");
                         System.out.print("Ingrese el mensaje: ");
                         String message = scanner.nextLine();
-                        // Enviar un mensaje al destinatario
                         out.println("SEND " + recipient + " " + message);
                         break;
+
                     case 2: {
                         System.out.println("");
                         System.out.print("Ingrese su nombre: ");
@@ -41,7 +41,6 @@ System.out.println("");
                         System.out.println("");
                         out.println("RECEIVE " + name.trim());
                         
-                        // Obtener los mensajes dirigidos al cliente actual
                         int numMessages = Integer.parseInt(in.readLine());
                         System.out.println("Tiene " + numMessages + " mensajes nuevos:");
                         System.out.println("");

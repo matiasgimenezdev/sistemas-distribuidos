@@ -3,14 +3,13 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-    // Clase para manejar las solicitudes de un cliente
-    public class ClientHandler implements Runnable {
+    public class RequestHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
         private HashMap<String, LinkedList<String>> messageQueues;
 
-        public ClientHandler(Socket socket, HashMap<String, LinkedList<String>> messageQueues) {
+        public RequestHandler(Socket socket, HashMap<String, LinkedList<String>> messageQueues) {
             this.clientSocket = socket;
             this.messageQueues = messageQueues;
         }
@@ -49,6 +48,11 @@ import java.util.*;
                             for (String msg : messages) {
                                 out.println(msg);
                             }
+
+                            String clientAck = in.readLine();
+                            if(clientAck.trim().equals("ACK")){
+                                deleteMessages(recipient);
+                            }
                             break;
                         default:
                             out.println("Comando no reconocido.");
@@ -65,7 +69,6 @@ import java.util.*;
             }
         }
 
-        // Agregar un mensaje a la cola del destinatario
         private void sendMessage(String recipient, String message) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -78,7 +81,6 @@ import java.util.*;
             }
         }
 
-        // Obtener todos los mensajes de la cola del destinatario
         private List<String> receiveMessages(String recipient) {
             synchronized (messageQueues) {
                 LinkedList<String> queue = messageQueues.get(recipient);
@@ -87,6 +89,18 @@ import java.util.*;
                 } else {
                     List<String> messages = new ArrayList<String>(queue);
                     return messages;
+                }
+
+
+            }
+        }
+
+        private void deleteMessages(String recipient) {
+            synchronized (messageQueues) {
+                LinkedList<String> queue = messageQueues.get(recipient);
+                if (queue != null && queue.size() > 0) {
+                    queue.clear();
+                    System.out.println("Los mensajes de " + recipient + " fueron eliminados de la cola");
                 }
             }
         }
