@@ -12,11 +12,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Image;
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.ExposedPort;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
@@ -26,7 +30,7 @@ import org.json.JSONObject;
 @RestController
 @SpringBootApplication
 public class Server {
-	private DockerClient dockerClient;
+	private static DockerClient dockerClient;
 	public static void main(String[] args) {
 		SpringApplication.run(Server.class, args);
 	}
@@ -71,32 +75,90 @@ public class Server {
 	}
 
 
-
-
 	//Codigo que hace pull de una imagen docker existente.
 	@GetMapping("test")
 	public ResponseEntity<String> test(){
 		try{
 			this.dockerClient = DockerClientBuilder.getInstance().build();
 			JSONObject response = new JSONObject();
-			List<Image> imageListBefore = dockerClient.listImagesCmd().exec();
-			response.put("before", imageListBefore);
-			boolean bool = dockerClient.pullImageCmd("hello-world")
+			
+			dockerClient.pullImageCmd("hello-world")
 			.withTag("latest")
 			.exec(new PullImageResultCallback())
 			.awaitCompletion(100, TimeUnit.SECONDS);
 			
-			List<Image> imageListAfter = dockerClient.listImagesCmd().exec();
-			response.put("after", imageListAfter);
+			// ExposedPort tcp01 = ExposedPort.tcp(5000);
+			// ExposedPort tcp02 = ExposedPort.tcp(5000);
+			List<Container> containerList = dockerClient.listContainersCmd()
+			.withShowAll(true)
+			.withShowSize(true)
+			.exec();
 
+			String containerId = "";
+			if(containerList.size() > 0){
+				for(Container container: containerList) {
+					if(container.getNames()[0].equals("/testing-container")){
+						System.out.println("Existe el contenedor");
+						containerId = container.getId();
+					}
+				}
+			}
+			System.out.println(containerId);
+			if(containerId.equals("")) {
+				System.out.println("Creando el contenedor");
+				CreateContainerResponse containerResponse = dockerClient
+				.createContainerCmd("hello-world")
+				.withName("testing-container")
+				.withHostName("localhost")
+				// .withExposedPorts(tcp01, tcp02)
+				.exec();
+			}
+						
+			dockerClient.startContainerCmd(containerId).exec();
+			response.put("containers", containerList);
 			return ResponseEntity.ok(response.toString());
 		} catch (Exception e){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
 		}
 	}
 
-	private static void pullImageAndRunContainer(String image) {
-		System.out.println("Hace un pull de: "+ image);
-		System.out.println("Crea el contenedor a partir de: " + image);
+	private static void pullImageAndRunContainer(String image) throws Exception {		
+		dockerClient = DockerClientBuilder.getInstance().build();
+		
+		dockerClient.pullImageCmd(image)
+		.withTag("latest")
+		.exec(new PullImageResultCallback())
+		.awaitCompletion(100, TimeUnit.SECONDS);
+		
+
+		List<Container> containerList = dockerClient.listContainersCmd()
+		.withShowAll(true)
+		.withShowSize(true)
+		.exec();
+
+		String containerId = "";
+		if(containerList.size() > 0){
+			for(Container container: containerList) {
+				if(container.getNames()[0].equals("/"+image)){
+					containerId = container.getId();
+				}
+			}
+		}
+
+
+		System.out.println(containerId);
+		// ExposedPort tcp01 = ExposedPort.tcp(5000);
+		// ExposedPort tcp02 = ExposedPort.tcp(5000);
+		if(containerId.equals("")) {
+			CreateContainerResponse containerResponse = dockerClient
+			.createContainerCmd(image)
+			.withName("testing-container")
+			.withHostName("localhost")
+			// .withExposedPorts(tcp01, tcp02)
+			.exec();
+		}
+					
+		dockerClient.startContainerCmd(containerId).exec();
+
 	}
 }
