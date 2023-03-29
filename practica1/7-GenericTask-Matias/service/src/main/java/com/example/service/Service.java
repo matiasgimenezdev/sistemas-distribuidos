@@ -2,12 +2,12 @@ package com.example.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import netscape.javascript.JSObject;
-
+import org.json.JSONException;
 import org.json.JSONObject;
 
 @RestController
@@ -18,10 +18,16 @@ public class Service {
 	}
 
 	@PostMapping("/task")
-	public String getRequest(@RequestBody String body) {
-		JSONObject params = new JSONObject(body);
-		JSONObject response = ejecutarTarea(params);
-		return(response.toString());
+	public ResponseEntity<String> getRequest(@RequestBody String body) {
+		try{
+			JSONObject params = new JSONObject(body);
+			JSONObject response = ejecutarTarea(params);
+			return ResponseEntity.ok(response.toString());
+		} catch(JSONException e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON Error: " + e.getMessage());
+		} catch (Exception e){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
+		}
 	}
 
 	private JSONObject ejecutarTarea(JSONObject parameters) {
