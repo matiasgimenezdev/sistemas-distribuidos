@@ -36,8 +36,8 @@ public class Client {
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
             JSONObject body = new JSONObject();
             body.put("dockerImage", "DockerImageName");
-            body.put("min", 10);
-            body.put("max", 100);
+            body.put("min", 10.0);
+            body.put("max", 100.0);
             body.put("genericTask", gson.toJson(new TareaGenerica()));
             out.write(body.toString());
             out.flush();
