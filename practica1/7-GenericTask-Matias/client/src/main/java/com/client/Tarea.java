@@ -1,5 +1,7 @@
 package com.client;
 
+import org.json.JSONObject;
+
 public interface Tarea {
-    String ejecutarTarea();
+    JSONObject ejecutar(JSONObject params);
 }
