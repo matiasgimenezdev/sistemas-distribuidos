@@ -10,8 +10,7 @@ import java.net.URL;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.core.dockerfile.Dockerfile;
-import com.github.dockerjava.api.model.Image;
+
 
 
 import org.json.JSONObject;
@@ -22,9 +21,8 @@ public class Client {
     
     public static void main(String[] args) {
         try {
-            // String dockerImageName = buildAndPushDockerImage();
-            // System.out.println(dockerImageName);
-
+            
+            // buildAndPushDockerImage();
             URL url = new URL("http://localhost:8080/remotetask");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -35,7 +33,7 @@ public class Client {
 
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
             JSONObject body = new JSONObject();
-            body.put("dockerImage", "DockerImageName");
+            body.put("dockerImage", "generic-task");
             body.put("min", 10.0);
             body.put("max", 100.0);
             body.put("genericTask", gson.toJson(new TareaGenerica()));
@@ -60,13 +58,10 @@ public class Client {
         }
     }
 
-    // private static String buildAndPushDockerImage() {
-    //     dockerClient = DockerClientBuilder.getInstance().build();
-    //     String image = dockerClient.buildImageCmd()
-    //     .withDockerfile(new File("pathToDockerfile"))
-    //     .withTag("tag_name")
-    //     .exec(new BuildImageResultCallback())
-    //     .awaitImageId();
-    //     return image;
-    // }
+    private static void buildAndPushDockerImage() {
+        dockerClient = DockerClientBuilder.getInstance().build();
+        dockerClient.buildImageCmd().withDockerfile(new File("pathToDockerfile")).withTag("generic-task");
+    
+        //+ push imagen
+    }
 }
