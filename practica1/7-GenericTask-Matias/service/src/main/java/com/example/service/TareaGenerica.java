@@ -1,7 +1,7 @@
 package com.example.service;
 
 public class TareaGenerica implements Tarea {
-    public String ejecutarTarea() {
+    public String ejecutar() {
         return "Tarea ejecutada";
     }
 }

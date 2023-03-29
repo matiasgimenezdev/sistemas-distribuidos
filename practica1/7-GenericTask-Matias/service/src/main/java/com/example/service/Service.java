@@ -28,10 +28,13 @@ public class Service {
 	}
 
 	@PostMapping("/task")
-	public ResponseEntity<String> postRequest(@RequestBody String body) {
+	public ResponseEntity<String> ejecutarTarea(@RequestBody String body) {
 		try{
-			JSONObject params = new JSONObject(body);
-			JSONObject response = ejecutarTarea(params);
+			Gson gson = new Gson();
+			JSONObject parameters = new JSONObject(body);
+			JSONObject response = new JSONObject();
+			Tarea genericTask = gson.fromJson(parameters.get("genericTask").toString(), TareaGenerica.class); 
+			response.put("result", genericTask.ejecutar());
 			return ResponseEntity.ok(response.toString());
 		} catch(JSONException e){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON Error: " + e.getMessage());
@@ -62,13 +65,8 @@ public class Service {
 	}
 
 	private JSONObject ejecutarTarea(JSONObject parameters) {
-		Gson gson = new Gson();
-		Tarea genericTask = gson.fromJson(parameters.get("genericTask").toString(), TareaGenerica.class); 
-		System.out.println("El servicio ejecuta ejecutarTarea(): " + genericTask.ejecutarTarea());
-		Double randomNumber = Math.random();
-		JSONObject response = new JSONObject();
-		response.put("result", randomNumber.toString());
-		return response;
+
+
 	}
 }
 
