@@ -27,6 +27,13 @@
 			<artifactId>json</artifactId>
 			<version>20230227</version>
     	</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java -->
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>3.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

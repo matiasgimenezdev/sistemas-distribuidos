@@ -1,5 +1,6 @@
 package com.example.service;
+import org.json.JSONObject;
 
 public interface Tarea {
-    String ejecutar();
+    JSONObject ejecutar(JSONObject params);
 }

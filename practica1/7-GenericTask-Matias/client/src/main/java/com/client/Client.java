@@ -51,7 +51,9 @@ public class Client {
             }
 
             in.close();
-            System.out.println(response.toString());
+            JSONObject responseAsJson = new JSONObject(response.toString());
+            Double resultado = responseAsJson.getDouble("taskResult");
+            System.out.println("Numero aleatorio: " + resultado.toString());
         
         } catch (Exception e) {
             e.printStackTrace();
