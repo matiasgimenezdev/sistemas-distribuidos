@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.gson.Gson;
 
 @RestController
 @SpringBootApplication
@@ -31,9 +32,10 @@ public class Service {
 	}
 
 	private JSONObject ejecutarTarea(JSONObject parameters) {
-		Integer min = parameters.getInt("min");
-		Integer max = parameters.getInt("max");
-		Double randomNumber = Math.random() * min + max;
+		Gson gson = new Gson();
+		Tarea genericTask = gson.fromJson(parameters.get("genericTask").toString(), TareaGenerica.class); 
+		System.out.println("El servicio ejecuta ejecutarTarea(): " + genericTask.ejecutarTarea());
+		Double randomNumber = Math.random();
 		JSONObject response = new JSONObject();
 		response.put("result", randomNumber.toString());
 		return response;

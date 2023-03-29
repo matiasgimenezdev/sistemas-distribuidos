@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.json.JSONObject;
+import com.google.gson.Gson;
 
 public class Client {
     public static void main(String[] args) {
@@ -17,10 +18,14 @@ public class Client {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
 
+            Gson gson = new Gson();
+
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
             JSONObject body = new JSONObject();
+            body.put("dockerImage", "DockerImageName");
             body.put("min", 10);
             body.put("max", 100);
+            body.put("genericTask", gson.toJson(new TareaGenerica()));
             out.write(body.toString());
             out.flush();
             out.close();
