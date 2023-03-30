@@ -105,14 +105,14 @@ public class Server {
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerName);
 		} else {
-			String cmd = "docker container restart " + containerName; 
+			String cmd = "docker container start " + containerName; 
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerId);
 		}
 	}
 	
 	private static void stopContainer(String containerName) throws Exception{
-		String [] cmd = {"docker","container","stop", containerName}; 
+		String cmd = "docker container stop " + containerName; 
 		Runtime.getRuntime().exec(cmd);
 	}
 }
