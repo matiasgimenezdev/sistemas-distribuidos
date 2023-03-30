@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
 import org.json.JSONException;
@@ -44,11 +42,12 @@ public class Server {
 			String containerName = requestData.getString("dockerContainerName");
 			Integer port = requestData.getInt("port");
 			pullImageAndRunContainer(image, tag, containerName, port);
-
+			
 			// Arma el JSON con los parametros para el servicio
 			JSONObject params = new JSONObject();
 			params.put("min", requestData.getDouble("min"));
 			params.put("max", requestData.getDouble("max"));
+
 
 			StringBuffer response = new StringBuffer();
 
@@ -71,8 +70,7 @@ public class Server {
 			in.close();
 
 			//Detiene el contenedor
-			stopContainer();
-
+			stopContainer(containerName);
 			//Enviar el resultado de la ejecucion de la tarea al cliente.
 			return ResponseEntity.ok(response.toString());
 		
@@ -86,7 +84,7 @@ public class Server {
 	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer portNumber) throws Exception {		
 		dockerClient.pullImageCmd(image)
 		.exec(new PullImageResultCallback())
-		.awaitCompletion(50, TimeUnit.SECONDS);
+		.awaitCompletion(100, TimeUnit.SECONDS);
 		
 		List<Container> containerList = dockerClient.listContainersCmd()
 		.withShowAll(true)
@@ -100,23 +98,21 @@ public class Server {
 				}
 			}
 		}
-
-		// Crea el contenedor si todavia no existe
+		
+		// // Crea el contenedor si todavia no existe
 		if(containerId.equals("")) {
-			ExposedPort port = ExposedPort.tcp(portNumber);
-			CreateContainerResponse creationResponse = dockerClient
-			.createContainerCmd(image)
-			.withName(containerName)
-			.withHostName("localhost")
-			.withExposedPorts(port)
-			.exec();
-			containerId = creationResponse.getId();
+			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image; //Comando de apagado en windows
+			Runtime.getRuntime().exec(cmd);
+			System.out.println("Container started: " + containerName);
+		} else {
+			String cmd = "docker container restart " + containerName; //Comando de apagado en windows
+			Runtime.getRuntime().exec(cmd);
+			System.out.println("Container started: " + containerId);
 		}
-		System.out.println("ID Container: " + containerId);
-		dockerClient.startContainerCmd(containerId).exec();
 	}
-
-	private static void stopContainer(){
-		dockerClient.stopContainerCmd(containerId).exec();
+	
+	private static void stopContainer(String containerName) throws Exception{
+		String [] cmd = {"docker","container","stop", containerName}; //Comando de apagado en windows
+		Runtime.getRuntime().exec(cmd);
 	}
 }
