@@ -24,8 +24,8 @@ public class Service {
 	public ResponseEntity<String> ejecutarTarea(@RequestBody String body) {
 		try{
 			Gson gson = new Gson();
-			JSONObject parameters = new JSONObject(body);
-			Tarea genericTask = gson.fromJson(parameters.get("genericTask").toString(), TareaGenerica.class); 
+			JSONObject params = new JSONObject(body);
+			TareaGenerica genericTask = new Tarea();
 			JSONObject response = genericTask.ejecutar(parameters);
 			return ResponseEntity.ok(response.toString());
 		} catch(JSONException e){
@@ -34,9 +34,6 @@ public class Service {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
 		}
 	}
-
-
-
 }
 
 

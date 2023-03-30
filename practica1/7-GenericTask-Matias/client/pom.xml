@@ -14,25 +14,12 @@
       <version>5.9.1</version>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-			<groupId>com.github.docker-java</groupId>
-			<artifactId>docker-java</artifactId>
-			<version>3.3.0</version>
-		</dependency>
-
     
     <dependency>
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>20230227</version>
     </dependency>
-
-    <dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.10</version>
-		</dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
