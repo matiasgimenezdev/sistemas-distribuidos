@@ -101,18 +101,18 @@ public class Server {
 		
 		// // Crea el contenedor si todavia no existe
 		if(containerId.equals("")) {
-			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image; //Comando de apagado en windows
+			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image; 
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerName);
 		} else {
-			String cmd = "docker container restart " + containerName; //Comando de apagado en windows
+			String cmd = "docker container restart " + containerName; 
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerId);
 		}
 	}
 	
 	private static void stopContainer(String containerName) throws Exception{
-		String [] cmd = {"docker","container","stop", containerName}; //Comando de apagado en windows
+		String [] cmd = {"docker","container","stop", containerName}; 
 		Runtime.getRuntime().exec(cmd);
 	}
 }
