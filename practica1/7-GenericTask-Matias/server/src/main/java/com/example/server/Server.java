@@ -1,6 +1,5 @@
 package com.example.server;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.core.DockerClientBuilder;
@@ -20,8 +18,6 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ExposedPort;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
 import org.json.JSONException;
@@ -31,19 +27,26 @@ import org.json.JSONObject;
 @SpringBootApplication
 public class Server {
 	private static DockerClient dockerClient;
-	public static void main(String[] args) {
-		SpringApplication.run(Server.class, args);
+	private static String containerId = "";
+
+	public Server () {
+		dockerClient = DockerClientBuilder.getInstance().build();
 	}
 
 	@PostMapping("/remotetask")
 	public ResponseEntity<String> ejecutarTareaRemota(@RequestBody String body) {
 		try{
 			JSONObject requestData = new JSONObject(body);
-			String image = requestData.getString("dockerImage");
-			pullImageAndRunContainer(image);
 
+			// Obtiene los parammetros (para levantar el contenedor) del JSON enviado por el cliente, 
+			String image = requestData.getString("dockerImage");
+			String tag = requestData.getString("dockerImageTag");
+			String containerName = requestData.getString("dockerContainerName");
+			Integer port = requestData.getInt("port");
+			pullImageAndRunContainer(image, tag, containerName, port);
+
+			// Arma el JSON con los parametros para el servicio
 			JSONObject params = new JSONObject();
-			params.put("genericTask", requestData.get("genericTask"));
 			params.put("min", requestData.getDouble("min"));
 			params.put("max", requestData.getDouble("max"));
 
@@ -66,7 +69,13 @@ public class Server {
 				response.append(inputLine);
 			}
 			in.close();
+
+			//Detiene el contenedor
+			stopContainer();
+
+			//Enviar el resultado de la ejecucion de la tarea al cliente.
 			return ResponseEntity.ok(response.toString());
+		
 		} catch(JSONException e){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON Error: " + e.getMessage());
 		} catch (Exception e){
@@ -74,91 +83,40 @@ public class Server {
 		}
 	}
 
-
-	//Codigo que hace pull de una imagen docker existente.
-	@GetMapping("test")
-	public ResponseEntity<String> test(){
-		try{
-			this.dockerClient = DockerClientBuilder.getInstance().build();
-			JSONObject response = new JSONObject();
-			
-			dockerClient.pullImageCmd("hello-world")
-			.withTag("latest")
-			.exec(new PullImageResultCallback())
-			.awaitCompletion(100, TimeUnit.SECONDS);
-			
-			// ExposedPort tcp01 = ExposedPort.tcp(5000);
-			// ExposedPort tcp02 = ExposedPort.tcp(5000);
-			List<Container> containerList = dockerClient.listContainersCmd()
-			.withShowAll(true)
-			.withShowSize(true)
-			.exec();
-
-			String containerId = "";
-			if(containerList.size() > 0){
-				for(Container container: containerList) {
-					if(container.getNames()[0].equals("/testing-container")){
-						System.out.println("Existe el contenedor");
-						containerId = container.getId();
-					}
-				}
-			}
-			System.out.println(containerId);
-			if(containerId.equals("")) {
-				System.out.println("Creando el contenedor");
-				CreateContainerResponse containerResponse = dockerClient
-				.createContainerCmd("hello-world")
-				.withName("testing-container")
-				.withHostName("localhost")
-				// .withExposedPorts(tcp01, tcp02)
-				.exec();
-			}
-						
-			dockerClient.startContainerCmd(containerId).exec();
-			response.put("containers", containerList);
-			return ResponseEntity.ok(response.toString());
-		} catch (Exception e){
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
-		}
-	}
-
-	private static void pullImageAndRunContainer(String image) throws Exception {		
-		dockerClient = DockerClientBuilder.getInstance().build();
-		
+	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer portNumber) throws Exception {		
 		dockerClient.pullImageCmd(image)
-		.withTag("latest")
 		.exec(new PullImageResultCallback())
-		.awaitCompletion(100, TimeUnit.SECONDS);
+		.awaitCompletion(50, TimeUnit.SECONDS);
 		
-
 		List<Container> containerList = dockerClient.listContainersCmd()
 		.withShowAll(true)
-		.withShowSize(true)
 		.exec();
-
-		String containerId = "";
-		if(containerList.size() > 0){
+		JSONObject containers = new JSONObject(containerList);
+		
+		if(!containers.getBoolean("empty")){
 			for(Container container: containerList) {
-				if(container.getNames()[0].equals("/"+image)){
+				if(container.getNames()[0].equals("/"+containerName)){
 					containerId = container.getId();
 				}
 			}
 		}
 
-
-		System.out.println(containerId);
-		// ExposedPort tcp01 = ExposedPort.tcp(5000);
-		// ExposedPort tcp02 = ExposedPort.tcp(5000);
+		// Crea el contenedor si todavia no existe
 		if(containerId.equals("")) {
-			CreateContainerResponse containerResponse = dockerClient
+			ExposedPort port = ExposedPort.tcp(portNumber);
+			CreateContainerResponse creationResponse = dockerClient
 			.createContainerCmd(image)
-			.withName("testing-container")
+			.withName(containerName)
 			.withHostName("localhost")
-			// .withExposedPorts(tcp01, tcp02)
+			.withExposedPorts(port)
 			.exec();
+			containerId = creationResponse.getId();
 		}
-					
+		System.out.println("ID Container: " + containerId);
 		dockerClient.startContainerCmd(containerId).exec();
+	}
 
+	private static void stopContainer(){
+		dockerClient.stopContainerCmd(containerId).exec();
 	}
 }
