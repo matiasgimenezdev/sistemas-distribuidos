@@ -36,8 +36,7 @@ public class Server {
 		try {
 			JSONObject requestData = new JSONObject(body);
 
-			// Obtiene los parammetros (para levantar el contenedor) del JSON enviado por el
-			// cliente,
+			// Obtiene los parammetros (para levantar el contenedor) del JSON.
 			String image = requestData.getString("dockerImage");
 			String tag = requestData.getString("dockerImageTag");
 			String containerName = requestData.getString("dockerContainerName");
@@ -79,11 +78,17 @@ public class Server {
 		}
 	}
 
-	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer port)
-			throws Exception {
+	private static void showMessage(String message) {
+		System.out.println("");
+		System.out.println(message);
+	}
+
+	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer port) throws Exception {
+		showMessage("# Descargando la imagen...");
 		dockerClient.pullImageCmd(image)
 				.exec(new PullImageResultCallback())
-				.awaitCompletion(100, TimeUnit.SECONDS);
+				.awaitCompletion();
+		
 
 		List<Container> containerList = dockerClient.listContainersCmd()
 				.withShowAll(true)
@@ -98,12 +103,14 @@ public class Server {
 			}
 		}
 
+
 		if (containerId.equals("")) {
+			showMessage("# Creando el contenedor...");
 			String[] cmd = { "docker", "container", "run", "-d", "-p", port.toString().trim() + ":" + port.toString().trim(),
 					"--name", containerName, image };
 			Runtime.getRuntime().exec(cmd);
-			Thread.sleep(3000);
-			System.out.println("Container started: " + containerName);
+			Thread.sleep(4000);
+			showMessage("# Contenedor iniciado");
 		} else {
 			Boolean isRunning = dockerClient
 					.inspectContainerCmd(containerId)
@@ -111,10 +118,12 @@ public class Server {
 					.getState()
 					.getRunning();
 			if (!isRunning) {
+				System.out.println("");
+				System.out.println("# Iniciado el contenedor...");
 				String cmd = "docker container start " + containerName;
 				Runtime.getRuntime().exec(cmd);
-				Thread.sleep(3000);
-				System.out.println("Container started: " + containerName);
+				Thread.sleep(4000);
+				showMessage("# Contenedor iniciado");
 			}
 		}
 
