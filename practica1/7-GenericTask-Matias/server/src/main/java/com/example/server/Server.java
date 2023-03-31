@@ -27,27 +27,27 @@ public class Server {
 	private static DockerClient dockerClient;
 	private static String containerId = "";
 
-	public Server () {
+	public Server() {
 		dockerClient = DockerClientBuilder.getInstance().build();
 	}
 
 	@PostMapping("/remotetask")
 	public ResponseEntity<String> ejecutarTareaRemota(@RequestBody String body) {
-		try{
+		try {
 			JSONObject requestData = new JSONObject(body);
 
-			// Obtiene los parammetros (para levantar el contenedor) del JSON enviado por el cliente, 
+			// Obtiene los parammetros (para levantar el contenedor) del JSON enviado por el
+			// cliente,
 			String image = requestData.getString("dockerImage");
 			String tag = requestData.getString("dockerImageTag");
 			String containerName = requestData.getString("dockerContainerName");
 			Integer port = requestData.getInt("port");
 			pullImageAndRunContainer(image, tag, containerName, port);
-			
+
 			// Arma el JSON con los parametros para el servicio
 			JSONObject params = new JSONObject();
 			params.put("min", requestData.getDouble("min"));
 			params.put("max", requestData.getDouble("max"));
-
 
 			StringBuffer response = new StringBuffer();
 
@@ -69,50 +69,56 @@ public class Server {
 			}
 			in.close();
 
-			//Detiene el contenedor
+			// Detiene el contenedor
 			stopContainer(containerName);
-			//Enviar el resultado de la ejecucion de la tarea al cliente.
+			// Enviar el resultado de la ejecucion de la tarea al cliente.
 			return ResponseEntity.ok(response.toString());
-		
-		} catch(JSONException e){
+
+		} catch (JSONException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON Error: " + e.getMessage());
-		} catch (Exception e){
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error interno del servidor: " + e.getMessage());
 		}
 	}
 
-	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer portNumber) throws Exception {		
-		dockerClient.pullImageCmd(image)
-		.exec(new PullImageResultCallback())
-		.awaitCompletion(100, TimeUnit.SECONDS);
-		
+	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer portNumber)
+			throws Exception {
+		try {
+			dockerClient.pullImageCmd(image)
+					.exec(new PullImageResultCallback())
+					.awaitCompletion();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		List<Container> containerList = dockerClient.listContainersCmd()
-		.withShowAll(true)
-		.exec();
+				.withShowAll(true)
+				.exec();
 		JSONObject containers = new JSONObject(containerList);
-		
-		if(!containers.getBoolean("empty")){
-			for(Container container: containerList) {
-				if(container.getNames()[0].equals("/"+containerName)){
+
+		if (!containers.getBoolean("empty")) {
+			for (Container container : containerList) {
+				if (container.getNames()[0].equals("/" + containerName)) {
 					containerId = container.getId();
 				}
 			}
 		}
-		
+
 		// // Crea el contenedor si todavia no existe
-		if(containerId.equals("")) {
-			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image; 
+		if (containerId.equals("")) {
+			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image;
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerName);
 		} else {
-			String cmd = "docker container start " + containerName; 
+			String cmd = "docker container start " + containerName;
 			Runtime.getRuntime().exec(cmd);
 			System.out.println("Container started: " + containerId);
 		}
 	}
-	
-	private static void stopContainer(String containerName) throws Exception{
-		String cmd = "docker container stop " + containerName; 
+
+	private static void stopContainer(String containerName) throws Exception {
+		String cmd = "docker container stop " + containerName;
 		Runtime.getRuntime().exec(cmd);
 	}
 }
