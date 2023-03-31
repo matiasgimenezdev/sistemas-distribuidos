@@ -6,11 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
@@ -40,6 +39,8 @@ public class Server {
 			String tag = requestData.getString("dockerImageTag");
 			String containerName = requestData.getString("dockerContainerName");
 			Integer port = requestData.getInt("port");
+			String path = requestData.getString("path");
+
 			pullImageAndRunContainer(image, tag, containerName, port);
 
 			// Arma el JSON con los parametros para el servicio
@@ -47,33 +48,23 @@ public class Server {
 			params.put("min", requestData.getDouble("min"));
 			params.put("max", requestData.getDouble("max"));
 
-			StringBuffer response = new StringBuffer();
-			URL url = new URL("http://localhost:5000/task");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
+			
+			HttpClient client = HttpClient.newHttpClient();
+			HttpRequest request = HttpRequest.newBuilder()
+									.uri(URI.create("http://localhost:" + port + path))
+									.POST(HttpRequest.BodyPublishers.ofString(params.toString()))
+									.build();
+			
+			HttpResponse<String> response = null;
+			response = client.send(request,
+                        HttpResponse.BodyHandlers.ofString());
 
-			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(params.toString());
-			out.flush();
-			out.close();
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			// Enviar el resultado de la ejecucion de la tarea al cliente.
-			return ResponseEntity.ok(response.toString());
+			return ResponseEntity.ok(response.body());
 
 		} catch (JSONException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 	}
 
