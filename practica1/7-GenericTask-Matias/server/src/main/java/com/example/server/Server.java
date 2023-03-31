@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.core.command.PullImageResultCallback;
+import com.github.dockerjava.api.command.PullImageResultCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +50,6 @@ public class Server {
 
 
 			StringBuffer response = new StringBuffer();
-
 			URL url = new URL("http://localhost:5000/task");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
@@ -69,8 +68,6 @@ public class Server {
 			}
 			in.close();
 
-			//Detiene el contenedor
-			stopContainer(containerName);
 			//Enviar el resultado de la ejecucion de la tarea al cliente.
 			return ResponseEntity.ok(response.toString());
 		
@@ -81,7 +78,7 @@ public class Server {
 		}
 	}
 
-	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer portNumber) throws Exception {		
+	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer port) throws Exception {				
 		dockerClient.pullImageCmd(image)
 		.exec(new PullImageResultCallback())
 		.awaitCompletion(100, TimeUnit.SECONDS);
@@ -98,21 +95,25 @@ public class Server {
 				}
 			}
 		}
-		
-		// // Crea el contenedor si todavia no existe
+
 		if(containerId.equals("")) {
-			String cmd = "docker container run -d -p 5000:5000 --name " + containerName + " " + image; 
+			String [] cmd = {"docker", "container", "run", "-d", "-p", port.toString().trim() +":"+port.toString().trim(), "--name", containerName, image};
 			Runtime.getRuntime().exec(cmd);
+			Thread.sleep(3000);
 			System.out.println("Container started: " + containerName);
 		} else {
-			String cmd = "docker container start " + containerName; 
-			Runtime.getRuntime().exec(cmd);
-			System.out.println("Container started: " + containerId);
+			Boolean	isRunning = dockerClient
+			.inspectContainerCmd(containerId)
+			.exec()
+			.getState()
+			.getRunning();
+			if(!isRunning){
+				String cmd = "docker container start " + containerName;
+				Runtime.getRuntime().exec(cmd);
+				Thread.sleep(3000);
+				System.out.println("Container started: " + containerName);
+			}
 		}
-	}
-	
-	private static void stopContainer(String containerName) throws Exception{
-		String cmd = "docker container stop " + containerName; 
-		Runtime.getRuntime().exec(cmd);
+
 	}
 }
