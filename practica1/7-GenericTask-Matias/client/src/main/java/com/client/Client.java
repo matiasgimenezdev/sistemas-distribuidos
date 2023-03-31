@@ -16,11 +16,13 @@ public class Client {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
 
-
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
             JSONObject body = new JSONObject();
-            body.put("task", "randomNumber"); 
-            body.put("dockerImage", "generic-task");
+            body.put("task", "randomNumber");
+            body.put("dockerImage", "mgimenezdev/task-service:v1");
+            body.put("dockerImageTag", "v1");
+            body.put("dockerContainerName", "task-service");
+            body.put("port", "5000");
             body.put("min", 10.0);
             body.put("max", 100.0);
             out.write(body.toString());
@@ -36,9 +38,9 @@ public class Client {
 
             in.close();
             JSONObject responseAsJson = new JSONObject(response.toString());
-            Double resultado = responseAsJson.getDouble("taskResult");
+            Double resultado = responseAsJson.getDouble("result");
             System.out.println("Numero aleatorio: " + resultado.toString());
-        
+
         } catch (Exception e) {
             e.printStackTrace();
         }
