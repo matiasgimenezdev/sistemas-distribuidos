@@ -12,7 +12,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
@@ -84,11 +83,17 @@ public class Server {
 	}
 
 	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer port) throws Exception {
-		showMessage("# Descargando la imagen...");
-		dockerClient.pullImageCmd(image)
+		
+		try {
+			dockerClient
+			.inspectImageCmd(image)
+			.exec();
+		} catch(Exception e) {
+			showMessage("# Descargando la imagen...");
+			dockerClient.pullImageCmd(image)
 				.exec(new PullImageResultCallback())
 				.awaitCompletion();
-		
+		}
 
 		List<Container> containerList = dockerClient.listContainersCmd()
 				.withShowAll(true)
@@ -103,7 +108,6 @@ public class Server {
 			}
 		}
 
-
 		if (containerId.equals("")) {
 			showMessage("# Creando el contenedor...");
 			String[] cmd = { "docker", "container", "run", "-d", "-p", port.toString().trim() + ":" + port.toString().trim(),
@@ -111,6 +115,7 @@ public class Server {
 			Runtime.getRuntime().exec(cmd);
 			Thread.sleep(4000);
 			showMessage("# Contenedor iniciado");
+			
 		} else {
 			Boolean isRunning = dockerClient
 					.inspectContainerCmd(containerId)
@@ -126,6 +131,5 @@ public class Server {
 				showMessage("# Contenedor iniciado");
 			}
 		}
-
 	}
 }
