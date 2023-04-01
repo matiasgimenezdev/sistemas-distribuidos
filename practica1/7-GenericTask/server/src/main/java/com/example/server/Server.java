@@ -22,11 +22,13 @@ import org.json.JSONObject;
 @RestController
 @SpringBootApplication
 public class Server {
+	private static CmdRunner cmdRunner;
 	private static DockerClient dockerClient;
 	private static String containerId = "";
 
 	public Server() {
 		dockerClient = DockerClientBuilder.getInstance().build();
+		cmdRunner = new CmdRunner();
 	}
 
 	@PostMapping("/remotetask")
@@ -58,9 +60,10 @@ public class Server {
 			HttpResponse<String> response = null;
 			response = client.send(request,
                         HttpResponse.BodyHandlers.ofString());
+			
+			stopContainer(containerName);
 
 			return ResponseEntity.ok(response.body());
-
 		} catch (JSONException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		} catch (Exception e) {
@@ -68,10 +71,14 @@ public class Server {
 		}
 	}
 
-	private static void showMessage(String message) {
-		System.out.println("");
-		System.out.println(message);
+
+	private static void stopContainer(String containerName) {
+		String[] cmd = { "docker", "container", "stop", containerName};
+		cmdRunner.showMessage("# Contenedor detenido");
+		cmdRunner.runCmd(cmd);
 	}
+
+
 
 	private static void pullImageAndRunContainer(String image, String tag, String containerName, Integer port) throws Exception {
 		
@@ -80,7 +87,7 @@ public class Server {
 			.inspectImageCmd(image)
 			.exec();
 		} catch(Exception e) {
-			showMessage("# Descargando la imagen...");
+			cmdRunner.showMessage("# Descargando la imagen...");
 			dockerClient.pullImageCmd(image)
 				.exec(new PullImageResultCallback())
 				.awaitCompletion();
@@ -100,12 +107,12 @@ public class Server {
 		}
 
 		if (containerId.equals("")) {
-			showMessage("# Creando el contenedor...");
-			String[] cmd = { "docker", "container", "run", "-d", "-p", port.toString().trim() + ":" + port.toString().trim(),
-					"--name", containerName, image };
-			Runtime.getRuntime().exec(cmd);
+			cmdRunner.showMessage("# Creando el contenedor...");
+			// String[] cmd = { "docker", "container", "run", "-d", "-p", port.toString().trim() + ":" + port.toString().trim(), "--name", containerName, image };
+			String[] cmd = { "docker", "container", "run", "-d", "--network", "host", "--name", containerName, image };
+			cmdRunner.runCmd(cmd);
 			Thread.sleep(4000);
-			showMessage("# Contenedor iniciado");
+			cmdRunner.showMessage("# Contenedor iniciado");
 			
 		} else {
 			Boolean isRunning = dockerClient
@@ -116,10 +123,10 @@ public class Server {
 			if (!isRunning) {
 				System.out.println("");
 				System.out.println("# Iniciado el contenedor...");
-				String cmd = "docker container start " + containerName;
-				Runtime.getRuntime().exec(cmd);
+				String[] cmd = { "docker", "container", "start", containerName};
+				cmdRunner.runCmd(cmd);
 				Thread.sleep(4000);
-				showMessage("# Contenedor iniciado");
+				cmdRunner.showMessage("# Contenedor iniciado");
 			}
 		}
 	}
