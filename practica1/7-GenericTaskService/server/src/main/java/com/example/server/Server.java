@@ -154,10 +154,8 @@ public class Server {
 				System.out.println("# Iniciado el contenedor...");
 				dockerClient.startContainerCmd(containerId).exec();
 				dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStarted();
-				printer.showMessage("# Contenedor iniciado.");
 				Thread.sleep(5000);
-
-				
+				printer.showMessage("# Contenedor iniciado.");
 			}
 		}
 	}
