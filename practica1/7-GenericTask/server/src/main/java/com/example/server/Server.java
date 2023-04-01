@@ -10,11 +10,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.List;
-import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.PullImageResultCallback;
+import com.github.dockerjava.api.command.WaitContainerResultCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,13 +31,26 @@ import org.json.JSONObject;
 @RestController
 @SpringBootApplication
 public class Server {
-	private static CmdRunner cmdRunner;
+	private static Printer printer;
 	private static DockerClient dockerClient;
 	private static String containerId = "";
 
 	public Server() {
-		dockerClient = DockerClientBuilder.getInstance().build();
-		cmdRunner = new CmdRunner();
+		DockerClientConfig customConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
+		.withDockerHost("unix:///var/run/docker.sock")
+		.withDockerConfig("/home/$USER/.docker")
+		.withDockerTlsVerify(false)
+		.build();
+		
+		DockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+		.dockerHost(customConfig.getDockerHost())
+		.maxConnections(100)
+		.connectionTimeout(Duration.ofSeconds(30))
+		.responseTimeout(Duration.ofSeconds(45))
+		.build();
+
+		dockerClient = DockerClientImpl.getInstance(customConfig, httpClient);
+		printer = new Printer();
 	}
 
 	@PostMapping("/remotetask")
@@ -73,9 +95,9 @@ public class Server {
 
 
 	private static void stopContainer(String containerName) {
-		String[] cmd = { "docker", "container", "stop", containerName};
-		cmdRunner.showMessage("# Contenedor detenido");
-		cmdRunner.runCmd(cmd);
+		dockerClient.stopContainerCmd(containerId).exec();
+		dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStatusCode();
+		printer.showMessage("# Contenedor detenido.");
 	}
 
 
@@ -87,10 +109,12 @@ public class Server {
 			.inspectImageCmd(image)
 			.exec();
 		} catch(Exception e) {
-			cmdRunner.showMessage("# Descargando la imagen...");
+			printer.showMessage("# Descargando la imagen...");
 			dockerClient.pullImageCmd(image)
 				.exec(new PullImageResultCallback())
 				.awaitCompletion();
+			printer.showMessage("# Imagen descargada.");
+			
 		}
 
 		List<Container> containerList = dockerClient.listContainersCmd()
@@ -107,13 +131,18 @@ public class Server {
 		}
 
 		if (containerId.equals("")) {
-			cmdRunner.showMessage("# Creando el contenedor...");
-			// String[] cmd = { "docker", "container", "run", "-d", "-p", port.toString().trim() + ":" + port.toString().trim(), "--name", containerName, image };
-			String[] cmd = { "docker", "container", "run", "-d", "--network", "host", "--name", containerName, image };
-			cmdRunner.runCmd(cmd);
-			Thread.sleep(4000);
-			cmdRunner.showMessage("# Contenedor iniciado");
-			
+			printer.showMessage("# Creando el contenedor...");
+			HostConfig hostConfig = HostConfig.newHostConfig().withPortBindings(PortBinding.parse(port.toString()+":" + port.toString()));
+			CreateContainerResponse containerResponse = dockerClient
+			.createContainerCmd(image)
+			.withName(containerName)
+			.withHostConfig(hostConfig)
+			.exec();
+			containerId = containerResponse.getId();
+			dockerClient.startContainerCmd(containerId).exec();
+			dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStarted();
+			Thread.sleep(3000);
+			printer.showMessage("# Contenedor iniciado.");
 		} else {
 			Boolean isRunning = dockerClient
 					.inspectContainerCmd(containerId)
@@ -123,10 +152,12 @@ public class Server {
 			if (!isRunning) {
 				System.out.println("");
 				System.out.println("# Iniciado el contenedor...");
-				String[] cmd = { "docker", "container", "start", containerName};
-				cmdRunner.runCmd(cmd);
-				Thread.sleep(4000);
-				cmdRunner.showMessage("# Contenedor iniciado");
+				dockerClient.startContainerCmd(containerId).exec();
+				dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStarted();
+				printer.showMessage("# Contenedor iniciado.");
+				Thread.sleep(3000);
+
+				
 			}
 		}
 	}
