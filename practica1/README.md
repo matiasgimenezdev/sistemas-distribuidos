@@ -62,3 +62,6 @@ La clase "Server" es un servidor HTTP que se inicia en el puerto 8080 y se pone 
 Esta clase "RequestHandler" se encarga de parsear el cuerpo de la peticion POST, donde vienen los parametros necesarios para realizar la suma de los vectores. Convierte el vector sumado a string, luego a bytes y lo envia a traves del flujo de datos de salida de la conexion. Posteriormente, finaliza la conexion con el cliente.
 
 La clase "Cliente" abre una conexion TCP contra el servidor utilizando la URL 'http://localhost:8080/sum' y arma la peticion, incluyendo headers, method (POST) y el body del mensaje HTTP donde envia los vectores que quiere sumar. Si la peticion tuvo exito (codigo 200), muestra el resultado en la consola.
+
+### Ejercicio 7
+El informe sobre este ejercicio se encuentra en el documento PDF dentro del repositorio
