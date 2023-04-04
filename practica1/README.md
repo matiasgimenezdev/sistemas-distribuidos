@@ -7,12 +7,12 @@
 ### 1) ¿En qué casos sería relevante e indispensable contar con este tipo de servicios?
 Los **microservicios** son un enfoque arquitectónico y organizativo para el desarrollo de software donde el software está compuesto por pequeños servicios independientes.
 
-Con las arquitecturas monolíticas, todos los procesos están estrechamente asociados y se ejecutan como un solo servicio. Esto significa que, si un proceso de una aplicación experimenta un pico de demanda, se debe escalartoda la arquitectura. Agregar o mejorar las características de una aplicación monolítica se vuelve más complejo a medida que crece la base de código.
+Con las arquitecturas monolíticas, todos los procesos están estrechamente asociados y se ejecutan como un solo servicio. Esto significa que, si un proceso de una aplicación experimenta un pico de demanda, se debe escalar toda la arquitectura. Agregar o mejorar las características de una aplicación monolítica se vuelve más complejo a medida que crece la base de código.
 Las arquitecturas monolíticas aumentan el riesgo de la disponibilidad de la aplicación porque muchos procesos dependientes y estrechamente vinculados aumentan el impacto del error de un proceso, ya que si se origina un error en un servicio, puede propagarse el error a los demás.
 
 En cambio con una **arquitectura de microservicios**, una aplicación se crea con componentes independientes que ejecutan cada proceso de la aplicación como un servicio. Cada servicio es un componente en una arquitectura de microservicios que fueron creados para desempeñar una unica funcion y la comunicación entre ellos ocurre a través de APIs bien definidas. Cada uno de ellos se puede desarrollar, operar y escalar sin afectar el funcionamiento de otros servicios. Es decir, permite que cada servicio escale de forma independiente para satisfacer la demanda de la aplicación que respalda.
 
-Además, cada servicio está diseñado para resolver un único problema específico. Si se aportará más código a un servicio a lo largo del tiempo, este se volverá más complejo, por lo cual, se podría dividir en servicios más pequeños y simplificados.
+Además, cada servicio está diseñado para resolver un único problema específico. Si se aportara más código a un servicio a lo largo del tiempo, este se volverá más complejo, por lo cual, se podría dividir en servicios más pequeños y simplificados.
 
 ![image](https://user-images.githubusercontent.com/117539520/229898938-c6734ef3-97a2-4f1f-a892-9c07d659301e.png)
 
