@@ -35,7 +35,10 @@ En nuestra implementación, la comunicación entre procesos es síncrona, ya que
 En cambio, si pensamos una implementación donde la comunicación es asíncrona, los procesos funcionarían de forma independiente, ya que el proceso emisor envía un mensaje y continúa su trabajo sin esperar la respuesta inmediata del proceso receptor. La comunicación asíncrona es útil en sistemas distribuidos donde los procesos pueden estar separados geográficamente y tener diferentes velocidades de procesamiento. Además, la comunicación asíncrona puede mejorar la tolerancia a fallos del
 sistema distribuido. En nuestro caso, el proceso cliente depende por completo del proceso servidor para obtener el resultado. Se encuentra bloqueado esperando la respuesta, por lo cual, no puede pedirle a otro proceso que realice esa misma operación como segunda alternativa.
 
-Entonces, la comunicación asíncrona puede mejorar la tolerancia a fallos en el sentido que, un proceso puede enviar un mensaje a una cola de mensajes y, si más de un consumidor está suscrito a esa cola, uno podrá responder en lugar del otro en caso de que ocurran fallas. Esto permite que el proceso emisor no dependa de un único consumidor. 
+Entonces, la comunicación asíncrona puede mejorar la tolerancia a fallos en el sentido que, un proceso puede enviar un mensaje a una cola de mensajes y, si más de un consumidor está suscrito a esa cola, uno podrá responder en lugar del otro en caso de que ocurran fallas. Esto permite que el proceso emisor no dependa de un único consumidor.
+![image](https://user-images.githubusercontent.com/117539520/229899206-18a4b678-45c2-4676-b712-3a71240cf8fc.png)
+
+
 En resumen, si se requiere reducir el acoplamiento entre procesos y aumentar la tolerancia a fallos, el uso de cola de mensajes para implementar
 una comunicación asíncrona, puede ser una buena alternativa al uso de HTTP.
 
