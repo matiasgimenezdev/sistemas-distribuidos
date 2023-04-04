@@ -65,3 +65,6 @@ La clase "Cliente" abre una conexion TCP contra el servidor utilizando la URL 'h
 
 ### Ejercicio 7
 El informe sobre este ejercicio se encuentra en el documento PDF dentro del [repositorio](https://github.com/matiasgimenezdev/sistemas-distribuidos/tree/main/practica1/7-GenericTaskService)
+<a href="https://github.com/matiasgimenezdev/sistemas-distribuidos/tree/main/practica1/7-GenericTaskService">
+repositorio
+</a>
