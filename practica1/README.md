@@ -3,7 +3,6 @@
 ## Conceptos básicos para la construcción de Sistemas Distribuidos.
 
 ## Ejercicio 7
-El informe sobre este ejercicio se encuentra en el documento PDF dentro del [repositorio](https://github.com/matiasgimenezdev/sistemas-distribuidos/tree/main/practica1/7-GenericTaskService)
 
 ### 1) ¿En qué casos sería relevante e indispensable contar con este tipo de servicios?
 Los **microservicios** son un enfoque arquitectónico y organizativo para el desarrollo de software donde el software está compuesto por pequeños servicios independientes.
