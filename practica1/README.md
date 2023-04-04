@@ -15,6 +15,8 @@ En cambio con una **arquitectura de microservicios**, una aplicación se crea co
 
 Además, cada servicio está diseñado para resolver un único problema específico. Si se aportará más código a un servicio a lo largo del tiempo, este se volverá más complejo, por lo cual, se podría dividir en servicios más pequeños y simplificados.
 
+![image](https://user-images.githubusercontent.com/117539520/229898938-c6734ef3-97a2-4f1f-a892-9c07d659301e.png)
+
 Los microservicios son útiles en una variedad de situaciones, generalmente para construir aplicaciones escalables, flexibles y resilientes. En los casos donde pueden ser útiles son:
   A. Si una aplicación necesita escalar horizontalmente para manejar un mayor volumen de tráfico o procesamiento. Cada microservicio puede ser escalado de manera             independiente, lo que permite agregar recursos solo donde se necesitan, en lugar de tener que escalar todo el sistema.
   B. Si se busca facilitar el trabajo en equipo, los microservicios pueden simplificar el mantenimiento de una aplicación al permitir que se realicen actualizaciones y       cambios de forma aislada. Esto significa que los desarrolladores pueden trabajar en actualizaciones y mejoras en partes específicas de la aplicación sin tener         que preocuparse por el mpacto en otras partes del sistema.
