@@ -1,4 +1,4 @@
-# Tareas genéricas | Ejercicio 7
+# Tareas genéricas
 
 ## Descripción
 Para iniciar los proyectos con spring utilizamos el [Spring Initialzr](https://start.spring.io/). Luego, para la comunicación del servidor con el demonio de Docker hicimos uso de la liberia [docker-java](https://github.com/docker-java/docker-java), ya que Docker no provee una libreria oficial para Java pero si recomienda algunas y esta es una de ellas.
