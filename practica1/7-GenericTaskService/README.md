@@ -1,4 +1,10 @@
-# Instrucciones de ejecucion
+# Tareas genéricas
+
+## Descripción
+Para iniciar los proyectos con spring utilizamos el [Spring Initialzr](https://start.spring.io/). Luego, para la comunicación del servidor con el demonio de Docker hicimos uso de la liberia [docker-java](https://github.com/docker-java/docker-java), ya que Docker no provee una libreria oficial para Java pero si recomienda algunas y esta es una de ellas.
+
+## Instrucciones de ejecución
+
 La idea es levantar localmente el contenedor que contiene el servidor, por lo cual, debe tener Docker instalado. Luego, ejecutar el cliente para que se inicie la comunicacion entre procesos.
 
 ### Descargar imagen del servidor
