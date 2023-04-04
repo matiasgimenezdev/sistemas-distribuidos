@@ -141,7 +141,7 @@ public class Server {
 			containerId = containerResponse.getId();
 			dockerClient.startContainerCmd(containerId).exec();
 			dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStarted();
-			Thread.sleep(5000);
+			Thread.sleep(7000);
 			printer.showMessage("# Contenedor iniciado.");
 		} else {
 			Boolean isRunning = dockerClient
@@ -154,7 +154,7 @@ public class Server {
 				System.out.println("# Iniciado el contenedor...");
 				dockerClient.startContainerCmd(containerId).exec();
 				dockerClient.waitContainerCmd(containerId).exec(new WaitContainerResultCallback()).awaitStarted();
-				Thread.sleep(5000);
+				Thread.sleep(7000);
 				printer.showMessage("# Contenedor iniciado.");
 			}
 		}
