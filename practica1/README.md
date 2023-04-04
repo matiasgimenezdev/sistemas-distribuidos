@@ -63,5 +63,5 @@ Esta clase "RequestHandler" se encarga de parsear el cuerpo de la peticion POST,
 
 La clase "Cliente" abre una conexion TCP contra el servidor utilizando la URL 'http://localhost:8080/sum' y arma la peticion, incluyendo headers, method (POST) y el body del mensaje HTTP donde envia los vectores que quiere sumar. Si la peticion tuvo exito (codigo 200), muestra el resultado en la consola.
 
-
-##### Las instrucciones de ejecucion se encuentran indicadas en cada uno de los proyectos.
+### Ejercicio 7
+El informe sobre este ejercicio se encuentra en el documento PDF dentro del repositorio (En el directorio 7-GenericTaskService)
