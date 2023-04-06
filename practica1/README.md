@@ -14,7 +14,7 @@ En cambio con una **arquitectura de microservicios**, una aplicación se crea co
 
 Además, cada servicio está diseñado para resolver un único problema específico. Si se aportara más código a un servicio a lo largo del tiempo, este se volverá más complejo, por lo cual, se podría dividir en servicios más pequeños y simplificados.
 
-![image](https://user-images.githubusercontent.com/117539520/230367695-38fdbc0c-f675-4999-a5b0-b96032fe76e3.png)
+<img src="[https://mma.prnewswire.com/media/1513369/Educative_Logo.jpg](https://user-images.githubusercontent.com/117539520/230367695-38fdbc0c-f675-4999-a5b0-b96032fe76e3.png)"  width="600" height="300">
 
 Los microservicios son útiles en una variedad de situaciones, generalmente para construir aplicaciones escalables, flexibles y resilientes. En los casos donde pueden ser útiles son:
   A. Si una aplicación necesita escalar horizontalmente para manejar un mayor volumen de tráfico o procesamiento. Cada microservicio puede ser escalado de manera             independiente, lo que permite agregar recursos solo donde se necesitan, en lugar de tener que escalar todo el sistema.
@@ -35,10 +35,8 @@ En cambio, si pensamos una implementación donde la comunicación es asíncrona,
 sistema distribuido. En nuestro caso, el proceso cliente depende por completo del proceso servidor para obtener el resultado. Se encuentra bloqueado esperando la respuesta, por lo cual, no puede pedirle a otro proceso que realice esa misma operación como segunda alternativa.
 
 Entonces, la comunicación asíncrona puede mejorar la tolerancia a fallos en el sentido que, un proceso puede enviar un mensaje a una cola de mensajes y, si más de un consumidor está suscrito a esa cola, uno podrá responder en lugar del otro en caso de que ocurran fallas. Esto permite que el proceso emisor no dependa de un único consumidor.
+
 ![image](https://user-images.githubusercontent.com/117539520/230369406-fbbcc24b-4761-44de-a948-22e283bbf62e.png)
-
-![image](https://user-images.githubusercontent.com/117539520/229899206-18a4b678-45c2-4676-b712-3a71240cf8fc.png)
-
 
 En resumen, si se requiere reducir el acoplamiento entre procesos y aumentar la tolerancia a fallos, el uso de cola de mensajes para implementar
 una comunicación asíncrona, puede ser una buena alternativa al uso de HTTP.
