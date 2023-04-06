@@ -36,7 +36,7 @@ sistema distribuido. En nuestro caso, el proceso cliente depende por completo de
 
 Entonces, la comunicación asíncrona puede mejorar la tolerancia a fallos en el sentido que, un proceso puede enviar un mensaje a una cola de mensajes y, si más de un consumidor está suscrito a esa cola, uno podrá responder en lugar del otro en caso de que ocurran fallas. Esto permite que el proceso emisor no dependa de un único consumidor.
 
-<img src="https://user-images.githubusercontent.com/117539520/230370606-90c76324-ff11-40ac-89fa-042202a5bdba.png" width="600" height="300">
+<img src="https://user-images.githubusercontent.com/117539520/230370606-90c76324-ff11-40ac-89fa-042202a5bdba.png" width="600" height="400">
 
 En resumen, si se requiere reducir el acoplamiento entre procesos y aumentar la tolerancia a fallos, el uso de cola de mensajes para implementar
 una comunicación asíncrona, puede ser una buena alternativa al uso de HTTP.
