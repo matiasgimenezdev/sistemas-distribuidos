@@ -9,7 +9,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        MasterNode mn = new MasterNode(9000);
-        mn.start();
+        EndNode en = new EndNode();
+        en.start();
     }
 }

@@ -38,10 +38,5 @@ public class MasterNode {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        MasterNode masterNode = new MasterNode(9000);
-        masterNode.start();
-    }
 }
 
