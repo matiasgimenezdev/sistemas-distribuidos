@@ -1,31 +1,37 @@
-package com.example;    
+package com.example;
 
-import java.net.*;
-import java.io.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Properties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.json.JSONObject;
 
 public class EndNode {
     
-    private static final String SERVER_CONFIG_FILE = "server.properties";
-    private final List<String> masterAddresses;
-    private final List<Integer> masterPorts;
+    private final ArrayList<String> masterAddresses;
+    private final ArrayList<Integer> masterPorts;
+    private Properties serviceProperties;
+    private Map<String, File> files;
 
-    public EndNode() throws IOException {
+    public EndNode(String configFile, int PORT) throws IOException {
+
         // Initialize master addresses and ports from config file
         this.masterAddresses = new ArrayList<>();
         this.masterPorts = new ArrayList<>();
-        File configFile = new File(SERVER_CONFIG_FILE);
+        this.files = new HashMap<>();
+
+        // Agrega files
+        addFile("file1.txt");
+        addFile("file2.txt");
+
         BufferedReader reader = new BufferedReader(new FileReader(configFile));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -34,31 +40,41 @@ public class EndNode {
             masterPorts.add(Integer.parseInt(parts[1]));
         }
         reader.close();
+
+
+        serviceProperties = new Properties();
+        serviceProperties.load(new FileReader("server.properties"));
     }
 
-    public void start() {
+    public void start() throws IOException {
+         // Register files with master
         try {
-            
-            Socket socket = new Socket(masterAddresses.get(0), masterPorts.get(0));
-                
-            System.out.println("Conectado al nodo maestro: " + masterAddresses.get(0));
-            
-            // Realizar consultas al servidor centralizado
-        
-            // Realizar consultas al servidor centralizado
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-            writer.println("Consulta 1");
-            String response = reader.readLine();
-            System.out.println("Respuesta del servidor centralizado: " + response);
-
-            writer.println("Consulta 2");
-            response = reader.readLine();
-            System.out.println("Respuesta del servidor centralizado: " + response);
-
-
+            JSONObject data = new JSONObject();
+            for (String filename : files.keySet()) {
+                data.put(filename, files.get(filename).length());
+            }
+            URL url = new URL("http://" + masterAddresses.get(0) + ":" + masterPorts.get(0) + "/share-files");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("User-Agent", "Java client");
+            connection.getOutputStream().write(data.toString().getBytes());
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                System.err.println("Failed to register files with master");
+                return;
+            }
         } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public void addFile(String filename) {
+        File file = new File(filename);
+        if (file.exists()) {
+            files.put(file.getName(), file);
         }
     }
 }
