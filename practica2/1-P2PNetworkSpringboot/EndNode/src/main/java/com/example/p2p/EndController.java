@@ -1,10 +1,13 @@
 package com.example.p2p;
 
+import java.io.FileNotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,17 +17,45 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class EndController {
 
-  @Autowired
   private EndModel end;
-
-  @Autowired
   private NetworkService networkService;
 
+  @Autowired
+  public EndController(NetworkService networkService, EndModel end) {
+    this.end = end;
+    this.networkService = networkService;
+  }
+
   @GetMapping("/file")
-  public String getFile() {
-    // TODO Entregar el archivo que el peer esta solicitando
-    networkService.deliver("nombre archivo");
-    return "Here is your file";
+  public ResponseEntity<Resource> getFile() {
+    try {
+      Resource resource = networkService.deliver("nombre archivo");
+      return ResponseEntity
+        .ok()
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .header(
+          HttpHeaders.CONTENT_DISPOSITION,
+          "attachment; filename=\"" + resource.getFilename() + "\""
+        )
+        .body(resource);
+    } catch (FileNotFoundException exception) {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping("/register")
+  public ResponseEntity<String> register() {
+    try {
+      String[] availableFiles = this.end.getAvailableFiles();
+      JSONObject registerResponse =
+        this.networkService.register(availableFiles);
+      System.out.println(registerResponse.toString(0));
+      return ResponseEntity.ok(registerResponse.toString());
+    } catch (Exception exception) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(exception.getMessage());
+    }
   }
 
   @GetMapping("/download")
@@ -39,8 +70,10 @@ public class EndController {
       // networkService.download(fileInformation);
 
       return ResponseEntity.ok(fileInformation.toString());
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    } catch (Exception exception) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(exception.getMessage());
     }
   }
 }
