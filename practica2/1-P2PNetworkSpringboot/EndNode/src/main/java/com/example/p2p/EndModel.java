@@ -1,7 +1,9 @@
 package com.example.p2p;
 
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EndModel {
 
   public void save() {
