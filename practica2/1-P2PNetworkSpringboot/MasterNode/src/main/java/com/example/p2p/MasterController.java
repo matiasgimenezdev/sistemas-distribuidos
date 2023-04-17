@@ -1,6 +1,7 @@
 package com.example.p2p;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MasterController {
 
   // private final String IP = "127.0.0.1";
-  private MasterModel master;
+  private Master master;
 
-  public MasterController() {
-    this.master = new MasterModel();
+  @Autowired
+  public MasterController(Master master) {
+    this.master = master;
   }
 
   @GetMapping("/getFile")

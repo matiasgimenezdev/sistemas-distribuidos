@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-public class EndController {
+public class PeerController {
 
-  private EndModel end;
+  private Peer peer;
   private NetworkService networkService;
 
   @Autowired
-  public EndController(NetworkService networkService, EndModel end) {
-    this.end = end;
+  public PeerController(NetworkService networkService, Peer peer) {
+    this.peer = peer;
     this.networkService = networkService;
   }
 
@@ -46,7 +46,7 @@ public class EndController {
   @GetMapping("/register")
   public ResponseEntity<String> register() {
     try {
-      String[] availableFiles = this.end.getAvailableFiles();
+      String[] availableFiles = this.peer.getAvailableFiles();
       JSONObject registerResponse =
         this.networkService.register(availableFiles);
       System.out.println(registerResponse.toString(0));

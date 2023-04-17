@@ -5,8 +5,10 @@ import java.util.Map;
 import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
-public class MasterModel {
+@Component
+public class Master {
 
   HashMap<Integer, PeerData> peers = new HashMap<>();
 

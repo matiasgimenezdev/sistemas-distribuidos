@@ -5,6 +5,6 @@ import org.springframework.boot.SpringApplication;
 public class App {
 
   public static void main(String[] args) {
-    SpringApplication.run(EndController.class, args);
+    SpringApplication.run(PeerController.class, args);
   }
 }
