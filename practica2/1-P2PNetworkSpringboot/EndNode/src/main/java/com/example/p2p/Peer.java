@@ -47,7 +47,7 @@ public class Peer {
 
   public void saveFile(Resource resource) throws IOException {
     String DIR = System.getProperty("user.dir");
-    Path directory = Paths.get(DIR + "/filesDownloaded/");
+    Path directory = Paths.get(DIR + "/EndNode/filesDownloaded/");
     if (!Files.exists(directory)) {
       Files.createDirectories(directory);
     }
