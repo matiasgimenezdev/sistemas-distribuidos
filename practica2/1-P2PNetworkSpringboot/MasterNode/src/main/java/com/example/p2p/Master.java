@@ -2,7 +2,6 @@ package com.example.p2p;
 
 import java.util.HashMap;
 import java.util.Map;
-import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;

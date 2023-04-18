@@ -27,16 +27,21 @@ public class PeerController {
   }
 
   @GetMapping("/file")
-  public ResponseEntity<Resource> getFile() {
+  public ResponseEntity<Resource> getFile(
+    @RequestParam("file") String fileName
+  ) {
     try {
-      Resource resource = networkService.deliver("nombre archivo");
+      Resource resource = networkService.deliver(fileName);
+
+      //TODO Verificar que este enviando de forma correcta en la respuesta el archivo solicitado
+
       return ResponseEntity
         .ok()
-        .contentType(MediaType.APPLICATION_OCTET_STREAM)
         .header(
           HttpHeaders.CONTENT_DISPOSITION,
-          "attachment; filename=\"" + resource.getFilename() + "\""
+          "attachment; filename=\"" + fileName + "\""
         )
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
         .body(resource);
     } catch (FileNotFoundException exception) {
       return ResponseEntity.notFound().build();
@@ -47,6 +52,9 @@ public class PeerController {
   public ResponseEntity<String> register() {
     try {
       String[] availableFiles = this.peer.getAvailableFiles();
+      for (String string : availableFiles) {
+        System.out.println(string);
+      }
       JSONObject registerResponse =
         this.networkService.register(availableFiles);
       System.out.println(registerResponse.toString(0));
@@ -57,23 +65,24 @@ public class PeerController {
         .body(exception.getMessage());
     }
   }
-
-  @GetMapping("/download")
-  public ResponseEntity<String> downloadFile(
-    @RequestParam("file") String file
-  ) {
-    try {
-      JSONObject fileInformation = networkService.getFileInformation(file);
-      System.out.println(fileInformation.toString());
-
-      // TODO Descargar el archivo desde el peer indicado.
-      // networkService.download(fileInformation);
-
-      return ResponseEntity.ok(fileInformation.toString());
-    } catch (Exception exception) {
-      return ResponseEntity
-        .status(HttpStatus.BAD_REQUEST)
-        .body(exception.getMessage());
-    }
-  }
+  //   @GetMapping("/download")
+  //   public ResponseEntity<String> downloadFile(
+  //     @RequestParam("file") String file
+  //   ) {
+  //     try {
+  //       JSONObject fileInformation = networkService.getFileInformation(file);
+  //       System.out.println(fileInformation.toString());
+  //       Resource resource = networkService.download(fileInformation);
+  //       System.out.println(resource.getFilename());
+  //       this.peer.saveFile(resource);
+  //       this.register(); // Actualiza su registro en el master
+  //       JSONObject response = new JSONObject();
+  //       response.put("response", "OK: Archivo descargado.");
+  //       return ResponseEntity.ok(fileInformation.toString());
+  //     } catch (Exception exception) {
+  //       return ResponseEntity
+  //         .status(HttpStatus.BAD_REQUEST)
+  //         .body(exception.getMessage());
+  //     }
+  //   }
 }
