@@ -1,5 +1,6 @@
 package com.example.p2p;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,21 +22,28 @@ public class MasterController {
     this.master = master;
   }
 
-  @GetMapping("/getFile")
+  @GetMapping("/fileinfo")
   public String getFile(@RequestParam("file") String fileName) {
-    JSONObject response = new JSONObject();
-    response.put("response", master.getFileInformation(fileName).toString());
-    return response.toString();
+    return master.getFileInformation(fileName).toString();
   }
 
   @PostMapping("/register")
   public String register(@RequestBody String body) {
-    JSONObject requestBody = new JSONObject(body);
+    JSONObject requestBody = null;
     JSONObject response = new JSONObject();
-    if (master.register(requestBody)) {
-      response.put("response", "OK: Peer registered");
-    } else {
-      response.put("response", "OK: Peer is already registered. Files updated");
+    try {
+      requestBody = new JSONObject(body);
+    } catch (JSONException exception) {
+      response.put("error", exception.getMessage());
+    } finally {
+      if (master.register(requestBody)) {
+        response.put("response", "OK: Peer registered");
+      } else {
+        response.put(
+          "response",
+          "OK: Peer is already registered. Files updated"
+        );
+      }
     }
     return response.toString();
   }
