@@ -69,7 +69,6 @@ public class PeerController {
       Resource file = new FileSystemResource(currentDir + "/files/" + fileName);
       System.out.println(currentDir + "/files/" + fileName);
       if (!file.exists()) { // Verificar si el archivo existe
-        System.out.println("No lo encontro");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Devolver una respuesta 404 Not Found si no se encontró el archivo
       }
 

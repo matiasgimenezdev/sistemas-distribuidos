@@ -124,16 +124,11 @@ public class NetworkService {
       System.out.println(currentDir + "/filesDownloaded/" + fileName);
 
       Resource fileResource = response.getBody(); // TODO: ver por qué acá esta obteniendo NULL
-      if (fileResource == null) {
-        System.out.println("NULL");
-      }
-      System.out.println(response.toString());
+      System.out.println("Content length: " + fileResource.contentLength());
       InputStream inputStream = fileResource.getInputStream();
 
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
       inputStream.close();
-    } else {
-      System.out.println("Error al obtener el archivo");
     }
   }
 }
