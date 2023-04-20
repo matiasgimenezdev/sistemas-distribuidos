@@ -10,11 +10,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -98,18 +103,33 @@ public class NetworkService {
 
     String url =
       "http://" + ipAddress + ":" + port + "/file?fileName=" + fileName.trim();
+
     RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<Resource> response = restTemplate.getForEntity(
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(
+      Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM)
+    );
+    HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+    ResponseEntity<Resource> response = restTemplate.exchange(
       url,
+      HttpMethod.GET,
+      entity,
       Resource.class
     );
 
     if (response.getStatusCode() == HttpStatus.OK) {
-      String DIR = System.getProperty("user.dir");
+      Path currentPath = Paths.get("");
+      String currentDir = currentPath.toAbsolutePath().toString();
+      Path filePath = Paths.get(currentDir + "/filesDownloaded/" + fileName);
+      System.out.println(currentDir + "/filesDownloaded/" + fileName);
+
       Resource fileResource = response.getBody(); // TODO: ver por qué acá esta obteniendo NULL
+      if (fileResource == null) {
+        System.out.println("NULL");
+      }
+      System.out.println(response.toString());
       InputStream inputStream = fileResource.getInputStream();
-      System.out.println(DIR + "/EndNode/filesDownloaded/" + fileName);
-      Path filePath = Paths.get(DIR + "/EndNode/filesDownloaded/" + fileName);
+
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
       inputStream.close();
     } else {

@@ -1,5 +1,7 @@
 package com.example.p2p;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -62,19 +64,22 @@ public class PeerController {
   @GetMapping("/file")
   public ResponseEntity<Resource> get(@RequestParam String fileName) {
     try {
-      String DIR = System.getProperty("user.dir");
-      Resource file = new FileSystemResource(
-        DIR + "/EndNode/files/" + fileName
-      );
-      System.out.println(DIR + "/EndNode/files/" + fileName);
-      // TODO Ver si esta enviando bien el archivo en la respuesta
+      Path currentPath = Paths.get("");
+      String currentDir = currentPath.toAbsolutePath().toString();
+      Resource file = new FileSystemResource(currentDir + "/files/" + fileName);
+      System.out.println(currentDir + "/files/" + fileName);
+      if (!file.exists()) { // Verificar si el archivo existe
+        System.out.println("No lo encontro");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Devolver una respuesta 404 Not Found si no se encontró el archivo
+      }
+
       return ResponseEntity
         .ok()
         .header(
           HttpHeaders.CONTENT_DISPOSITION,
           "attachment; filename=\"" + file.getFilename() + "\""
         )
-        .body(file);
+        .body(file); // TODO Ver si esta enviando bien el archivo en la respuesta
     } catch (Exception exception) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
