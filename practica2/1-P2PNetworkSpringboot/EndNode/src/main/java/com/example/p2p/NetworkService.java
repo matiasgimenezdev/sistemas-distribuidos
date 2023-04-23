@@ -120,11 +120,9 @@ public class NetworkService {
     if (response.getStatusCode() == HttpStatus.OK) {
       Path currentPath = Paths.get("");
       String currentDir = currentPath.toAbsolutePath().toString();
-      Path filePath = Paths.get(currentDir + "/filesDownloaded/" + fileName);
-      System.out.println(currentDir + "/filesDownloaded/" + fileName);
+      Path filePath = Paths.get(currentDir + "/files/" + fileName);
 
-      Resource fileResource = response.getBody(); // TODO: ver por qué acá esta obteniendo NULL
-      System.out.println("Content length: " + fileResource.contentLength());
+      Resource fileResource = response.getBody();
       InputStream inputStream = fileResource.getInputStream();
 
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);

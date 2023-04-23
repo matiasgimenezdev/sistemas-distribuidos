@@ -16,7 +16,6 @@ public class Master {
     String[] files = new String[filesArray.length()];
     for (int i = 0; i < files.length; i++) {
       String fileName = filesArray.get(i).toString();
-      System.out.println(fileName);
       files[i] = fileName;
     }
 
