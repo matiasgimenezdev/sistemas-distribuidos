@@ -26,15 +26,13 @@ public class Peer {
     Path currentPath = Paths.get("");
     String currentDir = currentPath.toAbsolutePath().toString();
     File directory = new File(currentDir + "/files/");
-    System.out.println(currentDir + "/files/");
     if (directory.isDirectory()) {
       File[] files = directory.listFiles();
       if (files != null) {
         for (File file : files) {
-          if (file.isFile()) {
+          if (file.isFile() && file.length() > 0) {
             String fileName = file.getName();
             availableFiles.add(fileName);
-            System.out.println(fileName);
           }
         }
       }
