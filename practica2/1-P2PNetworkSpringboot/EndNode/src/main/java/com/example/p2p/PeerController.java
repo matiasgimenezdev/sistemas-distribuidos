@@ -25,6 +25,9 @@ public class PeerController {
   public PeerController(NetworkService networkService, Peer peer) {
     this.peer = peer;
     this.networkService = networkService;
+    this.networkService.initFile();
+    this.networkService.initFile();
+    this.networkService.initFile();
   }
 
   @GetMapping("/register")

@@ -1,8 +1,12 @@
 package com.example.p2p;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -11,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
+import java.util.Random;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -127,6 +132,36 @@ public class NetworkService {
 
       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
       inputStream.close();
+    }
+  }
+
+  public void initFile() {
+    try {
+      URL url = new URL("https://picsum.photos/500/300");
+      URLConnection conn = url.openConnection();
+      HttpURLConnection httpConn = (HttpURLConnection) conn;
+
+      int responseCode = httpConn.getResponseCode();
+      if (responseCode == HttpURLConnection.HTTP_OK) {
+        Path currentPath = Paths.get("");
+        String currentDir = currentPath.toAbsolutePath().toString();
+        Random random = new Random();
+        Integer randomNumber = random.nextInt(10000 - 1) + 1;
+        String fileName = "file" + randomNumber.toString() + ".jpg";
+        String filePath = currentDir + "/files/" + fileName;
+        try (
+          InputStream inputStream = conn.getInputStream();
+          FileOutputStream outputStream = new FileOutputStream(filePath)
+        ) {
+          byte[] buffer = new byte[4096];
+          int bytesRead = -1;
+          while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+          }
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 }
