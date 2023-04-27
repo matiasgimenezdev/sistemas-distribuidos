@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args ) throws IOException
     {
         System.out.println( "Hello World!" );
-        EndNode en = new EndNode("server.properties", 8000);
+        EndNode en = new EndNode();
         en.start();
     }
 }

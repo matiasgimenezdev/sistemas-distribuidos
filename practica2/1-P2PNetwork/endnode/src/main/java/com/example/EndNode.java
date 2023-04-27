@@ -1,31 +1,21 @@
 package com.example;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.json.JSONObject;
 
 public class EndNode {
     
-    private final ArrayList<String> masterAddresses;
-    private final ArrayList<Integer> masterPorts;
-    private Properties serviceProperties;
     private Map<String, File> files;
 
-    public EndNode(String configFile, int PORT) throws IOException {
+    public EndNode() throws IOException {
 
-        // Initialize master addresses and ports from config file
-        this.masterAddresses = new ArrayList<>();
-        this.masterPorts = new ArrayList<>();
         this.files = new HashMap<>();
 
         // Agrega files
@@ -34,12 +24,16 @@ public class EndNode {
     }
 
     public void start() throws IOException {
-         // Register files with master
+        
         try {
             JSONObject data = new JSONObject();
+            ArrayList<String> filenames = new ArrayList<>();
+            data.put("ip", "localhost");
+            data.put("port", "5000");
             for (String filename : files.keySet()) {
-                data.put(filename, files.get(filename).length());
+                filenames.add(filename);
             }
+            data.put("files", filenames);
             URL url = new URL("http://" + "localhost" + ":" + "8080" + "/share-files");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
