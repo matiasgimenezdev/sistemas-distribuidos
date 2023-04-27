@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 services:
     nginx:
         image: nginx
@@ -7,24 +7,51 @@ services:
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
         container_name: 'nginx'
-        # restart: always
+        restart: unless-stopped
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.5
     master-node-1:
         image: 'mgimenezdev/p2p-master:latest'
         ports:
             - '8080:8080'
         container_name: 'master-node-1'
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.100
     master-node-2:
         image: 'mgimenezdev/p2p-master:latest'
         ports:
             - '8081:8080'
         container_name: 'master-node-2'
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.101
     end-node-1:
         image: 'mgimenezdev/p2p-end:latest'
         ports:
             - '9000:9000'
         container_name: 'end-node-1'
+        environment:
+            IP_ADDRESS: 192.168.0.150
+            PORT: 9000
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.150
     end-node-2:
         image: 'mgimenezdev/p2p-end:latest'
         ports:
             - '9001:9000'
         container_name: 'end-node-2'
+        environment:
+            IP_ADDRESS: 192.168.0.151
+            PORT: 9001
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.151
+networks:
+  my-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.0.0/24
