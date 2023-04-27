@@ -80,7 +80,7 @@ public class PeerController {
           HttpHeaders.CONTENT_DISPOSITION,
           "attachment; filename=\"" + file.getFilename() + "\""
         )
-        .body(file); // TODO Ver si esta enviando bien el archivo en la respuesta
+        .body(file);
     } catch (Exception exception) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
