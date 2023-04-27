@@ -7,7 +7,7 @@ services:
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
         container_name: 'nginx'
-        restart: always
+        # restart: always
     master-node-1:
         image: 'mgimenezdev/p2p-master:latest'
         ports:
