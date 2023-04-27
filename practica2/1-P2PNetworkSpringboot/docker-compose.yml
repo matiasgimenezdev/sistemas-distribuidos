@@ -1,9 +1,30 @@
-version: '3'
+version: '3.9'
 services:
     nginx:
         image: nginx
         ports:
-            - '80:80'
+            - '8888:80'
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
-# Luego, deberia levantar dos contenedores de nodos maestros y algunos nodos extremos
+        container_name: 'nginx'
+        restart: always
+    master-node-1:
+        image: 'mgimenezdev/p2p-master:latest'
+        ports:
+            - '8080:8080'
+        container_name: 'master-node-1'
+    master-node-2:
+        image: 'mgimenezdev/p2p-master:latest'
+        ports:
+            - '8081:8080'
+        container_name: 'master-node-2'
+    end-node-1:
+        image: 'mgimenezdev/p2p-end:latest'
+        ports:
+            - '9000:9000'
+        container_name: 'end-node-1'
+    end-node-2:
+        image: 'mgimenezdev/p2p-end:latest'
+        ports:
+            - '9001:9000'
+        container_name: 'end-node-2'
