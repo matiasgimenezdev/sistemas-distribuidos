@@ -1,5 +1,7 @@
 package com.example;
 
+import org.springframework.boot.SpringApplication;
+
 import java.io.IOException;
 
 /**
@@ -10,8 +12,6 @@ public class App
 {
     public static void main( String[] args ) throws IOException
     {
-        System.out.println( "Hello World!" );
-        EndNode en = new EndNode();
-        en.start();
+        SpringApplication.run(EndNode.class, args);
     }
 }
