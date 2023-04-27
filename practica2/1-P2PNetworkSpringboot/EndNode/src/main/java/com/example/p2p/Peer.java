@@ -1,8 +1,6 @@
 package com.example.p2p;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -23,9 +21,7 @@ public class Peer {
 
   private void updateAvailableFiles() {
     availableFiles.clear();
-    Path currentPath = Paths.get("");
-    String currentDir = currentPath.toAbsolutePath().toString();
-    File directory = new File(currentDir + "/files/");
+    File directory = new File("/usr/src/files/");
     if (directory.isDirectory()) {
       File[] files = directory.listFiles();
       if (files != null) {

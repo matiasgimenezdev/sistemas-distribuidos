@@ -123,9 +123,7 @@ public class NetworkService {
     );
 
     if (response.getStatusCode() == HttpStatus.OK) {
-      Path currentPath = Paths.get("");
-      String currentDir = currentPath.toAbsolutePath().toString();
-      Path filePath = Paths.get(currentDir + "/files/" + fileName);
+      Path filePath = Paths.get("/usr/src/files/" + fileName);
 
       Resource fileResource = response.getBody();
       InputStream inputStream = fileResource.getInputStream();
@@ -143,12 +141,10 @@ public class NetworkService {
 
       int responseCode = httpConn.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
-        Path currentPath = Paths.get("");
-        String currentDir = currentPath.toAbsolutePath().toString();
         Random random = new Random();
         Integer randomNumber = random.nextInt(10000 - 1) + 1;
         String fileName = "file" + randomNumber.toString() + ".jpg";
-        String filePath = currentDir + "/files/" + fileName;
+        String filePath = "/usr/src/files/" + fileName;
         try (
           InputStream inputStream = conn.getInputStream();
           FileOutputStream outputStream = new FileOutputStream(filePath)

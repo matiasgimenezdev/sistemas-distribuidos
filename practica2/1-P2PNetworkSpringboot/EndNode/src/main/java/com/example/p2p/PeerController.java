@@ -1,7 +1,5 @@
 package com.example.p2p;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -67,9 +65,7 @@ public class PeerController {
   @GetMapping("/file")
   public ResponseEntity<Resource> get(@RequestParam String fileName) {
     try {
-      Path currentPath = Paths.get("");
-      String currentDir = currentPath.toAbsolutePath().toString();
-      Resource file = new FileSystemResource(currentDir + "/files/" + fileName);
+      Resource file = new FileSystemResource("/usr/src/files/" + fileName);
       if (!file.exists()) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
       }
