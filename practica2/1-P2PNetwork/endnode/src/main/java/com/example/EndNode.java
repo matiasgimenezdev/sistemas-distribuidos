@@ -31,19 +31,6 @@ public class EndNode {
         // Agrega files
         addFile("file1.txt");
         addFile("file2.txt");
-
-        BufferedReader reader = new BufferedReader(new FileReader(configFile));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(":");
-            masterAddresses.add(parts[0]);
-            masterPorts.add(Integer.parseInt(parts[1]));
-        }
-        reader.close();
-
-
-        serviceProperties = new Properties();
-        serviceProperties.load(new FileReader("server.properties"));
     }
 
     public void start() throws IOException {
@@ -53,7 +40,7 @@ public class EndNode {
             for (String filename : files.keySet()) {
                 data.put(filename, files.get(filename).length());
             }
-            URL url = new URL("http://" + masterAddresses.get(0) + ":" + masterPorts.get(0) + "/share-files");
+            URL url = new URL("http://" + "localhost" + ":" + "8080" + "/share-files");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
