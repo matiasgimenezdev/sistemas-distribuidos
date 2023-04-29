@@ -56,6 +56,7 @@ public class PeerController {
       this.networkService.downloadFile(fileInformation);
       String[] availableFiles = this.peer.getAvailableFiles();
       this.networkService.register(availableFiles);
+      System.out.println("Updating available files...");
       return ResponseEntity.ok(fileInformation.toString());
     } catch (Exception exception) {
       return ResponseEntity
