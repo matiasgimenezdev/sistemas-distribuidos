@@ -64,7 +64,7 @@ public class Master {
       ) {
         exists = true;
         peer.getValue().setFiles(newPeer.getFiles());
-        System.out.println(new JSONObject(peer).toString());
+        System.out.println(new JSONObject(peer.getValue()).toString());
       }
     }
     return exists;
