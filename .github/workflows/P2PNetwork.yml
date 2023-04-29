@@ -34,11 +34,11 @@ jobs:
               with:
                   context: ./practica2/1-P2PNetworkSpringboot/EndNode
                   push: true
-                  tags: ${{ secrets.DOCKER_USERNAME }}/my-image:${{ github.sha }}
+                  tags: ${{ secrets.DOCKER_USERNAME }}/p2p-end:${{ github.sha }}
 
             - name: Build and push MasterNode Docker image
               uses: docker/build-push-action@v2
               with:
                   context: ./practica2/1-P2PNetworkSpringboot/MasterNode
                   push: true
-                  tags: ${{ secrets.DOCKER_USERNAME }}/my-image:${{ github.sha }}
+                  tags: ${{ secrets.DOCKER_USERNAME }}/p2p-master:${{ github.sha }}
