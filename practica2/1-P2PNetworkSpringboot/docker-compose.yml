@@ -41,7 +41,7 @@ services:
     end-node-2:
         image: 'mgimenezdev/p2p-end:latest'
         ports:
-            - '9001:9000'
+            - '9001:9001'
         container_name: 'end-node-2'
         environment:
             IP_ADDRESS: 192.168.0.151
@@ -50,8 +50,8 @@ services:
             my-network:
                 ipv4_address: 192.168.0.151
 networks:
-  my-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.0.0/24
+    my-network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.0.0/24
