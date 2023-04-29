@@ -41,7 +41,7 @@ services:
     end-node-2:
         image: 'mgimenezdev/p2p-end:latest'
         ports:
-            - '9001:9001'
+            - '9001:9000'
         container_name: 'end-node-2'
         environment:
             IP_ADDRESS: 192.168.0.151
