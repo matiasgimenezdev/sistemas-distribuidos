@@ -142,7 +142,7 @@ public class NetworkService {
       int responseCode = httpConn.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
         Random random = new Random();
-        Integer randomNumber = random.nextInt(10000 - 1) + 1;
+        Integer randomNumber = random.nextInt(100000 - 1) + 1;
         String fileName = "file" + randomNumber.toString() + ".jpg";
         String filePath = "/usr/src/files/" + fileName;
         try (
