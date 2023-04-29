@@ -54,6 +54,8 @@ public class PeerController {
         throw new FileNotFoundException(fileInformation.getString("error"));
       }
       this.networkService.downloadFile(fileInformation);
+      String[] availableFiles = this.peer.getAvailableFiles();
+      this.networkService.register(availableFiles);
       return ResponseEntity.ok(fileInformation.toString());
     } catch (Exception exception) {
       return ResponseEntity
