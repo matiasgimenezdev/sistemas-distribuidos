@@ -42,3 +42,6 @@ jobs:
                   context: ./practica2/1-P2PNetworkSpringboot/MasterNode
                   push: true
                   tags: ${{ secrets.DOCKER_USERNAME }}/p2p-master:latest
+
+            - name: Delete previus version of docker images
+              run: docker image rm ${{ secrets.DOCKER_USERNAME }}/p2p-master:latest ${{ secrets.DOCKER_USERNAME }}/p2p-end:latest
