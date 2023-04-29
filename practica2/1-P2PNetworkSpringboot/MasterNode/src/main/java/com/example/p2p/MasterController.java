@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class MasterController {
 
-  // private final String IP = "127.0.0.1";
   private Master master;
 
   @Autowired
