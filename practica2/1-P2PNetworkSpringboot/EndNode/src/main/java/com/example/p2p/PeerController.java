@@ -63,10 +63,15 @@ public class PeerController {
       if (fileInformation.has("error")) {
         throw new FileNotFoundException(fileInformation.getString("error"));
       }
+      String[] oldAvailableFiles = this.peer.getAvailableFiles();
+
       this.networkService.downloadFile(fileInformation);
-      String[] availableFiles = this.peer.getAvailableFiles();
-      this.networkService.register(availableFiles);
-      return ResponseEntity.ok(fileInformation.toString());
+      String[] newAvailableFiles = this.peer.getAvailableFiles();
+      this.networkService.register(newAvailableFiles);
+      JSONObject response = new JSONObject();
+      response.put("Pre-Download-Files", oldAvailableFiles);
+      response.put("Post-Download-Files", newAvailableFiles);
+      return ResponseEntity.ok(response.toString());
     } catch (Exception exception) {
       return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
