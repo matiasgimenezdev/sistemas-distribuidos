@@ -1,15 +1,26 @@
 package com.example.p2p;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 @Component
 public class Master {
 
-  HashMap<Integer, PeerData> peers = new HashMap<>();
+  private Jedis redis;
+
+  @Autowired
+  public Master(Environment env) {
+    Integer redisPort = Integer.parseInt(env.getProperty("redis.port", "6379"));
+    String redisHost = env.getProperty("redis.host");
+    this.redis = new Jedis(redisHost, redisPort);
+  }
 
   public boolean register(JSONObject peerData) {
     JSONArray filesArray = peerData.getJSONArray("files");
@@ -25,28 +36,26 @@ public class Master {
       files
     );
 
-    if (!peerExists(peer)) {
-      peers.put((peers.size()), peer);
-      JSONObject json = new JSONObject(peers);
-      System.out.println(json.toString());
-      return true;
-    } else {
-      return false;
-    }
+    return this.peerExists(peer);
   }
 
   public JSONObject getFileInformation(String fileName) {
     boolean found = false;
     JSONObject json = new JSONObject();
 
-    for (Map.Entry<Integer, PeerData> peer : peers.entrySet()) {
-      if (!peer.getValue().getFile(fileName).equals("NF")) {
-        json.put("ipAddress", peer.getValue().getIpAddress());
-        json.put("port", peer.getValue().getPort());
-        json.put("fileName", fileName);
-        found = true;
+    Set<String> keys = redis.keys("*");
+    for (String key : keys) {
+      List<String> files = redis.lrange(key, 0, -1);
+      for (String file : files) {
+        if (file.equals(fileName)) {
+          json.put("ipAddres", key);
+          json.put("port", redis.get(key));
+          json.put("port", fileName);
+          found = true;
+        }
       }
     }
+
     if (!found) {
       json.put("error", fileName + " Not Found");
     }
@@ -54,19 +63,33 @@ public class Master {
     return json;
   }
 
+  public JSONObject getFiles() {
+    ArrayList<String> availableFiles = new ArrayList<String>();
+    Set<String> keys = redis.keys("*");
+    for (String key : keys) {
+      List<String> files = redis.lrange(key, 0, -1);
+      for (String file : files) {
+        if (!availableFiles.contains(file)) {
+          availableFiles.add(file);
+        }
+      }
+    }
+    JSONObject json = new JSONObject();
+    json.put("Files", availableFiles);
+    return json;
+  }
+
   private boolean peerExists(PeerData newPeer) {
     boolean exists = false;
-
-    for (Map.Entry<Integer, PeerData> peer : peers.entrySet()) {
-      if (
-        peer.getValue().getIpAddress().equals(newPeer.getIpAddress()) &&
-        peer.getValue().getPort().equals(newPeer.getPort())
-      ) {
-        exists = true;
-        peer.getValue().setFiles(newPeer.getFiles());
-        System.out.println("Peer information updated.");
-        System.out.println(new JSONObject(peer.getValue()).toString());
-      }
+    String peerPort = this.redis.get(newPeer.getIpAddress());
+    this.redis.rpush(newPeer.getIpAddress(), newPeer.getFiles());
+    if (peerPort != null) {
+      exists = true;
+      this.redis.set(newPeer.getIpAddress(), newPeer.getPort());
+      System.out.println("Peer information updated.");
+    } else {
+      exists = false;
+      System.out.println(newPeer.toString());
     }
     return exists;
   }

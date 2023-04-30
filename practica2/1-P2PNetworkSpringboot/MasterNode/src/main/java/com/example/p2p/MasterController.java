@@ -26,6 +26,11 @@ public class MasterController {
     return master.getFileInformation(fileName).toString();
   }
 
+  @GetMapping("/list")
+  public String getFile() {
+    return master.getFiles().toString();
+  }
+
   @PostMapping("/register")
   public String register(@RequestBody String body) {
     JSONObject requestBody = null;
