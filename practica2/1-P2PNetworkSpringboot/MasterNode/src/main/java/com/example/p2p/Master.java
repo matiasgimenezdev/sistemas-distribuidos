@@ -57,7 +57,7 @@ public class Master {
         JSONArray filesArray = json.getJSONArray("files");
         for (int i = 0; i < filesArray.length(); i++) {
           if (fileName.equals(filesArray.get(i))) {
-            response.put("ipAddres", key);
+            response.put("ipAddress", key);
             response.put("port", json.getString("port"));
             response.put("port", fileName);
             found = true;
@@ -82,12 +82,11 @@ public class Master {
       Set<String> keys = jedis.keys("*");
       for (String key : keys) {
         String peerData = jedis.get(key);
-        System.out.println(peerData);
         JSONObject json = new JSONObject(peerData);
         JSONArray filesArray = json.getJSONArray("files");
         for (int i = 0; i < filesArray.length(); i++) {
           String fileName = filesArray.get(i).toString();
-          availableFiles.add(fileName);
+          availableFiles.add(i + "- " + fileName);
         }
       }
       response.put("Files", availableFiles);
