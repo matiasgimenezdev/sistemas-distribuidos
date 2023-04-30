@@ -81,13 +81,12 @@ public class Master {
 
   private boolean saveData(PeerData newPeer) {
     boolean exists = redis.exists(newPeer.getIpAddress());
-    this.redis.set(newPeer.getIpAddress(), newPeer.getPort());
-    this.redis.rpush(newPeer.getIpAddress(), newPeer.getFiles());
-
     JSONObject peerData = new JSONObject();
-    peerData.put("ip", newPeer.getIpAddress());
     peerData.put("port", newPeer.getPort());
     peerData.put("files", newPeer.getFiles());
+    this.redis.set(newPeer.getIpAddress(), peerData.toString());
+
+    peerData.put("ip", newPeer.getIpAddress());
     System.out.println(peerData.toString());
     return exists;
   }
