@@ -27,7 +27,8 @@ public class MasterController {
   }
 
   @GetMapping("/list")
-  public String getFile() {
+  public String getFiles() {
+    System.out.println(master.getFiles().toString());
     return master.getFiles().toString();
   }
 
@@ -40,7 +41,7 @@ public class MasterController {
     } catch (JSONException exception) {
       response.put("error", exception.getMessage());
     } finally {
-      if (!master.register(requestBody)) {
+      if (master.register(requestBody)) {
         response.put("response", "OK: Peer registered");
       } else {
         response.put(

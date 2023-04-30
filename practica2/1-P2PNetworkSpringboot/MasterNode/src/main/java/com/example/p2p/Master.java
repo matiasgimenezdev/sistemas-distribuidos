@@ -72,13 +72,14 @@ public class Master {
       JSONArray filesArray = json.getJSONArray("files");
       for (int i = 0; i < filesArray.length(); i++) {
         String fileName = filesArray.get(i).toString();
+        System.out.println(fileName);
+
         availableFiles.add(fileName);
       }
     }
 
     JSONObject json = new JSONObject();
     json.put("Files", availableFiles);
-    System.out.println(json.toString());
     return json;
   }
 
