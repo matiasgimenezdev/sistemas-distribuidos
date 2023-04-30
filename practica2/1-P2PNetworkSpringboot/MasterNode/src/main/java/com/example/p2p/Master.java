@@ -89,8 +89,13 @@ public class Master {
       System.out.println("Peer information updated.");
     } else {
       exists = false;
-      System.out.println(newPeer.toString());
     }
+
+    JSONObject peerData = new JSONObject();
+    peerData.put("ip", newPeer.getIpAddress());
+    peerData.put("port", redis.get(newPeer.getIpAddress()));
+    peerData.put("files", redis.lrange(newPeer.getIpAddress(), 0, -1));
+    System.out.println(peerData.toString());
     return exists;
   }
 }
