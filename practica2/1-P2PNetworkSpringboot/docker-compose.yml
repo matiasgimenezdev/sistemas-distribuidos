@@ -72,7 +72,7 @@ services:
         image: 'mgimenezdev/p2p-end:latest'
         ports:
             - '9003:9000'
-        container_name: 'end-node-3'
+        container_name: 'end-node-4'
         environment:
             IP_ADDRESS: 192.168.0.153
             PORT: 9003
