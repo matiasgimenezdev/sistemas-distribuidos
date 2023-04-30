@@ -1,6 +1,14 @@
 # P2P Network
 
-## Instrucciones de ejecución
+## Tecnologias utilizadas 🛠️
+- Java + Spring
+- Docker + Docker compose
+- <a href="https://hub.docker.com/_/nginx">Nginx</a>
+- <a href="https://hub.docker.com/_/redis">Redis</a>
+- <a href="https://github.com/redis/jedis">Jedis: Redis client for Java</a>
+- <a href="https://github.com/matiasgimenezdev/sistemas-distribuidos/blob/main/.github/workflows/P2PNetwork.yml">Github Actions</a>
+
+## Instrucciones de ejecución 📒
 
 Se debe contar con docker y docker-compose instalados.
 
