@@ -1,7 +1,6 @@
 package com.example.p2p;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,32 +48,35 @@ public class Master {
 
   public JSONObject getFileInformation(String fileName) {
     boolean found = false;
-    JSONObject json = new JSONObject();
+    JSONObject response = new JSONObject();
     try (Jedis jedis = jedisPool.getResource()) {
       Set<String> keys = jedis.keys("*");
       for (String key : keys) {
-        List<String> files = jedis.lrange(key, 0, -1);
-        for (String file : files) {
-          if (file.equals(fileName)) {
-            json.put("ipAddres", key);
-            json.put("port", jedis.get(key));
-            json.put("port", fileName);
+        String peerData = jedis.get(key);
+        JSONObject json = new JSONObject(peerData);
+        JSONArray filesArray = json.getJSONArray("files");
+        for (int i = 0; i < filesArray.length(); i++) {
+          if (fileName.equals(filesArray.get(i))) {
+            response.put("ipAddres", key);
+            response.put("port", json.getString("port"));
+            response.put("port", fileName);
             found = true;
           }
         }
       }
-
-      if (!found) {
-        json.put("error", fileName + " Not Found");
-      }
+    } catch (Exception e) {
+      response.put("error", e.getMessage());
     }
 
-    return json;
+    if (!found) {
+      response.put("error", fileName + " Not Found");
+    }
+
+    return response;
   }
 
   public JSONObject getFiles() {
     ArrayList<String> availableFiles = new ArrayList<String>();
-    System.out.println("Entré a getFiles()");
     JSONObject response = new JSONObject();
     try (Jedis jedis = jedisPool.getResource()) {
       Set<String> keys = jedis.keys("*");
