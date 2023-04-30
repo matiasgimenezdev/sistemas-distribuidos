@@ -78,6 +78,7 @@ public class Master {
 
     JSONObject json = new JSONObject();
     json.put("Files", availableFiles);
+    System.out.println(json.toString());
     return json;
   }
 
