@@ -59,7 +59,7 @@ public class Master {
           if (fileName.equals(filesArray.get(i))) {
             response.put("ipAddress", key);
             response.put("port", json.getString("port"));
-            response.put("port", fileName);
+            response.put("fileName", fileName);
             found = true;
           }
         }
