@@ -36,7 +36,7 @@ public class Master {
       files
     );
 
-    return this.peerExists(peer);
+    return this.saveData(peer);
   }
 
   public JSONObject getFileInformation(String fileName) {
@@ -79,18 +79,10 @@ public class Master {
     return json;
   }
 
-  private boolean peerExists(PeerData newPeer) {
-    boolean exists = false;
-    String peerPort = this.redis.get(newPeer.getIpAddress());
+  private boolean saveData(PeerData newPeer) {
+    boolean exists = redis.exists(newPeer.getIpAddress());
+    this.redis.set(newPeer.getIpAddress(), newPeer.getPort());
     this.redis.rpush(newPeer.getIpAddress(), newPeer.getFiles());
-    System.out.println(peerPort);
-    if (peerPort != null) {
-      exists = true;
-      this.redis.set(newPeer.getIpAddress(), newPeer.getPort());
-      System.out.println("Peer information updated.");
-    } else {
-      exists = false;
-    }
 
     JSONObject peerData = new JSONObject();
     peerData.put("ip", newPeer.getIpAddress());
