@@ -33,7 +33,6 @@ public class MasterController {
 
   @PostMapping("/register")
   public String register(@RequestBody String body) {
-    System.out.println("Testing");
     JSONObject requestBody = null;
     JSONObject response = new JSONObject();
     try {
