@@ -45,6 +45,17 @@ public class PeerController {
     }
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<String> list() {
+    try {
+      return ResponseEntity.ok(this.networkService.listFiles().toString());
+    } catch (Exception exception) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(exception.getMessage());
+    }
+  }
+
   @GetMapping("/download")
   public ResponseEntity<String> download(@RequestParam String fileName) {
     try {

@@ -160,4 +160,13 @@ public class NetworkService {
       e.printStackTrace();
     }
   }
+
+  public JSONObject listFiles() throws Exception {
+    String masterIpAddress = env.getProperty("master.ipAddress").trim();
+    String masterPort = env.getProperty("master.port").trim();
+    String url = "http://" + masterIpAddress + ":" + masterPort + "/list";
+
+    JSONObject response = get(url);
+    return response;
+  }
 }
