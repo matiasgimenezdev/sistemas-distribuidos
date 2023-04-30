@@ -74,7 +74,7 @@ public class Master {
 
   public JSONObject getFiles() {
     ArrayList<String> availableFiles = new ArrayList<String>();
-    System.out.println("Entré");
+    System.out.println("Entré a getFiles()");
     JSONObject response = new JSONObject();
     try (Jedis jedis = jedisPool.getResource()) {
       Set<String> keys = jedis.keys("*");

@@ -28,6 +28,7 @@ public class MasterController {
 
   @GetMapping("/list")
   public String getFiles() {
+    System.out.println("GET /list");
     String files = master.getFiles().toString();
     System.out.println(files);
     return files;
