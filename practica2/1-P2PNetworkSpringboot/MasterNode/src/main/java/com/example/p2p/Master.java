@@ -83,6 +83,7 @@ public class Master {
     boolean exists = false;
     String peerPort = this.redis.get(newPeer.getIpAddress());
     this.redis.rpush(newPeer.getIpAddress(), newPeer.getFiles());
+    System.out.println(peerPort);
     if (peerPort != null) {
       exists = true;
       this.redis.set(newPeer.getIpAddress(), newPeer.getPort());
@@ -93,8 +94,8 @@ public class Master {
 
     JSONObject peerData = new JSONObject();
     peerData.put("ip", newPeer.getIpAddress());
-    peerData.put("port", redis.get(newPeer.getIpAddress()));
-    peerData.put("files", redis.lrange(newPeer.getIpAddress(), 0, -1));
+    peerData.put("port", newPeer.getPort());
+    peerData.put("files", newPeer.getFiles());
     System.out.println(peerData.toString());
     return exists;
   }
