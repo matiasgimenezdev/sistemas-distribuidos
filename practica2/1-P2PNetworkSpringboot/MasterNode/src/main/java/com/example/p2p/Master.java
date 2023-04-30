@@ -67,13 +67,15 @@ public class Master {
     ArrayList<String> availableFiles = new ArrayList<String>();
     Set<String> keys = redis.keys("*");
     for (String key : keys) {
-      List<String> files = redis.lrange(key, 0, -1);
-      for (String file : files) {
-        if (!availableFiles.contains(file)) {
-          availableFiles.add(file);
-        }
+      String peerData = redis.get(key);
+      JSONObject json = new JSONObject(peerData);
+      JSONArray filesArray = json.getJSONArray("files");
+      for (int i = 0; i < filesArray.length(); i++) {
+        String fileName = filesArray.get(i).toString();
+        availableFiles.add(fileName);
       }
     }
+
     JSONObject json = new JSONObject();
     json.put("Files", availableFiles);
     return json;
