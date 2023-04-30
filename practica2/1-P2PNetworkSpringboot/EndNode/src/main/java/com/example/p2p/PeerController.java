@@ -60,7 +60,6 @@ public class PeerController {
   public ResponseEntity<String> download(@RequestParam String fileName) {
     try {
       JSONObject fileInformation = networkService.getFileInformation(fileName);
-      System.out.println(fileInformation.toString());
       if (fileInformation.has("error")) {
         throw new FileNotFoundException(fileInformation.getString("error"));
       }
