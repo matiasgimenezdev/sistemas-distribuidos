@@ -91,7 +91,7 @@ public class Master {
           counter++;
         }
       }
-      response.put("FilesAvailable", availableFiles);
+      response.put("Available-Files-In-Network", availableFiles);
     } catch (Exception e) {
       response.put("error", e.getMessage());
     }
