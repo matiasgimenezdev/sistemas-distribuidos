@@ -9,17 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Component
 public class Master {
 
-  private Jedis redis;
+  private JedisPool jedisPool;
 
   @Autowired
   public Master(Environment env) {
     Integer redisPort = Integer.parseInt(env.getProperty("redis.port", "6379"));
     String redisHost = env.getProperty("redis.host");
-    this.redis = new Jedis(redisHost, redisPort);
+    JedisPoolConfig poolConfig = new JedisPoolConfig();
+    poolConfig.setMaxTotal(100);
+    poolConfig.setMaxIdle(50);
+    poolConfig.setMinIdle(10);
+
+    JedisPool jedisPool = new JedisPool(poolConfig, redisHost, redisPort);
+    this.jedisPool = jedisPool;
   }
 
   public boolean register(JSONObject peerData) {
@@ -42,22 +50,23 @@ public class Master {
   public JSONObject getFileInformation(String fileName) {
     boolean found = false;
     JSONObject json = new JSONObject();
-
-    Set<String> keys = redis.keys("*");
-    for (String key : keys) {
-      List<String> files = redis.lrange(key, 0, -1);
-      for (String file : files) {
-        if (file.equals(fileName)) {
-          json.put("ipAddres", key);
-          json.put("port", redis.get(key));
-          json.put("port", fileName);
-          found = true;
+    try (Jedis jedis = jedisPool.getResource()) {
+      Set<String> keys = jedis.keys("*");
+      for (String key : keys) {
+        List<String> files = jedis.lrange(key, 0, -1);
+        for (String file : files) {
+          if (file.equals(fileName)) {
+            json.put("ipAddres", key);
+            json.put("port", jedis.get(key));
+            json.put("port", fileName);
+            found = true;
+          }
         }
       }
-    }
 
-    if (!found) {
-      json.put("error", fileName + " Not Found");
+      if (!found) {
+        json.put("error", fileName + " Not Found");
+      }
     }
 
     return json;
@@ -65,33 +74,38 @@ public class Master {
 
   public JSONObject getFiles() {
     ArrayList<String> availableFiles = new ArrayList<String>();
-    Set<String> keys = redis.keys("*");
-    for (String key : keys) {
-      String peerData = redis.get(key);
-      JSONObject json = new JSONObject(peerData);
-      JSONArray filesArray = json.getJSONArray("files");
-      for (int i = 0; i < filesArray.length(); i++) {
-        String fileName = filesArray.get(i).toString();
-        System.out.println(fileName);
+    System.out.println("Entré");
+    try (Jedis jedis = jedisPool.getResource()) {
+      Set<String> keys = jedis.keys("*");
+      for (String key : keys) {
+        String peerData = jedis.get(key);
+        JSONObject json = new JSONObject(peerData);
+        JSONArray filesArray = json.getJSONArray("files");
+        for (int i = 0; i < filesArray.length(); i++) {
+          String fileName = filesArray.get(i).toString();
+          System.out.println(fileName);
 
-        availableFiles.add(fileName);
+          availableFiles.add(fileName);
+        }
       }
     }
-
-    JSONObject json = new JSONObject();
-    json.put("Files", availableFiles);
-    return json;
+    JSONObject response = new JSONObject();
+    response.put("Files", availableFiles);
+    return response;
   }
 
   private boolean saveData(PeerData newPeer) {
-    boolean exists = redis.exists(newPeer.getIpAddress());
-    JSONObject peerData = new JSONObject();
-    peerData.put("port", newPeer.getPort());
-    peerData.put("files", newPeer.getFiles());
-    this.redis.set(newPeer.getIpAddress(), peerData.toString());
-
-    peerData.put("ip", newPeer.getIpAddress());
-    System.out.println(peerData.toString());
-    return exists;
+    try (Jedis jedis = jedisPool.getResource()) {
+      boolean exists = jedis.exists(newPeer.getIpAddress());
+      JSONObject peerData = new JSONObject();
+      peerData.put("port", newPeer.getPort());
+      peerData.put("files", newPeer.getFiles());
+      jedis.set(newPeer.getIpAddress(), peerData.toString());
+      peerData.put("ip", newPeer.getIpAddress());
+      System.out.println(peerData.toString());
+      return exists;
+    } catch (Exception e) {
+      return false;
+    }
   }
 }
