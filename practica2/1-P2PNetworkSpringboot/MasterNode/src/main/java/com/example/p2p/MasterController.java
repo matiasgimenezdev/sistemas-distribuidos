@@ -28,8 +28,9 @@ public class MasterController {
 
   @GetMapping("/list")
   public String getFiles() {
-    System.out.println(master.getFiles().toString());
-    return master.getFiles().toString();
+    String files = master.getFiles().toString();
+    System.out.println(files);
+    return files;
   }
 
   @PostMapping("/register")
