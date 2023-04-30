@@ -21,21 +21,21 @@ $ curl -X GET http://localhost:9001/register
 $ curl -X GET http://localhost:9002/register
 $ curl -X GET http://localhost:9003/register
 ```
-###### Cada nodo extremo tiene una serie de archivos de imagen aleatorios que sirven para probar la funcionalidad. Estos se encuentran en /usr/src/files dentro del contenedor. 
+**Cada nodo extremo tiene una serie de archivos de imagen aleatorios que sirven para probar la funcionalidad. Estos se encuentran en /usr/src/files dentro del contenedor.** 
 
 #### Listar los archivos disponibles en toda la red
 Seleccione uno entre los cuatro nodos extremos para probar la funcionalidad de la red. Posteriormente realice una peticion al path /list, reemplazando <PORT> con el numero de puerto asociado al nodo elegido por usted.
 ```
 $ curl -X GET http://localhost:<PORT>/list
 ```
-###### Todos los archivos listados estan disponibles para ser descargados.
+**Todos los archivos listados estan disponibles para ser descargados.**
 
 #### Descargar un archivo desde su nodo elegido
 De los archivos listados, seleccione uno para realizar su descarga. Sabiendo cual es su nodo extremo elegido, realice una peticion reemplazando <PORT> y <FILE> con el numero de puerto de su nodo elegido previamente y el nombre de archivo que desea descargar.
 ```
 curl -X GET http://localhost:9001/download\?fileName\=file59542.jpg
 ```
-###### Como resultado, vera los archivos que poseía el host antes y despues de la descarga. 
+**Como resultado, vera los archivos que poseía el host antes y despues de la descarga.** 
   
 #### Detener los contenedores con docker-compose
 
