@@ -30,13 +30,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class NetworkService {
+public class NetworkUtils {
 
   private Environment env;
   private HttpClient client;
 
   @Autowired
-  public NetworkService(Environment env) {
+  public NetworkUtils(Environment env) {
     this.env = env;
     this.client = HttpClient.newHttpClient();
   }

@@ -1,5 +1,6 @@
 package com.example.p2p;
 
+import java.io.FileNotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PeerController {
 
   private Peer peer;
-  private NetworkService networkService;
+  private NetworkUtils networkService;
 
   @Autowired
-  public PeerController(NetworkService networkService, Peer peer) {
+  public PeerController(NetworkUtils networkService, Peer peer) {
     this.peer = peer;
     this.networkService = networkService;
     this.networkService.initFile();
