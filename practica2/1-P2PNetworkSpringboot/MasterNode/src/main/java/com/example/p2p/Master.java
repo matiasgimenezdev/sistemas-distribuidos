@@ -75,22 +75,23 @@ public class Master {
   public JSONObject getFiles() {
     ArrayList<String> availableFiles = new ArrayList<String>();
     System.out.println("Entré");
+    JSONObject response = new JSONObject();
     try (Jedis jedis = jedisPool.getResource()) {
       Set<String> keys = jedis.keys("*");
       for (String key : keys) {
         String peerData = jedis.get(key);
+        System.out.println(peerData);
         JSONObject json = new JSONObject(peerData);
         JSONArray filesArray = json.getJSONArray("files");
         for (int i = 0; i < filesArray.length(); i++) {
           String fileName = filesArray.get(i).toString();
-          System.out.println(fileName);
-
           availableFiles.add(fileName);
         }
       }
+      response.put("Files", availableFiles);
+    } catch (Exception e) {
+      response.put("error", e.getMessage());
     }
-    JSONObject response = new JSONObject();
-    response.put("Files", availableFiles);
     return response;
   }
 
