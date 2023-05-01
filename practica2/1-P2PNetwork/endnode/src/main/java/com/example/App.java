@@ -12,6 +12,9 @@ public class App
 {
     public static void main( String[] args ) throws IOException
     {
-        SpringApplication.run(EndNode.class, args);
+        EndNode en = new EndNode();
+        SpringApplication.run(en.getClass(), args);
+        en.start();
+        en.search();
     }
 }
