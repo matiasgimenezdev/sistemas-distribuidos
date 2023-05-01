@@ -30,27 +30,26 @@ public class PeerData {
     }
     return peerFiles;
   }
+  // public String getFile(String fileName) {
+  //   int index = hasFile(fileName);
+  //   if (index != -1) {
+  //     return this.files.get(index);
+  //   } else {
+  //     return "NF";
+  //   }
+  // }
 
-  public String getFile(String fileName) {
-    int index = hasFile(fileName);
-    if (index != -1) {
-      return this.files.get(index);
-    } else {
-      return "NF";
-    }
-  }
+  // private int hasFile(String fileName) {
+  //   int index = this.files.indexOf(fileName);
+  //   return index;
+  // }
 
-  private int hasFile(String fileName) {
-    int index = this.files.indexOf(fileName);
-    return index;
-  }
-
-  public void setFiles(String[] endNodeFiles) {
-    this.files.clear();
-    if (endNodeFiles.length > 0) {
-      for (String file : endNodeFiles) {
-        this.files.add(file);
-      }
-    }
-  }
+  // public void setFiles(String[] endNodeFiles) {
+  //   this.files.clear();
+  //   if (endNodeFiles.length > 0) {
+  //     for (String file : endNodeFiles) {
+  //       this.files.add(file);
+  //     }
+  //   }
+  // }
 }
