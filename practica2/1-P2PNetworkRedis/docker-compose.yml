@@ -20,7 +20,7 @@ services:
             my-network:
                 ipv4_address: 192.168.0.2
     master-node-1:
-        image: 'mgimenezdev/p2p-master:latest'
+        image: 'mgimenezdev/p2p-master-redis:latest'
         ports:
             - '8080:8080'
         container_name: 'master-node-1'
@@ -28,7 +28,7 @@ services:
             my-network:
                 ipv4_address: 192.168.0.100
     master-node-2:
-        image: 'mgimenezdev/p2p-master:latest'
+        image: 'mgimenezdev/p2p-master-redis:latest'
         ports:
             - '8081:8080'
         container_name: 'master-node-2'
