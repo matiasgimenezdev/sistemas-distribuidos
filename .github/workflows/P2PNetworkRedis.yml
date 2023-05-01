@@ -1,4 +1,4 @@
-name: P2PNetworkSpringboot workflow
+name: P2PNetworkRedis workflow
 
 on:
     push:
@@ -16,11 +16,11 @@ jobs:
                   java-version: 17
 
             - name: Build EndNode with Maven
-              working-directory: ./practica2/1-P2PNetworkSpringboot/EndNode
+              working-directory: ./practica2/1-P2PNetworkRedis/EndNode
               run: mvn clean package
 
             - name: Build MasterNode with Maven
-              working-directory: ./practica2/1-P2PNetworkSpringboot/MasterNode
+              working-directory: ./practica2/1-P2PNetworkRedis/MasterNode
               run: mvn clean package
 
             - name: Login to Docker Hub
@@ -32,13 +32,13 @@ jobs:
             - name: Build and push EndNode Docker image
               uses: docker/build-push-action@v2
               with:
-                  context: ./practica2/1-P2PNetworkSpringboot/EndNode
+                  context: ./practica2/1-P2PNetworkRedis/EndNode
                   push: true
                   tags: ${{ secrets.DOCKER_USERNAME }}/p2p-end:latest
 
             - name: Build and push MasterNode Docker image
               uses: docker/build-push-action@v2
               with:
-                  context: ./practica2/1-P2PNetworkSpringboot/MasterNode
+                  context: ./practica2/1-P2PNetworkRedis/MasterNode
                   push: true
                   tags: ${{ secrets.DOCKER_USERNAME }}/p2p-master:latest
