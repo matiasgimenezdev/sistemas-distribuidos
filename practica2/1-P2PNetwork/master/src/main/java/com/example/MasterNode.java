@@ -16,14 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,12 +28,6 @@ public class MasterNode {
     private Map<String, ArrayList<String>> archivosPorNodo = new HashMap<String, ArrayList<String>>();
 
     public MasterNode() {
-    }
-
-    @PostMapping("/")
-    public String handleRequest(@RequestBody String requestBody){
-        System.out.println("Mensaje recibido: " + requestBody);
-        return "Respuesta del Nodo Maestro: " + requestBody;
     }
 
     @PostMapping("/share-files")
@@ -78,7 +65,7 @@ public class MasterNode {
             System.out.println(".");
             System.out.println(".");
             System.out.println("Solicitando archivo a End Node correspondiente");
-            String fileUrl = "http://" + "localhost" + ":5000/file?filename=" + filename;
+            String fileUrl = "http://" + ip +  ":" + port + "/file?filename=" + filename;
             ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
             System.out.println(".");
             System.out.println(".");
