@@ -3,22 +3,20 @@ package com.example;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.Socket;
-import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,16 +25,9 @@ import java.util.Map;
 @RestController
 public class MasterNode {
 
-    private Map<String, ArrayList<String>> archivosPorNodo;
+    private Map<String, ArrayList<String>> archivosPorNodo = new HashMap<String, ArrayList<String>>();
 
     public MasterNode() {
-        this.archivosPorNodo = new HashMap<String, ArrayList<String>>();
-    }
-
-    @PostMapping("/")
-    public String handleRequest(@RequestBody String requestBody){
-        System.out.println("Mensaje recibido: " + requestBody);
-        return "Respuesta del Nodo Maestro: " + requestBody;
     }
 
     @PostMapping("/share-files")
@@ -48,7 +39,11 @@ public class MasterNode {
             String ip = (String) jsonMap.get("ip");
             String port = (String) jsonMap.get("port");
             String socket = ip + ":" + port;
-            archivosPorNodo.put(socket, filenames);
+            this.archivosPorNodo.put(socket, filenames);
+            System.out.println(".");
+            System.out.println(".");
+            System.out.println("Endo node registrado: " + socket);
+            System.out.println(".");
             return ResponseEntity.ok("Nombres de archivos recibidos por el Nodo Maestro");
         } catch(JSONException e){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -57,33 +52,25 @@ public class MasterNode {
         }
     }
 
-    @PostMapping("/search-file")
-    public ResponseEntity<String> pedirArchivo(@RequestBody String filename) throws IOException {
-        
-        try {
-            JSONObject data = new JSONObject(filename);
-            String socket = getKeyByValue(this.archivosPorNodo, data.getString("filename"));
+    @GetMapping("/search-file")
+    public ResponseEntity<File> downloadFile(@RequestParam String filename) {
+            String socket = getKeyByValue(this.archivosPorNodo, filename);
             String[] endNode = socket.split(":", 2);
             String ip = endNode[0];
             String port = endNode[1];
-
-            URL url = new URL("http://" + "localhost" + ":" + "5000" + "/file");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("User-Agent", "Java client");
-            connection.getOutputStream().write(data.toString().getBytes());
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                System.err.println("Failed to register files with master");
-                return null;
-            }
-            return null;
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        return null;
+            System.out.println(".");
+            System.out.println(".");
+            System.out.println("Solicitud de archivo " +  filename + " recibida");
+            RestTemplate restTemplate = new RestTemplate();
+            System.out.println(".");
+            System.out.println(".");
+            System.out.println("Solicitando archivo a End Node correspondiente");
+            String fileUrl = "http://" + ip +  ":" + port + "/file?filename=" + filename;
+            ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
+            System.out.println(".");
+            System.out.println(".");
+            System.out.println("Enviando respuesta");
+            return response;
     }
 
     public String getKeyByValue(Map<String, ArrayList<String>> map, String value) {
