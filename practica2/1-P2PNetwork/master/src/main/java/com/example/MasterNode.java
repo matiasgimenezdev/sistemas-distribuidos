@@ -30,7 +30,7 @@ public class MasterNode {
     public MasterNode() {
     }
 
-    @PostMapping("/share-files")
+    @PostMapping("/register")
     public ResponseEntity<String> recibirArchivos(@RequestBody String body) {
         ObjectMapper mapper = new ObjectMapper();
         try{
@@ -52,8 +52,8 @@ public class MasterNode {
         }
     }
 
-    @GetMapping("/search-file")
-    public ResponseEntity<File> downloadFile(@RequestParam String filename) {
+    @GetMapping("/file")
+    public ResponseEntity<String> downloadFile(@RequestParam String filename) {
             String socket = getKeyByValue(this.archivosPorNodo, filename);
             String[] endNode = socket.split(":", 2);
             String ip = endNode[0];
@@ -61,16 +61,13 @@ public class MasterNode {
             System.out.println(".");
             System.out.println(".");
             System.out.println("Solicitud de archivo " +  filename + " recibida");
-            RestTemplate restTemplate = new RestTemplate();
-            System.out.println(".");
-            System.out.println(".");
-            System.out.println("Solicitando archivo a End Node correspondiente");
-            String fileUrl = "http://" + ip +  ":" + port + "/file?filename=" + filename;
-            ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
+            JSONObject response = new JSONObject();
+            response.put("ip", ip);
+            response.put("port", port);
             System.out.println(".");
             System.out.println(".");
             System.out.println("Enviando respuesta");
-            return response;
+            return ResponseEntity.ok(response.toString());
     }
 
     public String getKeyByValue(Map<String, ArrayList<String>> map, String value) {

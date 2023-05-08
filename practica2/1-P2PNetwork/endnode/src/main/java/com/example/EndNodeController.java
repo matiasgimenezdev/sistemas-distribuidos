@@ -43,7 +43,7 @@ public class EndNodeController {
 
         HttpRequest request = HttpRequest
         .newBuilder()
-        .uri(URI.create("http://" + "localhost" + ":" + "8080" + "/share-files"))
+        .uri(URI.create("http://" + "localhost" + ":" + "8080" + "/register"))
         .header("Content-Type", "application/json")
         .POST(HttpRequest.BodyPublishers.ofString(data.toString()))
         .build();
@@ -56,22 +56,22 @@ public class EndNodeController {
         return ResponseEntity.ok(responseBody.getString("response"));*/
     }
 
-    public void download() throws IOException {
+    @GetMapping("/file")
+    public void file(@RequestParam String filename) throws InterruptedException {
         try {
-            JSONObject data = new JSONObject();
-            data.put("filename", "file.txt");
+
             RestTemplate restTemplate = new RestTemplate();
-            String fileUrl = "http://" + "localhost" + ":8080/search-file?filename=" + data.getString("filename");
-            ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
-            File file = response.getBody();
-            this.endNode.saveFile(file);
+            ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/file?filename=" + filename, String.class);
+            String dataString = response.getBody();
+            JSONObject data = new JSONObject(dataString);
+            this.endNode.getFile(data, filename);
+            this.register();
         } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
     }
 
-    @GetMapping("/file")
+    @GetMapping("/getFile")
     public ResponseEntity<File> downloadFile(@RequestParam String filename) {
         File file = this.endNode.searchFile(filename);
         return ResponseEntity.ok()

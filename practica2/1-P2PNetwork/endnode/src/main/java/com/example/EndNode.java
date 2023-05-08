@@ -10,7 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.json.JSONObject;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class EndNode {
@@ -60,15 +64,30 @@ public class EndNode {
     }
 
     public void saveFile(File file) throws IOException{
-        File downloadedFile = new File("filename");
+        File downloadedFile = new File("src/main/files/filename.txt");
         Files.copy(file.toPath(), downloadedFile.toPath());
     }
 
     public ArrayList<String> getList(){
+        File folder = new File(this.directoryPath); // Carpeta a examinar
+        File[] fileList = folder.listFiles(); // Obtener lista de archivos
+
         ArrayList<String> filenames = new ArrayList<>();
-        for (String filename : files.keySet()) {
-            filenames.add(filename);
+        for (File file : fileList) {
+            if (file.isFile()) {
+                filenames.add(file.getName()); // Agregar nombre de archivo al array
+            }
         }
         return filenames;
+    }
+
+    public void getFile(JSONObject data, String filename) throws IOException {
+        String ip = data.getString("ip");
+        String port = data.getString("port");
+        RestTemplate restTemplate = new RestTemplate();
+        String fileUrl = "http://" + ip + ":" + port + "/getFile?filename=" + filename;
+        ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
+        File file = response.getBody();
+        this.saveFile(file);
     }
 }
