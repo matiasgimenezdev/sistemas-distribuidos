@@ -27,6 +27,7 @@ public class MasterNode {
 
     private Map<String, ArrayList<String>> archivosPorNodo = new HashMap<String, ArrayList<String>>();
 
+    
     public MasterNode() {
     }
 

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,9 @@ import org.json.JSONObject;
 public class EndNodeController {
 
     private EndNode endNode;
+    @Autowired
+    private Environment env;
+
 
     @Autowired
     public EndNodeController(EndNode endNode){
@@ -36,8 +40,8 @@ public class EndNodeController {
     @GetMapping("/register")
     public ResponseEntity<String> register() throws IOException, InterruptedException {
         JSONObject data = new JSONObject();
-        data.put("ip", "localhost");
-        data.put("port", "5000");
+        data.put("ip", this.env.getProperty("ip"));
+        data.put("port", this.env.getProperty("port"));
         ArrayList<String> filenames = this.endNode.getList();
         data.put("files", filenames);
 
