@@ -33,9 +33,9 @@ public class MasterController {
 
   @PostMapping("/register")
   public String register(@RequestBody String body) {
+    System.out.println(body);
     JSONObject requestBody = null;
     JSONObject response = new JSONObject();
-    System.out.println(body);
     try {
       requestBody = new JSONObject(body);
     } catch (JSONException exception) {
