@@ -54,6 +54,7 @@ public class NetworkUtils {
     String masterIpAddress = env.getProperty("master.ipAddress").trim();
     String masterPort = env.getProperty("master.port").trim();
     String url = "http://" + masterIpAddress + ":" + masterPort + "/register";
+    System.out.println(url);
 
     JSONObject response = post(url, registerInformation);
     return response;

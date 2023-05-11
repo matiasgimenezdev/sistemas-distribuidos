@@ -35,6 +35,7 @@ public class MasterController {
   public String register(@RequestBody String body) {
     JSONObject requestBody = null;
     JSONObject response = new JSONObject();
+    System.out.println(body);
     try {
       requestBody = new JSONObject(body);
     } catch (JSONException exception) {

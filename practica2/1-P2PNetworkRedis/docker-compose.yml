@@ -57,28 +57,28 @@ services:
         networks:
             my-network:
                 ipv4_address: 192.168.0.151
-    end-node-3:
-        image: 'mgimenezdev/p2p-end:latest'
-        ports:
-            - '9002:9000'
-        container_name: 'end-node-3'
-        environment:
-            IP_ADDRESS: 192.168.0.152
-            PORT: 9002
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.152
-    end-node-4:
-        image: 'mgimenezdev/p2p-end:latest'
-        ports:
-            - '9003:9000'
-        container_name: 'end-node-4'
-        environment:
-            IP_ADDRESS: 192.168.0.153
-            PORT: 9003
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.153
+    # end-node-3:
+    #     image: 'mgimenezdev/p2p-end:latest'
+    #     ports:
+    #         - '9002:9000'
+    #     container_name: 'end-node-3'
+    #     environment:
+    #         IP_ADDRESS: 192.168.0.152
+    #         PORT: 9002
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.152
+    # end-node-4:
+    #     image: 'mgimenezdev/p2p-end:latest'
+    #     ports:
+    #         - '9003:9000'
+    #     container_name: 'end-node-4'
+    #     environment:
+    #         IP_ADDRESS: 192.168.0.153
+    #         PORT: 9003
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.153
 networks:
     my-network:
         driver: bridge
