@@ -51,9 +51,9 @@ $ curl -X GET http://localhost:<PORT>/list
 De los archivos listados, seleccione uno para realizar su descarga. Sabiendo cual es su nodo extremo elegido, realice una peticion reemplazando <PORT> y <FILE> con el numero de puerto de su nodo elegido previamente y el nombre de archivo que desea descargar.
 
 ```
-curl -X GET http://localhost:9001/download\?fileName\=file59542.jpg
+curl -X GET http://localhost:<PORT>/download?fileName=<FILE>
 ```
-
+  
 **Como resultado, vera los archivos que poseía el host antes y despues de la descarga.**
 
 ### 5) Detener los contenedores con docker-compose
