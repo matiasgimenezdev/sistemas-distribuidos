@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PeerController {
 
   private Peer peer;
-  private NetworkUtils networkService;
+  private NetworkUtils networkUtils;
 
   @Autowired
-  public PeerController(NetworkUtils networkService, Peer peer) {
+  public PeerController(NetworkUtils networkUtils, Peer peer) {
     this.peer = peer;
-    this.networkService = networkService;
-    this.networkService.initFile();
-    this.networkService.initFile();
-    this.networkService.initFile();
+    this.networkUtils = networkUtils;
+    this.networkUtils.initFile();
+    this.networkUtils.initFile();
+    this.networkUtils.initFile();
   }
 
   @GetMapping("/register")
@@ -34,7 +34,7 @@ public class PeerController {
     try {
       String[] availableFiles = this.peer.getAvailableFiles();
       JSONObject registerInformation =
-        this.networkService.register(availableFiles);
+        this.networkUtils.register(availableFiles);
       if (registerInformation.has("error")) {
         throw new Exception(registerInformation.getString("error"));
       }
@@ -49,7 +49,7 @@ public class PeerController {
   @GetMapping("/list")
   public ResponseEntity<String> list() {
     try {
-      return ResponseEntity.ok(this.networkService.listFiles().toString());
+      return ResponseEntity.ok(this.networkUtils.listFiles().toString());
     } catch (Exception exception) {
       return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
@@ -60,15 +60,15 @@ public class PeerController {
   @GetMapping("/download")
   public ResponseEntity<String> download(@RequestParam String fileName) {
     try {
-      JSONObject fileInformation = networkService.getFileInformation(fileName);
+      JSONObject fileInformation = networkUtils.getFileInformation(fileName);
       if (fileInformation.has("error")) {
         throw new FileNotFoundException(fileInformation.getString("error"));
       }
       String[] oldAvailableFiles = this.peer.getAvailableFiles();
 
-      this.networkService.downloadFile(fileInformation);
+      this.networkUtils.downloadFile(fileInformation);
       String[] newAvailableFiles = this.peer.getAvailableFiles();
-      this.networkService.register(newAvailableFiles);
+      this.networkUtils.register(newAvailableFiles);
       JSONObject response = new JSONObject();
       response.put("Pre-Download-Files", oldAvailableFiles);
       response.put("Post-Download-Files", newAvailableFiles);

@@ -42,11 +42,19 @@ public class MasterController {
     } finally {
       if (!master.register(requestBody)) {
         response.put("response", "OK: Peer registered");
+        system.print.out(
+          "Register info - MASTER NODE: " + registerInformation.toString()
+        );
+        system.print.out("Response: " + response.toString());
       } else {
         response.put(
           "response",
           "OK: Peer is already registered. Files updated"
         );
+        system.print.out(
+          "Register info - MASTER NODE: " + registerInformation.toString()
+        );
+        system.print.out("Response: " + response.toString());
       }
     }
     return response.toString();
