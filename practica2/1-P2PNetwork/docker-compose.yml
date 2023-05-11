@@ -6,9 +6,7 @@ services:
         ports:
             - '8080:8080'
         container_name: 'master-node-1'
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.100
+        network_mode: "host"
     end-node-1:
         image: 'dileydl/end-node:latest'
         ports:
@@ -17,9 +15,7 @@ services:
         environment:
             IP_ADDRESS: 192.168.0.150
             PORT: 9000
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.150
+        network_mode: "host"
     end-node-2:
         image: 'dileydl/end-node:latest'
         ports:
@@ -28,12 +24,4 @@ services:
         environment:
             IP_ADDRESS: 192.168.0.151
             PORT: 9001
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.151
-networks:
-    my-network:
-        driver: bridge
-        ipam:
-            config:
-                - subnet: 192.168.0.0/24
+        network_mode: "host"
