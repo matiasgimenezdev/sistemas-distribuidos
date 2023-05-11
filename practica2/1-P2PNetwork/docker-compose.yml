@@ -1,7 +1,7 @@
 version: '3'
 services:
   master-node-1:
-    image: 'dileydl/master-node:v3'
+    image: 'dileydl/master-node:v4'
     ports:
       - '8080:8080'
     container_name: 'master-node-1'
@@ -9,7 +9,7 @@ services:
       my-network:
         ipv4_address: 192.168.0.100
   end-node-1:
-    image: 'dileydl/end-node:v3'
+    image: 'dileydl/end-node:v4'
     ports:
       - '9000:9000'
     container_name: 'end-node-1'
@@ -20,7 +20,7 @@ services:
       my-network:
         ipv4_address: 192.168.0.150
   end-node-2:
-    image: 'dileydl/end-node:v3'
+    image: 'dileydl/end-node:v4'
     ports:
       - '9001:9000'
     container_name: 'end-node-2'
