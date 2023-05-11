@@ -20,7 +20,7 @@ services:
       my-network:
         ipv4_address: 192.168.0.150
   end-node-2:
-    image: 'dileydl/end-node:latest'
+    image: 'dileydl/end-node:v3'
     ports:
       - '9001:9000'
     container_name: 'end-node-2'
