@@ -46,7 +46,8 @@ public class NetworkUtils {
     registerInformation.put("ipAddress", env.getProperty("peer.ipAddress"));
     registerInformation.put("port", env.getProperty("peer.port"));
     registerInformation.put("files", availableFiles);
-    system.print.out(
+
+    System.out.println(
       "Register info - END NODE: " + registerInformation.toString()
     );
 
