@@ -3,7 +3,7 @@ services:
   master-node-1:
     image: 'dileydl/master-node:latest'
     ports:
-      - '8000:8000'
+      - '8080:8080'
     container_name: 'master-node-1'
     networks:
       my-network:
