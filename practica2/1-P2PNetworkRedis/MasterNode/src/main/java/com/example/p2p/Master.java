@@ -76,7 +76,6 @@ public class Master {
   }
 
   public JSONObject getFiles() {
-    Integer counter = 1;
     ArrayList<String> availableFiles = new ArrayList<String>();
     JSONObject response = new JSONObject();
     try (Jedis jedis = jedisPool.getResource()) {
@@ -87,11 +86,10 @@ public class Master {
         JSONArray filesArray = json.getJSONArray("files");
         for (int i = 0; i < filesArray.length(); i++) {
           String fileName = filesArray.get(i).toString();
-          availableFiles.add(counter + "- " + fileName);
-          counter++;
+          availableFiles.add(fileName);
         }
       }
-      response.put("Available-Files-In-Network", availableFiles);
+      response.put("Files available in the network", availableFiles);
     } catch (Exception e) {
       response.put("error", e.getMessage());
     }

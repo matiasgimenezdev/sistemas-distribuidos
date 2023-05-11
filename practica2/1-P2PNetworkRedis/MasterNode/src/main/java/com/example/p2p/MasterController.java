@@ -33,7 +33,6 @@ public class MasterController {
 
   @PostMapping("/register")
   public String register(@RequestBody String body) {
-    System.out.println(body);
     JSONObject requestBody = null;
     JSONObject response = new JSONObject();
     try {
@@ -43,19 +42,11 @@ public class MasterController {
     } finally {
       if (!master.register(requestBody)) {
         response.put("response", "OK: Peer registered");
-        System.out.println(
-          "Register info - MASTER NODE: " + requestBody.toString()
-        );
-        System.out.println("Response: " + response.toString());
       } else {
         response.put(
           "response",
           "OK: Peer is already registered. Files updated"
         );
-        System.out.println(
-          "Register info - MASTER NODE: " + requestBody.toString()
-        );
-        System.out.println("Response: " + response.toString());
       }
     }
     return response.toString();

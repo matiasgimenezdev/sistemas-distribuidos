@@ -47,14 +47,9 @@ public class NetworkUtils {
     registerInformation.put("port", env.getProperty("peer.port"));
     registerInformation.put("files", availableFiles);
 
-    System.out.println(
-      "Register info - END NODE: " + registerInformation.toString()
-    );
-
     String masterIpAddress = env.getProperty("master.ipAddress").trim();
     String masterPort = env.getProperty("master.port").trim();
     String url = "http://" + masterIpAddress + ":" + masterPort + "/register";
-    System.out.println(url);
 
     JSONObject response = post(url, registerInformation);
     return response;
