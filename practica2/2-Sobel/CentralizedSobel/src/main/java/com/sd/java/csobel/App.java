@@ -8,6 +8,7 @@ public class App {
 
   public static void main(String[] args) {
     SpringApplication.run(App.class, args);
+    System.out.println("Servidor en escucha en el puerto 8080.");
     new SobelController();
   }
 }
