@@ -1,7 +1,8 @@
-FROM ubuntu:20.04
+FROM eclipse-temurin:19-jdk-alpine
 
-COPY target/sobel-centralized.jar /app/sobel.jar
+COPY /target/sobel-centralized.jar /usr/src/sobel-centralized.jar
 
-WORKDIR /app
+WORKDIR /usr/src/
 
-CMD ["java", "-jar", "sobel.jar"]
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "sobel-centralized.jar"]
