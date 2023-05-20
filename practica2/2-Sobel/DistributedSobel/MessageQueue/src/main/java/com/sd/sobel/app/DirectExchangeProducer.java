@@ -26,11 +26,12 @@ public class DirectExchangeProducer {
     System.out.println("Routing key: " + routingKey);
     System.out.println(ROUTING_KEY_TASKS_REGISTER);
     if (routingKey.equals(ROUTING_KEY_TASKS_REGISTER)) {
-      String taskId = taskData.getString("taskId");
-      String parts = taskData.getString("parts");
-      String width = taskData.getString("width");
-      String height = taskData.getString("height");
-      message = new TaskRegister(taskId, parts, width, height);
+      // String taskId = taskData.getString("taskId");
+      // String parts = taskData.getString("parts");
+      // String width = taskData.getString("width");
+      // String height = taskData.getString("height");
+      // message = new TaskRegister(taskId, parts, width, height);
+      message = new TaskRegister("task47858", "4", "1200", "650");
     } else {
       return;
     }
