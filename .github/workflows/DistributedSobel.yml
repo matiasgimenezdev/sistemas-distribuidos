@@ -1,4 +1,4 @@
-name: P2PNetworkRedis workflow
+name: DistributedSobel workflow
 
 on:
     push:
