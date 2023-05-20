@@ -23,12 +23,11 @@ public class DirectExchangeProducer {
   private void sendMsg(String routingKey, JSONObject taskData) {
     Task message = null;
     if (routingKey.equals(ROUTING_KEY_TASKS_REGISTER)) {
-      // String taskId = taskData.getString("taskId");
-      // String parts = taskData.getString("parts");
-      // String width = taskData.getString("width");
-      // String height = taskData.getString("height");
-      // message = new TaskRegister(taskId, parts, width, height);
-      message = new TaskRegister("task47858", "4", "1200", "650");
+      String taskId = taskData.getString("taskId");
+      String parts = taskData.getString("parts");
+      String width = taskData.getString("width");
+      String height = taskData.getString("height");
+      message = new TaskRegister(taskId, parts, width, height);
     } else {
       return;
     }
