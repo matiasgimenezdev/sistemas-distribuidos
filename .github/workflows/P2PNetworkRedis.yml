@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - main
+        paths:
+            - 'practica2/1-P2PNetworkRedis/**'
+
 jobs:
     build:
         runs-on: ubuntu-latest
