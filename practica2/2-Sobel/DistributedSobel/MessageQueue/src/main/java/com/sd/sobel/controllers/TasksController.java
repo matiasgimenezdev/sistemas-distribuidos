@@ -19,10 +19,19 @@ public class TasksController {
 
   @PostMapping("/register")
   public String taskRegister(@RequestBody String body) {
-    System.out.println("Task data: " + body);
+    System.out.println("REGISTER TASK data: " + body);
     JSONObject taskData = new JSONObject(body);
     directExchangeProducer.sendMessage(ROUTING_KEY_TASKS_REGISTER, taskData);
 
-    return "Task registered: " + taskData.toString();
+    return "TASK REGISTER added: " + taskData.toString();
+  }
+
+  @PostMapping("/todo")
+  public String taskTodo(@RequestBody String body) {
+    System.out.println("TODO TASK data: " + body);
+    JSONObject taskData = new JSONObject(body);
+    directExchangeProducer.sendMessage(ROUTING_KEY_TASKS_TODO, taskData);
+
+    return "TASK TODO added: " + taskData.toString();
   }
 }

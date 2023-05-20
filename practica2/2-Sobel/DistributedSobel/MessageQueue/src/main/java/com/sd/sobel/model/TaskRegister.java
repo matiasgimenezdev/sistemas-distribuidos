@@ -21,10 +21,12 @@ public class TaskRegister implements Serializable, Task {
     this.height = height;
   }
 
+  @Override
   public String getTaskId() {
     return this.taskId;
   }
 
+  @Override
   public void setTaskId(String taskId) {
     this.taskId = taskId;
   }

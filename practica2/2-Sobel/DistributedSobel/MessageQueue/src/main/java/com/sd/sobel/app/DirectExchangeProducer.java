@@ -4,6 +4,7 @@ import static com.sd.sobel.config.DirectExchangeConfig.*;
 
 import com.sd.sobel.model.Task;
 import com.sd.sobel.model.TaskRegister;
+import com.sd.sobel.model.TaskTodo;
 import com.sd.sobel.services.MessageLogger;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -28,6 +29,11 @@ public class DirectExchangeProducer {
       String width = taskData.getString("width");
       String height = taskData.getString("height");
       message = new TaskRegister(taskId, parts, width, height);
+    } else if (routingKey.equals(ROUTING_KEY_TASKS_TODO)) {
+      String taskId = taskData.getString("taskId");
+      String source = taskData.getString("source");
+      String destination = taskData.getString("destination");
+      message = new TaskTodo(taskId, source, destination);
     } else {
       return;
     }
