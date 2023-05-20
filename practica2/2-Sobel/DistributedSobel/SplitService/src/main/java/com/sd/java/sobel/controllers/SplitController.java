@@ -77,12 +77,12 @@ public class SplitController {
           url,
           parameters
         );
-        if (response.statusCode() > 300) {
-          return new ResponseEntity<>(
-            "TASK_TODO_ERROR",
-            HttpStatus.INTERNAL_SERVER_ERROR
-          );
-        }
+        // if (response.statusCode() > 300) {
+        //   return new ResponseEntity<>(
+        //     "TASK_TODO_ERROR",
+        //     HttpStatus.INTERNAL_SERVER_ERROR
+        //   );
+        // }
       }
 
       // Genera la tarea para el servicio de unificacion y la envia al servicio de cola de mensajes en una peticion.
