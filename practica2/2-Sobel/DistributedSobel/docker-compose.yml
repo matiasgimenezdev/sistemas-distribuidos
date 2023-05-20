@@ -7,15 +7,29 @@ services:
         container_name: 'image-split-service'
         networks:
             my-network:
-                ipv4_address: 192.168.0.10
+                ipv4_address: 192.168.0.5
     task-queues:
         image: 'mgimenezdev/tasks-queue-service:latest'
         ports:
             - '8082:8080'
         container_name: 'task-queue-service'
+        depends_on:
+            - rabbitmq
         networks:
             my-network:
-                ipv4_address: 192.168.0.15
+                ipv4_address: 192.168.0.25
+    rabbitmq:
+        image: rabbitmq:alpine
+        container_name: 'rabbitmq'
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        environment:
+            - RABBITMQ_DEFAULT_USER=myuser
+            - RABBITMQ_DEFAULT_PASS=mypassword
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.50
 
     # postgres:
     #     image: postgres:alpine3.18
