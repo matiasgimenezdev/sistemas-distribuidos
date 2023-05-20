@@ -66,7 +66,7 @@ public class SplitController {
 
         // Genera la tarea para los workers y la envia al servicio de cola de mensajes en una peticion.
         HttpRequests httpRequests = new HttpRequests();
-        String url = "http://task-queue-service/taskmanager/todo";
+        String url = "http://task-queue-service:8080/taskmanager/todo";
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("taskId", taskId + "-" + i);
         parameters.put("source", "source-bucket");
@@ -87,7 +87,7 @@ public class SplitController {
 
       // Genera la tarea para el servicio de unificacion y la envia al servicio de cola de mensajes en una peticion.
       HttpRequests httpRequests = new HttpRequests();
-      String url = "http://task-queue-service/taskmanager/register";
+      String url = "http://task-queue-service:8080/taskmanager/register";
       HashMap<String, String> parameters = new HashMap<>();
       parameters.put("taskId", taskId);
       parameters.put("parts", splitParts.toString());
