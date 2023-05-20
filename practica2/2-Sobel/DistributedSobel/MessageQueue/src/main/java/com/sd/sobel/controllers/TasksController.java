@@ -5,13 +5,13 @@ import static com.sd.sobel.config.DirectExchangeConfig.*;
 import com.sd.sobel.app.DirectExchangeProducer;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+// import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
+// @SpringBootApplication
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/taskmanager")
