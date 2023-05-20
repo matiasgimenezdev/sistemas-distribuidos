@@ -23,8 +23,6 @@ public class DirectExchangeProducer {
 
   private void sendMsg(String routingKey, JSONObject taskData) {
     Task message = null;
-    System.out.println("Routing key: " + routingKey);
-    System.out.println(ROUTING_KEY_TASKS_REGISTER);
     if (routingKey.equals(ROUTING_KEY_TASKS_REGISTER)) {
       // String taskId = taskData.getString("taskId");
       // String parts = taskData.getString("parts");
