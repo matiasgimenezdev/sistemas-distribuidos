@@ -1,0 +1,36 @@
+version: '3'
+services:
+    split-service:
+        image: 'mgimenezdev/image-split-service:latest'
+        ports:
+            - '8080:8080'
+        container_name: 'image-split-service'
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.10
+    task-queues:
+        image: 'mgimenezdev/task-queue-service:latest'
+        ports:
+            - '8081:8080'
+        container_name: 'task-queue-service'
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.15
+
+    # postgres:
+    #     image: postgres:alpine3.18
+    #     restart: always
+    #     environment:
+    #         POSTGRES_USER: myuser
+    #         POSTGRES_PASSWORD: mypassword
+    #         POSTGRES_DB: tasks-db
+    #     # volumes:
+    #     #     - ./data:/var/lib/postgresql/data
+    #     ports:
+    #         - '5432:5432'
+networks:
+    my-network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.0.0/24
