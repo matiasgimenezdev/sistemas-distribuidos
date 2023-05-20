@@ -58,10 +58,11 @@ public class SplitController {
         );
 
         // Guardar cada división en un archivo separado
-        Path currentPath = Paths.get("").toAbsolutePath();
-        String divisionPath =
-          currentPath + "/image-parts/division" + i + ".jpg";
-        ImageIO.write(division, "jpg", new File(divisionPath));
+
+        // Path currentPath = Paths.get("").toAbsolutePath();
+        // String divisionPath =
+        //   currentPath + "/image-parts/division" + i + ".jpg";
+        // ImageIO.write(division, "jpg", new File(divisionPath));
 
         // Genera la tarea para los workers y la envia al servicio de cola de mensajes en una peticion.
         HttpRequests httpRequests = new HttpRequests();
