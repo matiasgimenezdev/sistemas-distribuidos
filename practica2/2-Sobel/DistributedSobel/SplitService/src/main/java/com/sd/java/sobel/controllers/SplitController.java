@@ -71,7 +71,6 @@ public class SplitController {
         parameters.put("taskId", taskId + "-" + i);
         parameters.put("source", "source-bucket");
         parameters.put("destination", "destination-bucket");
-        httpRequests.PostHttpRequest(url, parameters);
 
         HttpResponse<String> response = httpRequests.PostHttpRequest(
           url,
