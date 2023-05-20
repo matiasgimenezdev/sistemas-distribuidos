@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,7 +41,9 @@ public class SplitController {
       Integer divisionWidth = width / splitParts;
 
       // El task ID deberia ser generado de alguna forma aleatoria.
-      String taskId = "task8585";
+      String randomString = RandomStringUtils.randomAlphanumeric(16);
+      String taskId = DigestUtils.sha1Hex(randomString);
+
       for (int i = 0; i < splitParts; i++) {
         int x = i * divisionWidth;
         int y = 0;
@@ -57,8 +61,7 @@ public class SplitController {
           divisionHeight
         );
 
-        // Guardar cada división en un archivo separado
-
+        // TODO:Cada división en un archivo separado y subirla al bucket
         // Path currentPath = Paths.get("").toAbsolutePath();
         // String divisionPath =
         //   currentPath + "/image-parts/division" + i + ".jpg";
