@@ -10,8 +10,8 @@ import org.json.JSONObject;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class DirectExchangeProducer {
 
   private final RabbitTemplate rabbitTemplate;
