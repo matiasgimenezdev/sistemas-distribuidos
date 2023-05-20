@@ -5,7 +5,6 @@ import static com.sd.sobel.config.DirectExchangeConfig.*;
 import com.sd.sobel.model.Task;
 import com.sd.sobel.model.TaskRegister;
 import com.sd.sobel.services.MessageLogger;
-import java.io.Console;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
