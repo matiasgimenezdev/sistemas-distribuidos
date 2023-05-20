@@ -21,7 +21,9 @@ public class TasksController {
 
   @PostMapping("/register")
   public String taskRegister(@RequestBody JSONObject taskData) {
+    System.out.println("Task data: " + taskData.toString());
     directExchangeProducer.sendMessage(ROUTING_KEY_TASKS_COMPLETED, taskData);
+
     return "Task registered: " + taskData.toString();
   }
 }
