@@ -68,7 +68,7 @@ public class SplitController {
         HttpRequests httpRequests = new HttpRequests();
         String url = "http://task-queue-service/taskmanager/todo";
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("taskId", taskId + i);
+        parameters.put("taskId", taskId + "-" + i);
         parameters.put("source", "source-bucket");
         parameters.put("destination", "destination-bucket");
         httpRequests.PostHttpRequest(url, parameters);
@@ -77,12 +77,12 @@ public class SplitController {
           url,
           parameters
         );
-        // if (response.statusCode() > 300) {
-        //   return new ResponseEntity<>(
-        //     "TASK_TODO_ERROR",
-        //     HttpStatus.INTERNAL_SERVER_ERROR
-        //   );
-        // }
+        if (response.statusCode() != HttpStatus.OK.value()) {
+          return new ResponseEntity<>(
+            "TASK_TODO_ERROR",
+            HttpStatus.INTERNAL_SERVER_ERROR
+          );
+        }
       }
 
       // Genera la tarea para el servicio de unificacion y la envia al servicio de cola de mensajes en una peticion.
@@ -98,8 +98,14 @@ public class SplitController {
           url,
           parameters
         );
-        // return new ResponseEntity<>(response.body(), HttpStatus.OK);
-        return new ResponseEntity<>("TASK_TOTALLY_REGISTERED", HttpStatus.OK);
+        if (response.statusCode() == HttpStatus.OK.value()) {
+          return new ResponseEntity<>("TASK_TOTALLY_REGISTERED", HttpStatus.OK);
+        } else {
+          return new ResponseEntity<>(
+            "TASK_REGISTER_ERROR",
+            HttpStatus.INTERNAL_SERVER_ERROR
+          );
+        }
       } catch (IOException | InterruptedException e) {
         e.printStackTrace();
         return new ResponseEntity<>(
