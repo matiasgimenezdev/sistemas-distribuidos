@@ -98,7 +98,8 @@ public class SplitController {
           url,
           parameters
         );
-        return new ResponseEntity<>(response.body(), HttpStatus.OK);
+        // return new ResponseEntity<>(response.body(), HttpStatus.OK);
+        return new ResponseEntity<>("TASK_TOTALLY_REGISTERED", HttpStatus.OK);
       } catch (IOException | InterruptedException e) {
         e.printStackTrace();
         return new ResponseEntity<>(
