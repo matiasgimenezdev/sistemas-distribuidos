@@ -3,11 +3,8 @@ package com.sd.java.sobel.controllers;
 import com.sd.java.sobel.services.HttpRequests;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -40,7 +37,7 @@ public class SplitController {
       Integer height = originalImage.getHeight();
       Integer divisionWidth = width / splitParts;
 
-      // El task ID deberia ser generado de alguna forma aleatoria.
+      // El task ID es generado de forma aleatoria.
       String randomString = RandomStringUtils.randomAlphanumeric(16);
       String taskId = DigestUtils.sha1Hex(randomString);
 
@@ -61,7 +58,7 @@ public class SplitController {
           divisionHeight
         );
 
-        // TODO:Cada división en un archivo separado y subirla al bucket
+        // TODO:Colocar división en un archivo separado y subirla al bucket
         // Path currentPath = Paths.get("").toAbsolutePath();
         // String divisionPath =
         //   currentPath + "/image-parts/division" + i + ".jpg";
@@ -95,6 +92,8 @@ public class SplitController {
       parameters.put("parts", splitParts.toString());
       parameters.put("width", width.toString());
       parameters.put("height", height.toString());
+      parameters.put("source", "parts of images - bucket");
+      parameters.put("destination", "assembled image - bucket");
       try {
         HttpResponse<String> response = httpRequests.PostHttpRequest(
           url,

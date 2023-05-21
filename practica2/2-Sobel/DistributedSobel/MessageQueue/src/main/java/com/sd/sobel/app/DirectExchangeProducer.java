@@ -28,7 +28,10 @@ public class DirectExchangeProducer {
       String parts = taskData.getString("parts");
       String width = taskData.getString("width");
       String height = taskData.getString("height");
-      message = new TaskRegister(taskId, parts, width, height);
+      String source = taskData.getString("source");
+      String destination = taskData.getString("destination");
+      message =
+        new TaskRegister(taskId, parts, width, height, source, destination);
     } else if (routingKey.equals(ROUTING_KEY_TASKS_TODO)) {
       String taskId = taskData.getString("taskId");
       String source = taskData.getString("source");

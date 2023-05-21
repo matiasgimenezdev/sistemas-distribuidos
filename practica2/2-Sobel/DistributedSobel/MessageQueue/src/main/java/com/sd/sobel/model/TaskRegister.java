@@ -8,17 +8,23 @@ public class TaskRegister implements Serializable, Task {
   private String parts;
   private String width;
   private String height;
+  private String source;
+  private String destination;
 
   public TaskRegister(
     String taskId,
     String parts,
     String width,
-    String height
+    String height,
+    String source,
+    String destination
   ) {
     this.taskId = taskId;
     this.parts = parts;
     this.width = width;
     this.height = height;
+    this.source = source;
+    this.destination = destination;
   }
 
   @Override
@@ -53,5 +59,21 @@ public class TaskRegister implements Serializable, Task {
 
   public void setHeight(String height) {
     this.height = height;
+  }
+
+  public String getSource() {
+    return this.source;
+  }
+
+  public void setSource(String source) {
+    this.source = source;
+  }
+
+  public String getDestination() {
+    return this.destination;
+  }
+
+  public void setDestination(String destination) {
+    this.destination = destination;
   }
 }

@@ -19,6 +19,7 @@ public class App {
     DirectExchangeProducer directExchangeProducer,
     DirectExchangeConsumer directExchangeConsumer
   ) {
-    return new TasksController(directExchangeProducer, directExchangeConsumer);
+    // return new TasksController(directExchangeProducer, directExchangeConsumer);
+    return new TasksController(directExchangeProducer);
   }
 }
