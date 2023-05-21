@@ -3,6 +3,7 @@ package com.sd.java.sobel.controllers;
 import com.sd.java.sobel.services.HttpRequests;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
@@ -58,19 +59,19 @@ public class SplitController {
           divisionHeight
         );
 
-        // TODO:Colocar división en un archivo separado y subirla al bucket
-        // Path currentPath = Paths.get("").toAbsolutePath();
-        // String divisionPath =
-        //   currentPath + "/image-parts/division" + i + ".jpg";
-        // ImageIO.write(division, "jpg", new File(divisionPath));
+        // TODO:Subir los archivos generados al bucket de partes pre-filtrado
+
+        String divisionPath = "/tmp/split/" + taskId + "-" + i;
+        ImageIO.write(division, "jpg", new File(divisionPath));
 
         // Genera la tarea para los workers y la envia al servicio de cola de mensajes en una peticion.
         HttpRequests httpRequests = new HttpRequests();
         String url = "http://task-queue-service:8080/taskmanager/todo";
         HashMap<String, String> parameters = new HashMap<>();
+        // taskId es el mismo nombre que  tendran los archivos en el bucket.
         parameters.put("taskId", taskId + "-" + i);
-        parameters.put("source", "source-bucket");
-        parameters.put("destination", "destination-bucket");
+        parameters.put("source", "bucket partes pre-filtrado");
+        parameters.put("destination", "bucket partes post-filtrado");
 
         HttpResponse<String> response = httpRequests.PostHttpRequest(
           url,

@@ -6,21 +6,19 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 @Service
 public class AssemblyService {
-
-  public AssemblyService() {
-    this.processTasks();
-  }
-
-  private void processTasks() {
-    // Realiza peticion HTTP al servicio de cola de mensajes para obtener TASKS_TODO
-    // taskStatusUpdate();
-    // 1 segundo de delay entre tareas.
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
+  // public AssemblyService() {
+  //   this.processTasks();
+  // }
+  // private void processTasks() {
+  //   // Realiza peticion HTTP al servicio de cola de mensajes para obtener TASKS_TODO
+  //   // taskStatusUpdate();
+  //   // 1 segundo de delay entre tareas.
+  //   try {
+  //     Thread.sleep(1000);
+  //   } catch (InterruptedException e) {
+  //     e.printStackTrace();
+  //   }
+  // }
   // private void taskStatusUpdate() {
   //   HttpRequests httpRequests = new HttpRequests();
   //   String url = "http//task-queue-service:8080/taskmanager/get/completed";

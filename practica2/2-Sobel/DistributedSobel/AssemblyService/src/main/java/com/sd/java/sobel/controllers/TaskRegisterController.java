@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TaskRegisterController {
 
-  @PostMapping("/taskregister")
+  @PostMapping("/register")
   public ResponseEntity<String> taskRegister(@RequestBody String body) {
     System.out.println("Saving REGISTER TASK in BDD : " + body);
     JSONObject taskData = new JSONObject(body);

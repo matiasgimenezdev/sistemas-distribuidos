@@ -20,7 +20,6 @@ public class DirectExchangeConsumer {
 
   private JSONObject consumeMsg(String queue) {
     MessageConverter messageConverter = new SimpleMessageConverter();
-    // TODO: Verificar si hay manera de poder controlar antes de consumir, si existe algun un mensaje.
     Message queueMessage = rabbitTemplate.receive(queue);
     JSONObject task = new JSONObject("");
 

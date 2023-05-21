@@ -17,9 +17,10 @@ public class TasksQueuesListener {
 
   @RabbitListener(queues = { QUEUE_TASKS_REGISTER })
   public void listenOnQueueRegister(TaskRegister message) {
+    // Cada tarea registrada para el servicio de unificacion la loguea en consola
     MessageLogger.logReceivedMessage(QUEUE_TASKS_REGISTER, message);
 
-    // Envia la tarea al servicio de unificacion de imagen para que la registre en la BDD.
+    // Cada tarea registrada para el servicio de unificacion, se la envia para que la registre en la BDD.
     JSONObject task = new JSONObject(message);
     HttpRequests httpRequests = new HttpRequests();
     String url = "http//image-assembly-service:8080/register";
@@ -37,11 +38,13 @@ public class TasksQueuesListener {
 
   @RabbitListener(queues = { QUEUE_TASKS_TODO })
   public void listenOnQueueTodo(Task message) {
+    // Cada tarea registrada para los workers la loguea en consola
     MessageLogger.logReceivedMessage(QUEUE_TASKS_TODO, message);
   }
 
   @RabbitListener(queues = { QUEUE_TASKS_COMPLETED })
   public void listenOnQueueCompleted(Task message) {
+    // Cada tarea registrada como completada por los workers la loguea en consola
     MessageLogger.logReceivedMessage(QUEUE_TASKS_COMPLETED, message);
   }
 }

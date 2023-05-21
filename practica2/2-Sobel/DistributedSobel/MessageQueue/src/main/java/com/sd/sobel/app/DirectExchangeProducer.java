@@ -37,6 +37,8 @@ public class DirectExchangeProducer {
       String source = taskData.getString("source");
       String destination = taskData.getString("destination");
       message = new TaskTodo(taskId, source, destination);
+    } else if (routingKey.equals(ROUTING_KEY_TASKS_COMPLETED)) {
+      // TODO: Implementar registro de tareas completadas por los workers
     } else {
       return;
     }
