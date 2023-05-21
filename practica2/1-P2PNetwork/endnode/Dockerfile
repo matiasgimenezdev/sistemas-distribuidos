@@ -5,6 +5,8 @@ COPY /src/main/resources/ /usr/src/resources/
 
 WORKDIR /usr/src/
 
+RUN mkdir files
+
 EXPOSE 5000
 
 ENTRYPOINT ["java", "-jar", "endnode.jar"]

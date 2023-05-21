@@ -24,7 +24,8 @@ import org.springframework.web.client.RestTemplate;
 public class EndNode {
 
     private Map<String, File> files = new HashMap<>();
-    private String directoryPath = "src/main/files/";
+    //private String directoryPath = "src/main/files/";
+    private String directoryPath = "usr/src/files/";
     
     public EndNode() throws IOException {
         this.createFile();
@@ -67,9 +68,14 @@ public class EndNode {
         return null;
     }
 
-    public void saveFile(File file) throws IOException{
-        File downloadedFile = new File("src/main/files/filename.txt");
-        Files.copy(file.toPath(), downloadedFile.toPath());
+    public String saveFile(File file) throws IOException{
+        File downloadedFile = new File(this.directoryPath + file.getName());
+        if(!downloadedFile.exists()){
+            Files.copy(file.toPath(), downloadedFile.toPath());
+            return "El archivo " + file.getName() + " se descargó con éxito";
+        } else {
+            return "El archivo " + file.getName() + " ya existe";
+        }
     }
 
     public ArrayList<String> getList(){
@@ -80,18 +86,19 @@ public class EndNode {
         for (File file : fileList) {
             if (file.isFile()) {
                 filenames.add(file.getName()); // Agregar nombre de archivo al array
+                this.files.put(file.getName(), file);
             }
         }
         return filenames;
     }
 
-    public void getFile(JSONObject data, String filename) throws IOException {
+    public String getFile(JSONObject data, String filename) throws IOException {
         String ip = data.getString("ip");
         String port = data.getString("port");
         RestTemplate restTemplate = new RestTemplate();
         String fileUrl = "http://" + ip + ":" + port + "/getFile?filename=" + filename;
         ResponseEntity<File> response = restTemplate.exchange(fileUrl, HttpMethod.GET, null, File.class);
         File file = response.getBody();
-        this.saveFile(file);
+        return this.saveFile(file);
     }
 }

@@ -43,7 +43,7 @@ public class MasterNode {
             this.archivosPorNodo.put(socket, filenames);
             System.out.println(".");
             System.out.println(".");
-            System.out.println("Endo node registrado: " + socket);
+            System.out.println("End node registrado: " + socket);
             System.out.println(".");
             return ResponseEntity.ok("Nombres de archivos recibidos por el Nodo Maestro");
         } catch(JSONException e){
@@ -58,8 +58,8 @@ public class MasterNode {
             String socket = getKeyByValue(this.archivosPorNodo, filename);
             String[] endNode = socket.split(":", 2);
             String ip = endNode[0];
-            String port = endNode[1];
             System.out.println(".");
+            String port = endNode[1];
             System.out.println(".");
             System.out.println("Solicitud de archivo " +  filename + " recibida");
             JSONObject response = new JSONObject();

@@ -42,12 +42,15 @@ public class EndNodeController {
         JSONObject data = new JSONObject();
         data.put("ip", this.env.getProperty("ip"));
         data.put("port", this.env.getProperty("port"));
+        //data.put("ip", "localhost");
+        //data.put("port", "9000");
         ArrayList<String> filenames = this.endNode.getList();
         data.put("files", filenames);
 
         HttpRequest request = HttpRequest
         .newBuilder()
-        .uri(URI.create("http://" + "localhost" + ":" + "8080" + "/register"))
+        .uri(URI.create("http://" + this.env.getProperty("master.ipAddress") + ":" + this.env.getProperty("master.port") + "/register"))
+        //.uri(URI.create("http://" + "localhost" + ":" + "8080" + "/register"))
         .header("Content-Type", "application/json")
         .POST(HttpRequest.BodyPublishers.ofString(data.toString()))
         .build();
@@ -61,18 +64,21 @@ public class EndNodeController {
     }
 
     @GetMapping("/file")
-    public void file(@RequestParam String filename) throws InterruptedException {
+    public String file(@RequestParam String filename) throws InterruptedException {
+        String msj = "";
         try {
 
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/file?filename=" + filename, String.class);
+            ResponseEntity<String> response = restTemplate.getForEntity("http://" + this.env.getProperty("master.ipAddress") + ":" + this.env.getProperty("master.port") + "/file?filename=" + filename, String.class);
+            //ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/file?filename=" + filename, String.class);
             String dataString = response.getBody();
             JSONObject data = new JSONObject(dataString);
-            this.endNode.getFile(data, filename);
+            msj = this.endNode.getFile(data, filename);
             this.register();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return msj;
     }
 
     @GetMapping("/getFile")
@@ -80,6 +86,16 @@ public class EndNodeController {
         File file = this.endNode.searchFile(filename);
         return ResponseEntity.ok()
                 .body(file);
+    }
+
+    @GetMapping("/list")
+    public String listFiles() {
+        ArrayList<String> files = this.endNode.getList();
+        String filenames = "Files: ";
+        for(String file:files){
+            filenames += file + "; ";
+        }
+        return filenames;
     }
 
 }
