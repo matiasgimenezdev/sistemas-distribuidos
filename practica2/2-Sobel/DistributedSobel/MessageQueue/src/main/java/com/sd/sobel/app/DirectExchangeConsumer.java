@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Service;
 public class DirectExchangeConsumer {
 
   private final RabbitTemplate rabbitTemplate;
-  private final MessageConverter messageConverter;
 
   public JSONObject consumeMessage(String queue) {
     return consumeMsg(queue);
   }
 
   private JSONObject consumeMsg(String queue) {
+    MessageConverter messageConverter = new SimpleMessageConverter();
     Message queueMessage = rabbitTemplate.receive(queue);
     JSONObject task = new JSONObject("");
     System.out.println(queue);
