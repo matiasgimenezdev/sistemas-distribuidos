@@ -27,7 +27,7 @@ jobs:
               run: mvn clean package
 
             - name: Build AssemblyService with Maven
-              working-directory: ./practica2/2-Sobel/DistributedSobel/Assembly
+              working-directory: ./practica2/2-Sobel/DistributedSobel/AssemblyService
               run: mvn clean package
 
             - name: Login to Docker Hub
