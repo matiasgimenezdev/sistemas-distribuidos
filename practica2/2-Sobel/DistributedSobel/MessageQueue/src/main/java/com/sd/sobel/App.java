@@ -1,5 +1,6 @@
 package com.sd.sobel;
 
+import com.sd.sobel.app.DirectExchangeConsumer;
 import com.sd.sobel.app.DirectExchangeProducer;
 import com.sd.sobel.controllers.TasksController;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -15,8 +16,9 @@ public class App {
   }
 
   public TasksController tasksController(
-    DirectExchangeProducer directExchangeProducer
+    DirectExchangeProducer directExchangeProducer,
+    DirectExchangeConsumer directExchangeConsumer
   ) {
-    return new TasksController(directExchangeProducer);
+    return new TasksController(directExchangeProducer, directExchangeConsumer);
   }
 }

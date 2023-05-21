@@ -30,6 +30,14 @@ services:
         networks:
             my-network:
                 ipv4_address: 192.168.0.50
+    assembly-service:
+        image: 'mgimenezdev/image-assembly-service:latest'
+        ports:
+            - '8083:8080'
+        container_name: 'image-assembly-service'
+        networks:
+            my-network:
+                ipv4_address: 192.168.0.60
 
     # postgres:
     #     image: postgres:alpine3.18

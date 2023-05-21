@@ -39,4 +39,28 @@ public class HttpRequests {
 
     return response;
   }
+
+  public HttpResponse<String> GetHttpRequest(String url)
+    throws IOException, InterruptedException {
+    System.out.println("HTTP REQUEST: " + url);
+
+    HttpResponse<String> response = null;
+
+    try {
+      HttpClient client = HttpClient.newHttpClient();
+      HttpRequest request = HttpRequest
+        .newBuilder()
+        .uri(URI.create(url))
+        .GET()
+        .build();
+
+      response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+      System.out.println(response.body());
+    } catch (Exception e) {
+      System.err.println("ERROR: " + e.getMessage());
+    }
+
+    return response;
+  }
 }
