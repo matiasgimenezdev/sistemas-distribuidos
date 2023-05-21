@@ -35,7 +35,7 @@ public class AssemblyService {
       HttpResponse<String> response = httpRequests.GetHttpRequest(url);
       if (response.statusCode() == HttpStatus.OK.value()) {
         String task = response.body();
-        //TODO: Debe registrar la tarea en la BDD
+        //TODO: Debe registrar la tarea en la BDD. Crearla si no existe.
         System.out.println("Realizando tarea de la primera cola: " + task);
       } else {
         System.out.println("No se pudo obtener una tarea de la cola");
