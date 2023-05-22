@@ -25,31 +25,27 @@ public class EndNode {
 
     private Map<String, File> files = new HashMap<>();
     //private String directoryPath = "src/main/files/";
-    private String directoryPath = "usr/src/files/";
+    private String directoryPath = "/files/";
     
     public EndNode() throws IOException {
         this.createFile();
     }
 
     public void createFile() throws IOException {
-        // Agrega files
         Random r = new Random();
         int n = r.nextInt(100) + 1;
+        
         String fileName = "file" + n + ".txt";
-        // Crea una instancia de File para el directorio
         File directory = new File(directoryPath);
-        // Crea el directorio si no existe
+        
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        // Crea una instancia de FileWriter con la ruta completa del archivo
+        
         FileWriter fileWriter = new FileWriter(directoryPath + fileName);
-        // Crea una instancia de BufferedWriter para escribir en el archivo
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        // Escribe una cadena en el archivo
         bufferedWriter.write("Este es un ejemplo de archivo de texto.");
         bufferedWriter.close();
-        // Agrega File a Map files
         addFile(directoryPath + fileName);
     }
 
@@ -79,13 +75,12 @@ public class EndNode {
     }
 
     public ArrayList<String> getList(){
-        File folder = new File(this.directoryPath); // Carpeta a examinar
-        File[] fileList = folder.listFiles(); // Obtener lista de archivos
-
+        File folder = new File(this.directoryPath);
+        File[] fileList = folder.listFiles();
         ArrayList<String> filenames = new ArrayList<>();
         for (File file : fileList) {
             if (file.isFile()) {
-                filenames.add(file.getName()); // Agregar nombre de archivo al array
+                filenames.add(file.getName());
                 this.files.put(file.getName(), file);
             }
         }

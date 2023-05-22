@@ -7,29 +7,29 @@ services:
     container_name: 'master-node-1'
     networks:
       my-network:
-        ipv4_address: 192.168.0.100
+        ipv4_address: 192.168.1.140
   end-node-1:
     image: 'dileydl/end-node:v5'
     ports:
       - '9000:9000'
     container_name: 'end-node-1'
     environment:
-      IP_ADDRESS: 192.168.0.150
+      IP_ADDRESS: 192.168.1.150
       PORT: 9000
     networks:
       my-network:
-        ipv4_address: 192.168.0.150
+        ipv4_address: 192.168.1.150
   end-node-2:
     image: 'dileydl/end-node:v5'
     ports:
       - '9001:9000'
     container_name: 'end-node-2'
     environment:
-      IP_ADDRESS: 192.168.0.151
+      IP_ADDRESS: 192.168.1.151
       PORT: 9001
     networks:
       my-network:
-        ipv4_address: 192.168.0.151
+        ipv4_address: 192.168.1.151
 networks:
   my-network:
     driver: bridge
