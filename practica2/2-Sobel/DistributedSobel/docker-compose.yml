@@ -1,55 +1,56 @@
 version: '3'
 services:
-    split-service:
-        image: 'mgimenezdev/image-split-service:latest'
-        ports:
-            - '8081:8080'
-        container_name: 'image-split-service'
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.5
-    task-queues:
-        image: 'mgimenezdev/tasks-queue-service:latest'
-        ports:
-            - '8082:8080'
-        container_name: 'task-queue-service'
-        depends_on:
-            - rabbitmq
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.25
-    rabbitmq:
-        image: rabbitmq:alpine
-        container_name: 'rabbitmq'
-        ports:
-            - '5672:5672'
-            - '15672:15672'
-        environment:
-            - RABBITMQ_DEFAULT_USER=guest
-            - RABBITMQ_DEFAULT_PASS=guest
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.50
-    assembly-service:
-        image: 'mgimenezdev/image-assembly-service:latest'
-        ports:
-            - '8083:8080'
-        container_name: 'image-assembly-service'
-        networks:
-            my-network:
-                ipv4_address: 192.168.0.60
-
-    # postgres:
-    #     image: postgres:alpine3.18
-    #     restart: always
-    #     environment:
-    #         POSTGRES_USER: myuser
-    #         POSTGRES_PASSWORD: mypassword
-    #         POSTGRES_DB: tasks-db
-    #     # volumes:
-    #     #     - ./data:/var/lib/postgresql/data
+    # split-service:
+    #     image: 'mgimenezdev/image-split-service:latest'
     #     ports:
-    #         - '5432:5432'
+    #         - '8081:8080'
+    #     container_name: 'image-split-service'
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.5
+    # task-queues:
+    #     image: 'mgimenezdev/tasks-queue-service:latest'
+    #     ports:
+    #         - '8082:8080'
+    #     container_name: 'task-queue-service'
+    #     depends_on:
+    #         - rabbitmq
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.25
+    # rabbitmq:
+    #     image: rabbitmq:alpine
+    #     container_name: 'rabbitmq'
+    #     ports:
+    #         - '5672:5672'
+    #         - '15672:15672'
+    #     environment:
+    #         - RABBITMQ_DEFAULT_USER=guest
+    #         - RABBITMQ_DEFAULT_PASS=guest
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.50
+    # assembly-service:
+    #     image: 'mgimenezdev/image-assembly-service:latest'
+    #     ports:
+    #         - '8083:8080'
+    #     container_name: 'image-assembly-service'
+    #     networks:
+    #         my-network:
+    #             ipv4_address: 192.168.0.60
+
+    postgres:
+        image: postgres:alpine3.18
+        restart: always
+        container_name: 'postgres'
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: tasks
+        # volumes:
+        #     - ./data:/var/lib/postgresql/data
+        ports:
+            - '5432:5432'
 networks:
     my-network:
         driver: bridge
