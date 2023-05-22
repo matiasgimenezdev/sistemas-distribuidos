@@ -7,7 +7,7 @@ services:
     container_name: 'master-node-1'
     networks:
       my-network:
-        ipv4_address: 192.168.0.100
+        ipv4_address: 192.168.0.200
   end-node-1:
     image: 'dileydl/end-node:v5'
     ports:
