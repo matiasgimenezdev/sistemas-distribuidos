@@ -23,7 +23,7 @@ public class TasksQueuesListener {
     // Cada tarea registrada para el servicio de unificacion, se la envia para que la registre en la BDD.
     JSONObject task = new JSONObject(message);
     HttpRequests httpRequests = new HttpRequests();
-    String url = "http//image-assembly-service:8080/register";
+    String url = "http://image-assembly-service:8080/register";
     try {
       HttpResponse<String> response = httpRequests.GetHttpRequest(url);
       if (response.statusCode() == HttpStatus.OK.value()) {
