@@ -69,12 +69,24 @@ public class DatabaseConnection {
     ) {
       Statement statement = connection.createStatement();
 
-      ResultSet resultSet = statement.executeQuery(
-        "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'TASKS')"
+      //TODO Revisar verificacion de tabla existente. No esta funcionando
+      DatabaseMetaData metadata = connection.getMetaData();
+      ResultSet resultSet = metadata.getTables(
+        null,
+        null,
+        "TASKS",
+        new String[] { "TABLE" }
       );
-      boolean tableExists = resultSet.next();
 
-      if (!tableExists) {
+      while (resultSet.next()) {
+        String foundTableName = resultSet.getString("TABLE_NAME");
+        if (foundTableName.equalsIgnoreCase("TASKS")) {
+          this.tableExists = true;
+          break;
+        }
+      }
+      System.out.println(this.tableExists);
+      if (!this.tableExists) {
         // Crea la tabla 'TASKS' si no existe
         statement.executeUpdate(
           "CREATE TABLE TASKS (TASK_ID char(60) PRIMARY KEY, PARTS VARCHAR(50), WIDTH VARCHAR(10), HEIGHT VARCHAR(10), SOURCE VARCHAR(255), DESTINATION VARCHAR(255))"
