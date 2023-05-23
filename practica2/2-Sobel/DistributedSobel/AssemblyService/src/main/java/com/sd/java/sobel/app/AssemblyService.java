@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 @Service
 public class AssemblyService {
+  // TODO Este servicio consume tareas completadas por los workers, actualiza el contador de progreso y una vez filtradas todas la partes por los workers, unifica la imagen.
+  // TODO Debe eliminar el registro de la tarea de la BDD una vez completada, evitandose posibles futuras colisiones de claves primarias.
   // public AssemblyService() {
   //   this.processTasks();
   // }

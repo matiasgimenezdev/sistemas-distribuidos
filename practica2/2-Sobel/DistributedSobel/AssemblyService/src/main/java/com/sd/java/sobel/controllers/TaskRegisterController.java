@@ -27,8 +27,8 @@ public class TaskRegisterController {
     Connection connection = null;
     try {
       connection = this.databaseConnection.getConnection();
-      Statement statement = connection.createStatement();
 
+      // Verifica si ya existe la tarea.
       String query = "SELECT * FROM TASKS WHERE TASK_ID = ?";
       PreparedStatement preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, taskData.getString("taskId"));
