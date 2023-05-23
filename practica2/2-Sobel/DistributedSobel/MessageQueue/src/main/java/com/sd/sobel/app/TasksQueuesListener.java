@@ -7,6 +7,7 @@ import com.sd.sobel.model.TaskRegister;
 import com.sd.sobel.services.HttpRequests;
 import com.sd.sobel.services.MessageLogger;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import org.json.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,18 @@ public class TasksQueuesListener {
 
     // Cada tarea registrada para el servicio de unificacion, se la envia para que la registre en la BDD.
     JSONObject task = new JSONObject(message);
+    System.out.println(task.toString());
     HttpRequests httpRequests = new HttpRequests();
     String url = "http://image-assembly-service:8080/register";
     try {
-      HttpResponse<String> response = httpRequests.GetHttpRequest(url);
+      HashMap<String, String> parameters = new HashMap<>();
+      parameters.put("taskId", task.getString("taskId"));
+      parameters.put("parts", task.getString("parts"));
+      parameters.put("width", task.getString("width"));
+      parameters.put("height", task.getString("height"));
+      parameters.put("source", task.getString("source"));
+      parameters.put("destination", task.getString("destination"));
+      HttpResponse<String> response = httpRequests.PostHttpRequest(url, null);
       if (response.statusCode() == HttpStatus.OK.value()) {
         System.out.println("Se envío la tarea de unificacion: " + task);
       } else {
