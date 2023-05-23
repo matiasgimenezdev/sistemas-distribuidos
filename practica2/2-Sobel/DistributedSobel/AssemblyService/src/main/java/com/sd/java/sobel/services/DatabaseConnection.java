@@ -15,8 +15,6 @@ public class DatabaseConnection {
 
   private String dbname;
 
-  private Boolean tableExists;
-
   public DatabaseConnection(Environment environment) {
     this.url = environment.getProperty("postgres.url", "URL not found");
     this.username =
@@ -25,7 +23,6 @@ public class DatabaseConnection {
       environment.getProperty("postgres.password", "PASSWORD not found");
     this.dbname =
       environment.getProperty("postgres.dbname", "DBNAME not found");
-    this.tableExists = false;
     try (
       Connection connection = DriverManager.getConnection(
         this.url + "postgres",
@@ -69,32 +66,10 @@ public class DatabaseConnection {
     ) {
       Statement statement = connection.createStatement();
 
-      //TODO Revisar verificacion de tabla existente. No esta funcionando
-      DatabaseMetaData metadata = connection.getMetaData();
-      ResultSet resultSet = metadata.getTables(
-        null,
-        null,
-        "TASKS",
-        new String[] { "TABLE" }
+      // Si no existe la tabla TASKS, la crea.
+      statement.executeUpdate(
+        "CREATE TABLE IF NOT EXISTS TASKS (TASK_ID char(60) PRIMARY KEY, PARTS VARCHAR(50), WIDTH VARCHAR(10), HEIGHT VARCHAR(10), SOURCE VARCHAR(255), DESTINATION VARCHAR(255), COUNT INTEGER DEFAULT 0 )"
       );
-
-      while (resultSet.next()) {
-        String foundTableName = resultSet.getString("TABLE_NAME");
-        if (foundTableName.equalsIgnoreCase("TASKS")) {
-          this.tableExists = true;
-          break;
-        }
-      }
-      System.out.println(this.tableExists);
-      if (!this.tableExists) {
-        // Crea la tabla 'TASKS' si no existe
-        statement.executeUpdate(
-          "CREATE TABLE TASKS (TASK_ID char(60) PRIMARY KEY, PARTS VARCHAR(50), WIDTH VARCHAR(10), HEIGHT VARCHAR(10), SOURCE VARCHAR(255), DESTINATION VARCHAR(255))"
-        );
-        System.out.println("Se creó la tabla 'TASKS'");
-      } else {
-        System.out.println("La tabla 'TASKS' ya existe");
-      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
