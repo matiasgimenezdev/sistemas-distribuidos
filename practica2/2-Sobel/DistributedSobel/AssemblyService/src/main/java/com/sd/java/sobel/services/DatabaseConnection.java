@@ -73,8 +73,7 @@ public class DatabaseConnection {
       ResultSet resultSet = statement.executeQuery(
         "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'TASKS')"
       );
-      resultSet.next();
-      boolean tableExists = resultSet.getBoolean(1);
+      boolean tableExists = resultSet.next();
 
       if (!tableExists) {
         // Crea la tabla 'TASKS' si no existe
