@@ -1,43 +1,43 @@
 version: '3'
 services:
-    # split-service:
-    #     image: 'mgimenezdev/image-split-service:latest'
-    #     ports:
-    #         - '8081:8080'
-    #     container_name: 'image-split-service'
-    #     networks:
-    #         my-network:
-    #             ipv4_address: 10.0.110.5
-    # task-queues:
-    #     image: 'mgimenezdev/tasks-queue-service:latest'
-    #     ports:
-    #         - '8082:8080'
-    #     container_name: 'task-queue-service'
-    #     depends_on:
-    #         - rabbitmq
-    #     networks:
-    #         my-network:
-    #             ipv4_address: 10.0.110.25
-    # rabbitmq:
-    #     image: rabbitmq:alpine
-    #     container_name: 'rabbitmq'
-    #     ports:
-    #         - '5672:5672'
-    #         - '15672:15672'
-    #     environment:
-    #         - RABBITMQ_DEFAULT_USER=guest
-    #         - RABBITMQ_DEFAULT_PASS=guest
-    #     networks:
-    #         my-network:
-    #             ipv4_address: 10.0.110.50
-    # assembly-service:
-    #     image: 'mgimenezdev/image-assembly-service:latest'
-    #     ports:
-    #         - '8083:8080'
-    #     container_name: 'image-assembly-service'
-    #     networks:
-    #         my-network:
-    #             ipv4_address: 10.0.110.60
+    split-service:
+        image: 'mgimenezdev/image-split-service:latest'
+        ports:
+            - '8081:8080'
+        container_name: 'image-split-service'
+        networks:
+            my-network:
+                ipv4_address: 10.0.110.5
+    task-queues:
+        image: 'mgimenezdev/tasks-queue-service:latest'
+        ports:
+            - '8082:8080'
+        container_name: 'task-queue-service'
+        depends_on:
+            - rabbitmq
+        networks:
+            my-network:
+                ipv4_address: 10.0.110.25
+    rabbitmq:
+        image: rabbitmq:alpine
+        container_name: 'rabbitmq'
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        networks:
+            my-network:
+                ipv4_address: 10.0.110.50
+    assembly-service:
+        image: 'mgimenezdev/image-assembly-service:latest'
+        ports:
+            - '8083:8080'
+        container_name: 'image-assembly-service'
+        networks:
+            my-network:
+                ipv4_address: 10.0.110.60
 
     postgres:
         image: postgres:alpine3.18
@@ -47,9 +47,9 @@ services:
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
             POSTGRES_DB: tasks
-        # networks:
-        #     my-network:
-        #         ipv4_address: 10.0.110.70
+        networks:
+            my-network:
+                ipv4_address: 10.0.110.70
         # volumes:
         #     - ./data:/var/lib/postgresql/data
         ports:
