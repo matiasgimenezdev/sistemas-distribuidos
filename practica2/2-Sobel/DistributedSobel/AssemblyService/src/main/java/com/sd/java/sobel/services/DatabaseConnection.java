@@ -69,7 +69,6 @@ public class DatabaseConnection {
     ) {
       Statement statement = connection.createStatement();
 
-      // TODO -> DEBUGUEAR ESTA FUNCION PORQUE ESTA LANZANDO EXCEPCION CUANDO LA TABLA EXISTE.
       ResultSet resultSet = statement.executeQuery(
         "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'TASKS')"
       );
